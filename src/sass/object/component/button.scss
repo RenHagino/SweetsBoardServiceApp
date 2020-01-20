@@ -1,0 +1,255 @@
+//base.scssでボタン要素のスタイルを初期化
+
+    //===========================
+    // ボタンコンテナー
+    //===========================
+    .btn-container{
+        display: inline-block;
+        height: auto;
+        margin: $space_l;
+        list-style: none;
+        //new.phpのボタンコンテナー
+        &_new{
+            //relativeはbase.scssのnew-back-contentに設定
+            position: absolute;
+            top: 80%;
+            left: 50%;
+            transform: translate(-50%, -50%); 
+        }
+
+        //=========================
+        //デフォルトボタン
+        //=========================
+        .btn{
+            //ボタンのデフォルトスタイル
+            border: 1px solid  #000;
+            box-sizing: border-box;
+            color: #333333;
+            background-color: $color_gray_light;
+            //デフォルトでホバーしたとき
+            :hover{
+                background-color: $color_orange_normal;
+                border: 1px solid $color_yellow_normal;
+                cursor: pointer;
+            }
+
+
+            //=========================
+            //ボタンの大きさ 
+            //=========================
+             //TODO: em, rem について勉強する
+            &-s{
+                width: 125px;
+                height: 40px;
+                padding: 0.5em 1em; 
+                font-size: $font-size_l;
+            }
+            &-m{
+                width: 150px;
+                height: 50px;
+                padding: 0.5em 1em; 
+                font-size: $font-size_xl;
+            }
+            &-l{
+                width: 200px;
+                height: 70px;
+                padding: 0.7em 1em; 
+                font-size: $font-size_xxl;
+            }
+            //=========================
+            //== ボタン位置 == //
+            //=========================
+            &-center{
+                margin: 0 auto;
+            }
+            &-right{
+                float: right;
+            }
+            &-left{
+                float: left;
+
+            }
+            //=========================
+            //== ボタンの種類 == //
+            //=========================
+
+            //new.phpの会員登録ボタン
+            &-new-signup{
+                padding: 0.5em 1em; 
+                border-radius: 90px;
+                //ホバーした時
+                &:hover{
+                    background-color: $color_orange_normal;
+                    border: 1px solid $color_yellow_normal;
+                }
+            }
+            //new.phpのログインボタン
+            &-new-login{
+                margin-left: 50px;
+                padding: 0.5em 1em; 
+                border-radius: 90px;
+                //ホバーした時
+                &:hover{
+                    background-color: $color_orange_normal;
+                    border: 1px solid $color_yellow_normal;
+                }
+            }
+
+            //戻るボタン
+            &-back{ 
+                padding: 0.5em 1em;
+                border-radius: 60px;
+                &:hover{
+                    background-color: $color_orange_normal;
+                    border: 1px solid $color_yellow_normal;
+                }
+            }
+
+            //購入ボタン
+            &-buy{
+                padding: 0.5em 1em;
+                border-radius: 60px;
+                &:hover{
+                    background-color: $color_orange_normal;
+                    border: 1px solid $color_yellow_normal;
+                }
+            }
+
+            //マイページボタン
+            &-mypage{
+                padding: 0.5em 1em;
+                border-radius: 60px;
+                &:hover{
+                    background-color: $color_orange_normal;
+                    border: 1px solid $color_yellow_normal;
+                }
+            }
+
+            //ログインボタン
+            &-login{
+                margin: $space_m 0;
+                padding: 0.5em 1em; 
+                border-radius: 60px;
+                &:hover{
+                    background-color: $color_orange_normal;
+                    border: 1px solid $color_yellow_normal;
+                }
+            }
+            //ログアウトボタン
+            &-logout{
+                padding: 0.5em 1em;
+                border-radius: 60px;
+                &:hover{
+                    background-color: $color_orange_normal;
+                    border: 1px solid $color_yellow_normal;
+                }
+            }
+            //スイーツ登録ボタン
+            &-regist{
+                padding: 0.5em 1em;
+                border-radius: 60px;
+                &:hover{
+                    background-color: $color_orange_normal;
+                    border: 1px solid $color_yellow_normal;
+                }
+            }
+            //お気に入りボタン
+            &-like{
+                padding: 0.5em 1em; 
+                &:hover{
+                    background-color: $color_orange_normal;
+                    border: 1px solid $color_yellow_normal;
+                }
+                &:active{
+                    background-color: $color_orange_normal;
+                    border: 1px solid $color_yellow_normal;
+                }
+            }
+            //ユーザー登録ボタン
+            &-signup{
+                padding: 0.5em 1em;
+                border-radius: 60px;
+                &:hover{
+                    background-color: $color_orange_normal;
+                    border: 1px solid $color_yellow_normal;
+                }
+            }
+            //プロフィール変更ボタン
+            &-changeprof{
+                padding: 0.5em 1em;
+                border-radius: 60px;
+                &:hover{
+                    background-color: $color_orange_normal;
+                    border: 1px solid $color_yellow_normal;
+                }
+            }
+            //退会する
+            &-withdraw{
+                padding: 0.5em 1em;
+                border-radius: 60px;
+                &:hover{
+                    background-color: $color_orange_normal;
+                    border: 1px solid $color_yellow_normal;
+                }
+            }
+            //削除する
+            &-delete{
+                padding: 0.5em 1em;
+                border-radius: 60px;
+                &:hover{
+                    background-color: $color_orange_normal;
+                    border: 1px solid $color_yellow_normal;
+                }
+            }
+        }
+
+        //=========================
+        //バッジ
+        //=========================
+        .badge{
+            //display: inline-block;
+            border: 1px solid  #000;
+            box-sizing: border-box;
+            cursor: pointer;
+            //== バッジの大きさ ==//
+            &-s{
+                width: 125px;
+                height: 40px;
+                font-size: $font-size_xl;
+                text-align:center;
+            }
+            &-m{
+                width: 150px;
+                height: 50px;
+                text-align:center;
+                font-size: $font-size_xl;
+            }
+            &-l{
+                width: 200px;
+                height: 70px;
+                text-align:center;
+                font-size: $font-size_xxl;
+                padding: 0.7em 1em; 
+            }
+            //== バッジの位置 ==//
+            &-center{
+                margin: 0 auto;
+            }
+            &-right{
+                float: right;
+            }
+            &-left{
+                float: left;
+            }
+            //== バッジの種類 ==//
+            &-price{
+                background-color: $color_paleorange_normal;
+                color: rgb(66, 66, 66);
+                padding: 0.5em 1em; 
+            }
+        }
+    }
+
+
+
+

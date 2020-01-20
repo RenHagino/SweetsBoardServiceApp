@@ -1,0 +1,17 @@
+.search-result{
+    width: auto;
+    height: 80px;
+    box-sizing: border-box;
+    margin-left: 1px;
+    padding: $space_xxl ;
+    border: 2px solid #8f8f8f;
+    display: flex;
+    justify-content: space-between;
+
+    &__left{
+        
+    }
+    &__right{
+
+    }
+}

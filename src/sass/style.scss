@@ -1,0 +1,24 @@
+//=======================================================
+//外部CSS読み込み
+    /*Gulp ver4を使う場合には*/
+    //foundation
+    @import '../../src/sass/foundation/variables.scss';
+    @import '../../src/sass/foundation/base.scss';
+    //layout
+    @import '../../src/sass/layout/footer.scss';
+    @import '../../src/sass/layout/header.scss';
+    @import '../../src/sass/layout/list.scss';
+    @import '../../src/sass/layout/sidebar.scss';
+    @import '../../src/sass/layout/sweetsDetail.scss';
+    //object
+        //component
+            @import '../../src/sass/object/component/form.scss';
+            @import '../../src/sass/object/component/button.scss';
+        //project
+            @import '../../src/sass/object/project/board.scss';
+            @import '../../src/sass/object/project/pagenation.scss';
+            @import '../../src/sass/object/project/panel-list.scss';
+            @import '../../src/sass/object/project/search-result.scss';
+            
+        //utility
+            @import '../../src/sass/object/utility/animation.scss';

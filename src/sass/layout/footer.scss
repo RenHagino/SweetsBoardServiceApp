@@ -1,0 +1,15 @@
+.footer{
+    height: 100px;
+    width: 100%;
+    background: linear-gradient(to bottom, #FC9A5C, #FFF0AF);
+    text-align: center;
+    display: table;
+    background-color: $color_white;
+
+    //注意：パス指定は吐き出し先のstyle.cssからで考えないとパス指定ミスとなり、404エラーとなる。
+    p{
+        display: table-cell;
+        font-size: $font-size_m;
+        vertical-align: middle;
+    }
+}

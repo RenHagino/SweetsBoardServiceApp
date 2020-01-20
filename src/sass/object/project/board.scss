@@ -1,0 +1,90 @@
+.board{
+    width: 100%;
+    height: auto;
+    border:  double 3px #999;
+
+    //相手側の基本情報section
+    .msg-info{
+        width: 100%;
+        height: auto;
+        float: left;
+        .avatar-container{
+                width: 100%;
+                height: auto;
+            .avatar{
+                width: 300px;
+                height: 300px;
+                border-radius: 90%;
+            }
+        }
+        .sweets-info{
+            
+        }
+        .sweets-info{
+
+        }
+    }
+
+    //== メッセージの履歴section ==//
+    .msg-board{
+        width: 100%;
+        height: auto;
+        float: right;
+
+        //== 相手側のメッセージ ==//
+        .msg-left{ 
+            //相手のアバター
+            .avatar-container{
+                width: auto;
+                height: auto;
+                .avatar{
+                    width: 300px;
+                    height: 300px;
+                    border-radius: 90%;
+                }
+            }
+            //相手のメッセージ
+            .msg{
+                .span{
+
+                }
+                .msg{
+
+                }
+            }
+            //相手の送信日時
+            .send-date{
+                font-size:.5em;
+                text-align:left;
+            }
+        }
+
+        //== 自分側のメッセージ ==//
+        .msg-right{
+            //自分のアバター
+            .avatar-container{
+                width: auto;
+                height: auto;
+                .avatar{
+                    width: 300px;
+                    height: 300px;
+                    border-radius: 90%;
+                }
+            }
+            //自分のメッセージ
+            .msg{
+                .span{
+
+                }
+                .msg{
+
+                }
+            }
+            //送信日時
+            .send-date{
+                font-size:.5em;
+                text-align:right;
+            }
+        }
+    }
+}

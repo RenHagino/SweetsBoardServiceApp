@@ -29,28 +29,28 @@ gulp.task('minify-css', function(){
 //=================================
 //タスク２,画像圧縮
 //=================================
-//var Img_paths = {
-//  srcDir: 'src/img/',
-//  dstDir: 'dist/img/'
-//}
-////jpg,png,gif画像の圧縮タスク
-//gulp.task('imagemin', function(){
-//  var srcGlob = Img_paths.srcDir + '/**/*.+(jpg|jpeg|png|gif)';
-//  var dstGlob = Img_paths.dstDir;
-//  
-//  /*.task実行時にsrcGlobとdstGlobに差分があった場合
-//    にimageminを使って圧縮している*/
-//  gulp.src(srcGlob)
-//  .pipe(changed(dstGlob))
-//  .pipe(imagemin(
-//    [
-//      imagemin.gifsicle({interlaced: true}),
-//      imagemin.jpegtran({progressive: true}),
-//      imagemin.optipng({optimizationLevel: 5})
-//    ]
-//  ))
-//  .pipe(gulp.dest(dstGlob));
-//});
+var Img_paths = {
+  srcDir: 'src/img/',
+  dstDir: 'dist/img/'
+}
+//jpg,png,gif画像の圧縮タスク
+gulp.task('imagemin', function(){
+  var srcGlob = Img_paths.srcDir + '/**/*.+(jpg|jpeg|png|gif)';
+  var dstGlob = Img_paths.dstDir;
+  
+  /*.task実行時にsrcGlobとdstGlobに差分があった場合
+    にimageminを使って圧縮している*/
+  gulp.src(srcGlob)
+  .pipe(changed(dstGlob))
+  .pipe(imagemin(
+    [
+      imagemin.gifsicle({interlaced: true}),
+      imagemin.jpegtran({progressive: true}),
+      imagemin.optipng({optimizationLevel: 5})
+    ]
+  ))
+  .pipe(gulp.dest(dstGlob));
+});
 
 //================================
 //タスク3, sass gulp.ver4で記述
@@ -67,15 +67,7 @@ gulp.task('sass', gulp.series(function(){
   //done
   done();
 }));
-//変換タスク2
-//gulp.task('sass', gulp.series(function(){
-//  //scssフォルダの全てのscssを対象に
-//  return gulp.src('./src/scss/*.scss')
-//  //sass()関数を使う
-//  .pipe(sass())
-//  //変換したファイルの吐き出し先を指定
-//  .pipe(gulp.dest('./src/css/'));
-//}));
+
 
 //================================
 //タスク３, SCSSのファイル監視　gulp.ver4で記述
@@ -90,11 +82,10 @@ gulp.task('watch-css', gulp.series(function(){
 //================================
 //タスク４ デフォルトタスクを書く
 //================================
+//現在はver4を使っているのでその書き方をする
+gulp.task('default', gulp.series('sass','minify-css')); 
+//タスクを1つだけ設定する場合でもseries()は必要なので下記のように書く
+  //gulp.task('default', gulp.series('watch-css'));
+
 //ver3での書き方
   //gulp.task('default', ['watch-css', 'minify-css'])
-
-//ver4で書かないと駄目
-gulp.task('default', gulp.series('sass','minify-css')); 
-
-//タスクを1つだけ設定する場合は下記のように書く
-  //gulp.task('default', gulp.series('watch-css'));

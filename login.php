@@ -118,7 +118,7 @@
         <?php 
         require('header.php');
         ?>
-        <!--SUUCESSメッセージ 第１６回で追加 TODO:テスト-->
+        <!--SUUCESSメッセージ -->
         <p class="js-show-msg show-slide">
             <?php echo getSessionFlash('msg-success');?>
         </p>

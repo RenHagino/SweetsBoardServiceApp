@@ -75,15 +75,14 @@ if(!empty($_POST)){
                 $stmt = queryPost($dbh, $sql, $data);
                 //クエリ成功の場合
                 if($stmt){
-                    //LESSON17で削除。queryPost関数内で行うようにしたから。
-                    //debug('クエリ成功です');
+
 
                     $_SESSION['msg-success'] = SUC01; //パスワードを変更しました。
 
                     //メールを送信する
                     //メールを送信
                         $username = ($userData['username']) ? $userData['username'] : '名無し';
-                        $from = 'info@webukatu.com';
+                        $from = 'info@sweetsboard.com';
                         $to = $userData['email'];
                         $subject = 'パスワード変更通知｜WEBUKATUMARKET';
                         //EOTはEndOfFileの略。ABCでもなんでもいい。先頭の<<<の後の文字列と合わせること。最後のEOTの前後に空白など何も入れてはいけない。
@@ -92,7 +91,7 @@ if(!empty($_POST)){
                                 {$username}　さん
                                 パスワードが変更されました。                     
                                 ////////////////////////////////////////
-                                ウェブカツマーケットカスタマーセンター
+                                スイーツボードマーケットカスタマーセンター
                                 URL  http://sweetsboard.com/
                                 E-mail info@sweetsboard.com
                                 ///////////////////////////////////////
@@ -102,10 +101,6 @@ EOT;
                     //マイページへ遷移
                     header("Location:mypage.php");
                 
-                //LESSON17で削除失敗した場合の処理はqueryPost関数内で行うようになったので
-                //}else{
-                    //debug('クエリ失敗です');
-                    //$err_msg['common'] = MSG07;//エラーが発生しました。しばらく〜〜ください
                 }
             }catch(Exception $e){
                 error_log('エラーが発生しました:'.$e->getMessage());

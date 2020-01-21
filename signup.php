@@ -94,10 +94,6 @@
                             //マイページへ遷移
                             header("Location:mypage.php"); 
 
-                            //LESSON17で削除 queryPost内で行うため
-                            //}else{
-                            //error_log('クエリに失敗しました。');
-                            //$err_msg['common'] = MSG07;
                         }
                         
                         }catch (Exception $e) {

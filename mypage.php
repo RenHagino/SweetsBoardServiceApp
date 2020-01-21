@@ -25,25 +25,6 @@
     debug('取得した商品データ:'.print_r($sweetsData,true));
     debug('取得した掲示板データ:'.print_r($boardData,true));
     debug('取得したお気に入りスイーツデータ:'.print_r($favorite,true));
-    
-    //TODO:お気に入りスイーツのページネーション
-        //$currentFavPageNum = (!empty($_GET['fs'])) ? $_GET['fs'] : 1; //現在ページ
-        //$favListSpan = 6; //表示件数を設定
-        //$currentFavMinNum = (($currentFavPageNum-1)*$favListSpan);　//現在の表示レコード先頭を算出 //２ページ目 = 2 - 1 * listSpan(20) なので20件目からとなる。
-        //$countFavData = getFavSweetsList($currentMinNum, $u_id); //TODO $spanはfunction側で定義
-    
-    
-    //TODO:登録したスイーツのページネーション
-       // $currentMyPageNum = (!empty($_GET['ms'])) ? $_GET['ms'] : 1; //現在ページ
-       // $myListSpan = 6; //表示件数を設定
-       // $currentMyMinNum = 1;
-       // //(($currentMyPageNum-1)*$myListSpan);　//現在の表示レコード先頭を算出 //２ページ目 = 2 - 1 * listSpan(20) なので20件目からとなる。
-       // $countMyData = getMySweetsList($currentMyMinNum, $u_id); //TODO $spanはfunction側で定義
-
-
-
-
-
 
 ?>
 <!DOCTYPE html>
@@ -58,7 +39,7 @@
         <?php 
             require('header.php');
             ?>
-        <!--スライドメッセージ--> <!--第１５回で追加 TODO:復習-->
+        <!--スライドメッセージ-->
         <!-- フッターにjs, CSSはanimation.scssに記述 function.phpで裏側の処理-->
         <p class="js-show-msg msg-slide" style="display: none;" >
             <?php echo getSessionFlash('msg-success'); ?> <!--msg-successにSUCが指定されると開発者ツールで中身を確認できる。-->

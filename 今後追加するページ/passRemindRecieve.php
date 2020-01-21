@@ -80,7 +80,7 @@ if(!empty($_POST)){
                         本メールアドレス宛にパスワードの再発行を致しました。
                         下記のURLにて再発行パスワードをご入力頂き、ログインください。
 
-                        ログインページ：http://localhost:8888/webservice_practice07/login.php
+                        ログインページ：http://localhost:8888/sweetsboard/login.php
                         再発行パスワード：{$pass}
                         ※ログイン後、パスワードのご変更をお願い致します
 

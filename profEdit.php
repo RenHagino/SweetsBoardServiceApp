@@ -30,17 +30,22 @@
         //POSTされている情報を確認
             debug('POST送信があります');
             debug('POST情報:'.print_r($_POST,true));
-            debug('FILE情報:'.print_r($_FILES,true)); //Lesson22で追加
+            debug('FILE情報:'.print_r($_FILES,true)); 
 
         //変数にユーザー情報を代入 //TODO:リファクタリング filter_inputを使う。
             $username = $_POST['username'];
             $region = $_POST['region'];
             $email =$_POST['email'];
-            //Lesson22で追加
+            
+            //$_FILES変数のpicmのname(連想配列)に何か値があればuploadImg関数にpicの情報を渡してアップロードする(key=pic)
             $pic = (!empty($_FILES['pic']['name'])) ? uploadImg($_FILES['pic'],'pic'): '';
+            //現在$picに何も入っていなくて、DBに画像があった場合はそれを表示する
             $pic = ( empty($pic) && !empty($dbFormData['pic'])) ? $dbFormData['pic']: $pic;
 
-        //DBの情報と入力情報（POST送信された情報）が違う場合にバリデーションを行う
+
+        //========================================================
+        // DBの情報と入力情報（POST送信された情報）が違う場合にバリデーションを行う
+        //========================================================
 
         //ユーザー名バリデーション
             if($dbFormData['username'] !== $username){
@@ -93,15 +98,9 @@
     
                 //クエリ成功の場合
                 if($stmt){
-                    // LESSON17で削除 queryPost内で行うため
-                    //debug('クエリ成功');
                     $_SESSION['msg-success'] = SUC02;
                     debug('マイページに遷移します');
                     header("Location:mypage.php");
-                //}else{
-                    // LESSON17で削除 queryPost内で行うため
-                    //debug('クエリに失敗しました');
-                    //$err_msg['common'] = MSG07;
                 }
 
             }catch( Exception $e ){
@@ -134,7 +133,7 @@
             <!--プロフィールリスト-->
             <section class="prof-list section-right">
                 <div class="form-container">
-                    <!--フォームタグにenctypeを追加していることに注意 これをつけないとフォームから添付ファイルを送れないので画像を取り扱えない-->
+                    <!-- フォームタグにenctypeを追加していることに注意 これをつけないとフォームから添付ファイルを送れないので画像を取り扱えない-->
                     <form class="form form-m prof-form" method="post" enctype="multipart/form-data">
                         <h2 class="prof-list__title">
                             プロフィール編集

@@ -42,7 +42,7 @@
         debug('POST送信がありました');
         debug('POST情報:'.print_r($_POST,true));
         //過去に登録した画像があればそれが$_FILESという変数の中に入ってくる
-        debug('FILES情報:'.print_r($_FILES,true)); //LESSON17で登場
+        debug('FILES情報:'.print_r($_FILES,true));
     
 
         //変数にユーザー情報を代入

@@ -72,12 +72,12 @@ if(!empty($_POST)){
                         ※認証キーの有効期限は30分となります
 
                         認証キーを再発行されたい場合は下記ページより再度再発行をお願い致します。
-                        http://localhost:8888/webservice_practice07/passRemindSend.php
+                        http://localhost:8888/sweetsboard/passRemindSend.php
 
                         ////////////////////////////////////////
-                        ウェブカツマーケットカスタマーセンター
-                        URL  http://webukatu.com/
-                        E-mail info@webukatu.com
+                        スイーツマーケットカスタマーセンター
+                        URL  http://sweetsboard.com/
+                        E-mail info@sweetsboard.com
                             ////////////////////////////////////////
 EOT;
                     //実際にメールを送信。

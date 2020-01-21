@@ -97,3 +97,96 @@
     デフォルト画像は src/img/に保存する。
 
 
+
+//===============================================
+//task4 myRegistSweets.phpで使う関数を完成させる
+//===============================================
+    //==========================================================
+    //== 自分の登録したスイーツの情報取得関数  
+    //function getFavSweetsList($currentMinNum=1, $u_id, $span = 6){
+    //    //デバッグ
+    //    debug('自分のお気に入りスイーツ情報を取得します。');
+    //    
+    //    //DB処理
+    //    try{
+    //        //==  SQL1 カテゴリ選択用の処理  １ == //
+    //            debug('「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「');
+    //            debug('「「「「「 お気に入りテーブルから自分のお気に入りスイーツを取得します「「「「「');
+    //            debug('「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「');
+//
+    //            //DBへ接続
+    //            $dbh = dbConnect();
+    //            //sweetsテーブルからidを取得（＝＞スイーツが何件あるかを判別する）
+    //            $sql = 'SELECT sweets_id FROM favorite WHERE user_id =:u_id'; //ID数を取得して総レコード数をカウントする
+//
+    //            //プレースホルダー
+    //            $data = array(':u_id'=>$u_id);
+    //            
+    //            //クエリ実行
+    //            $stmt = queryPost($dbh,$sql,$data);
+//
+    //            //総レコード数と総ページ数を変数に格納
+    //            $rst['total'] = $stmt->rowCount(); //総レコード数 home.phpで echo getSweetsData['total']; として呼び出す
+    //            $rst['total_page'] = ceil($rst['total']/$span); //総ページ数  home.phpで echo getSweetsData['total_page']; として呼び出す
+    //            
+    //            //クエリが失敗した場合
+    //            if(!$stmt){
+    //                debug('クエリに失敗しました１。');
+    //                debug('総レコード数と総ページ数が取得できませんでした');
+    //                return false;
+    //            }else{
+    //
+    //                debug('クエリに成功しました１');
+    //                debug('$rst[total]の中身:'.print_r($rst['total'],true));
+    //                debug('$rst[total_page]の中身:'.print_r($rst['total_page'],true));
+    //                debug('総レコード数と総ページ数が取得できました');
+    //            }
+//
+    //        //==== SQL2 検索機能用のコード 検索機能 ２ =========//
+    //            debug('「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「');
+    //            debug('「「「「「「「  カテゴリーと値段による並び替えののSQLを実行します 「「「「「');
+    //            debug('「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「');
+    //            //商品データを全て取得
+    //            $sql = 'SELECT * FROM sweets';
+    //            //$categoryがあった場合、そのカテゴリーに属するスイーツのデータを全て取得する
+    //            if(!empty($category)) $sql .= ' WHERE category_name = '.$category;
+    //            //ソートがあった場合、
+    //            if(!empty($sort)){
+    //                switch($sort){
+    //                case 1:
+    //                    $sql .= ' ORDER BY price ASC';
+    //                    break;
+    //                case 2:
+    //                    $sql .= ' ORDER BY price DESC';
+    //                    break;
+    //                }
+    //            }
+    //        //================================================//
+    //        //SQL3 商品の取得数のSQL 
+    //        //================================================//
+    //            debug('「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「');
+    //            debug('「「「「「「「「「「  商品の取得数を判別します  「「「「「「「「「');
+    //            debug('「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「');
+    //            //商品が何件取得できたかを判別するSQL
+    //            $sql .= ' LIMIT '.$span.' OFFSET '.$currentMinNum;
+    //            $data = array();
+    //            debug('商品が何件取得できたかを判別するSQLの結果：'.$sql);
+    //            // クエリ実行
+    //            $stmt = queryPost($dbh, $sql, $data);
+    //            // クエリが成功したら、
+    //            if($stmt){
+    //                // クエリ結果のデータを全レコードを格納
+    //                $rst['data'] = $stmt->fetchAll();  //home.phpで echo getSweetsData['data']; として呼び出す
+    //                debug('$rst[data]の中身:'.print_r($rst['data'],true));
+    //                debug('クエリ結果の全レコードを取得しました。');
+    //                return $rst;
+    //            }else{
+    //                return false;
+    //            }
+    //
+    //
+    //    //例外処理
+    //    }catch(exception $e){
+    //        $e->getMessage();
+    //    }
+    //}

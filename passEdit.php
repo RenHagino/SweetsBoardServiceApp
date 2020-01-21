@@ -143,7 +143,7 @@ EOT;
                         <input type="password" name="pass_old" class="input" value="<?php echo getFormData('pass_old'); ?>">
                     </label>
                     <div class="area-msg"> 
-                        <?php echo getErrMsg('pass_old');?> <!--lesson15で追加した関数を使う-->
+                        <?php echo getErrMsg('pass_old');?> 
                     </div>
                     <!--新しいパスワード-->
                     <label class="<?php if(!empty($err_msg['pass_new'])) echo 'err'; ?>">
@@ -151,7 +151,7 @@ EOT;
                         <input type="password" name="pass_new" class="input" value="<?php echo getFormData('pass_new'); ?>">
                     </label>
                     <div class="area-msg"> 
-                        <?php echo getErrMsg('pass_new');?> <!--lesson15で追加した関数を使う-->
+                        <?php echo getErrMsg('pass_new');?> 
                     </div>
                     <!--新しいパスワード（再入力）-->
                     <label class="<?php if(!empty($err_msg['pass_new_re'])) echo 'err'; ?>">
@@ -159,7 +159,7 @@ EOT;
                         <input type="password" name="pass_new_re" class="input" value="<?php echo getFormData('pass_new_re'); ?>">
                     </label>
                     <div class="area-msg"> 
-                        <?php echo getErrMsg('pass_new_re');?> <!--lesson15で追加した関数を使う-->
+                        <?php echo getErrMsg('pass_new_re');?> 
                     </div>
                     <!--ログインボタン-->
                     <div class="btn-container">

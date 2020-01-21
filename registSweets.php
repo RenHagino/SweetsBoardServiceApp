@@ -20,14 +20,14 @@
     $s_id = (!empty($_GET['s_id'])) ? $_GET['s_id'] : ''; //空でなければ''を選択
     //DBからスイーツのデータを取得 //ログイン中のユーザーIDに基づいて getSweetsの第二引数は取りたいスウィーツのID
     $dbFormData = (!empty($s_id)) ? getSweets( $_SESSION['user_id'], $s_id): '';
-    //スウィーツの新規登録か変種画面かの判断 //getSweetsでDBの情報を確認してからtrueとfalseを切り替える
+    
+    //スイーツの新規登録か変種画面かの判断 
     $edit_flg =(!empty($dbFormData)) ? true : false; //DBにデータがあればtrue =編集画面; データがなければfalse = 編集画面
-    //DBからカテゴリデータを取得 //引数は入れなくて良い
-        //$dbCategoryData = getCategory();
+        
     //デバッグ
     debug('スウィーツID:'.$s_id);
     debug('フォーム用DBデータ'.print_r($dbFormData,true));
-    //debug('カテゴリデータ:'.print_r($dbCategoryData,true));
+
 
     //パラメータ改ざんチェック（GETパラメータはURLにあるのでいじられる可能性がある）
     //ログイン中のユーザーのURLからDBに登録されていないGETパラメーターが検出された場合、
@@ -36,20 +36,6 @@
         debug('GETパラメータの商品IDが違います。マイページへ遷移します');
         header("Location:mypage.php");
     } 
-
-    //画像削除処理 TODO:あとで追加するかも
-        //削除ボタン１を押した場合。
-        //zif(!empty($_POST['delete-1'])){
-        //z    deleteImg('pic1',$s_id);
-        //z}
-        //z//削除ボタン２を押した場合。
-        //zif(!empty($_POST['delete-2'])){
-        //z    deleteImg('pic2',$s_id);
-        //z}
-        //z//削除ボタン３を押した場合。
-        //zif(!empty($_POST['delete-3'])){
-        //z    deleteImg('pic3',$s_id);
-        //z}
 
     //POST送信時処理
     if(!empty($_POST)){
@@ -330,20 +316,7 @@
                             </div>
                         </div>
                     </div>
-                    <!--削除ボタン--> <!--TODO:あとで追加するかも-->
-                    <!--
-                        <div class="deleteBtn-container">
-                        <div class="btn-container">
-                            <input type="submit" name="delete-1" class="btn btn-s btn-center btn-delete" value="削除する">
-                        </div>
-                        <div class="btn-container">
-                            <input type="submit" name="delete-2" class="btn btn-s btn-center btn-delete" value="削除する">
-                        </div>
-                        <div class="btn-container">
-                            <input type="submit"  name="delete-3" class="btn btn-s btn-center btn-delete" value="削除する">
-                        </div>
-                    </div>
-                    -->
+                    
                     <!--送信ボタン-->
                     <div class="btn-container">
                         <input type="submit" class="btn btn-m btn-regist" value="<?php echo (!$edit_flg) ? '登録する' : '更新する'; ?>" >
@@ -359,9 +332,8 @@
     </body>
 </html>
 
-<!-- おすすめスウィーツ出品画面-->
 <!--
-    商品登録機能の処理フロー
+    このページの処理フロー
     １GETパラメーターがあるかチェック
     ２フォームに表示するDBデータを取得
     ３POSTされているかをチェック
@@ -369,9 +341,4 @@
     ５バリデーションチェック
     ６DB新規登録 or 更新
     ７マイページへ遷移
-
-    ////////TODO：エラー修正タスク/////////////////
-    //・DBに画像のデータがPOSTされない。
-    //・GETデータ（$s_id）が格納できてない
-    //・スイーツデータ$dbFormデータが取得できてない。（GETデータ）が格納できてない影響？
 -->

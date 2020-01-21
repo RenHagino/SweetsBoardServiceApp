@@ -59,27 +59,34 @@
                 });
             //== 画像ライブプレビュー終了 ==//
                 
-
-            //テキストエリアカウント
+            //===================================
+            //文字数カウント機能
+            //===================================
                 var $countUp = $('.js-count');
                 var $countView = $('.js-count-view');
                     $countUp.on('keyup',function(e){
                     $countView.html($(this).val().length);
                 });
 
-            //画像切り替え //lesson21で追加
-                //変数にDOMを入れる
-                var $switchImgSubs = $('.js-switch-img-sub'),
-                    $switchImgMain = $('.js-switch-img-main');
-                //実際の処理。サブイメージがクリックされたら、メインイメージと入れ替える。
-                $switchImgSubs.on('click',function(e){ //サブイメージがクリックされた時、
-                    $switchImgMain.attr('src',$(this).attr('src'));//メイン画像のsrcを$(this)のsrcに変更している。
-                });
-            
-
-            //お気に入り機能 Lesson24で追加
+            //===================================
+            //画像切り替え
+            //===================================
+             //変数にDOMを入れる
+             var $switchImgSubs = $('.js-switch-img-sub'),
+                 $switchImgMain = $('.js-switch-img-main');
+             
+             //実際の処理。サブイメージがクリックされたら、メインイメージと入れ替える。
+             $switchImgSubs.on('click',function(e){ 
+                 //サブイメージがクリックされた時、メイン画像のsrcを
+                 //ダブ画像のsrc($this.attr('src'))に書き換えている
+                 $switchImgMain.attr('src',$(this).attr('src'));
+             });
+             
+            //===================================
+            //お気に入り機能 
+            //===================================
             var $like,
-                likeSweetsId;
+            likeSweetsId;
 
             $like = $('.js-like-click') || null ; //DOMが取れなかった場合はundefinedで後続の処理が止まってしまうのでそれを防ぐためにnullを入れる。
             likeSweetsId =  $like.data('sweetsid') || null  //js-like-clickのDOMにsweetsidが無かった場合はnullを入れる
@@ -113,7 +120,6 @@
                     });
                 });
             }
-            // == お気に入り機能 == === ===   ====   ====//
             
         });
     </script>

@@ -306,7 +306,7 @@ $err_msg = array();
         
         //DB処理
         try{
-            //==  SQL1 カテゴリ選択用の処理 Lesson22で追加 １ == //
+            //==  SQL1 カテゴリ選択用の処理 == //
                 debug('「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「');
                 debug('「「「「「「「「「「  カテゴリー選択用のSQLを実行します   「「「「「「「「「');
                 debug('「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「');
@@ -353,7 +353,7 @@ $err_msg = array();
                     debug('総レコード数と総ページ数が取得できました');
                 }
             //===========================================//
-            //==== SQL2 検索機能用のコード 検索機能 Lesson22で追加====//
+            //==== SQL2 検索機能用のコード 検索機能 ===//
             //===========================================//
                 debug('「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「');
                 debug('「「「「「「「  カテゴリーと値段による並び替えののSQLを実行します 「「「「「');
@@ -486,7 +486,7 @@ $err_msg = array();
     //    
     //    //DB処理
     //    try{
-    //        //==  SQL1 カテゴリ選択用の処理 Lesson22で追加 １ == //
+    //        //==  SQL1 カテゴリ選択用の処理  １ == //
     //            debug('「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「');
     //            debug('「「「「「 お気に入りテーブルから自分のお気に入りスイーツを取得します「「「「「');
     //            debug('「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「');
@@ -519,7 +519,7 @@ $err_msg = array();
     //                debug('総レコード数と総ページ数が取得できました');
     //            }
 //
-    //        //==== SQL2 検索機能用のコード 検索機能 Lesson22で追加 ２ =========//
+    //        //==== SQL2 検索機能用のコード 検索機能 ２ =========//
     //            debug('「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「');
     //            debug('「「「「「「「  カテゴリーと値段による並び替えののSQLを実行します 「「「「「');
     //            debug('「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「');
@@ -571,7 +571,7 @@ $err_msg = array();
 
 
     //=============================================
-    // スイーツの情報取得関数 Lesson21で追加  SweetsDetail.phpで使用 
+    // スイーツの情報取得関数   SweetsDetail.phpで使用 
     //  Sweetsテーブルとカテゴリーテーブルを外部結合してスイーツのカテゴリーも含めて情報を入手している。
     //=============================================
     function getSweetsOne($s_id){
@@ -580,13 +580,13 @@ $err_msg = array();
 
         try{
             //DB接続
-            $dbh = dbConnect(); 
-            //TODO:復習
-            //SQL c.name => categoryテーブルのnameカラム。s.idだとSweetsテーブルのidカラムになる 
-            //LEFT J
+            $dbh = dbConnect();
+
+            //sweetsテーブルとcategoryテーブルを分ける場合は内部結合で取得する
             //$sql ='SELECT s.id, s.name, s.comment, s.price, s.pic1, s.pic2, s.pic3, s.user_id, s.create_date, s.update_date, c.name AS category
             //    FROM Sweets AS s LEFT JOIN category AS c ON s.category_name = c.id  
             //    WHERE s.id = :s_id AND s.delete_flg = 0 AND c.delete_flg = 0';
+
             //新しいSQL (スイーツテーブルとカテゴリーテーブルを分けていない想定)   
             $sql = 'SELECT id, name, store_name, category_name, comment, price, pic1, pic2, pic3, user_id, create_date, update_date
                 FROM sweets
@@ -611,8 +611,7 @@ $err_msg = array();
     }
 
     //=============================================
-    //== マイスイーツ（お気に入り）の情報取得関数 
-    //Lesson25で追加  mypage.phpで使用 == //
+    //お気に入り登路したスイーツの情報取得関数
     //=============================================
     function getMySweets($u_id){
         debug('自分のお気に入りのスイーツ情報を取得します');
@@ -785,11 +784,10 @@ $err_msg = array();
 
     //=============================================
     //フォーム入力保持関数 profEdit.phpとregistSweets.phpで使用  
-    //TODO:　条件分岐通りに動くかチェックしてみる
     //=============================================
     function getFormData($str, $flg = false){
         
-        //Lesson22でGETかPOSTを判別する処理を追加 
+        //GETかPOSTを判別する処理を追加 
             //デフォルトではfalseになっている
             if($flg){
                 $method = $_GET;
@@ -798,9 +796,8 @@ $err_msg = array();
                 $method = $_POST;
                 debug('POST送信です');
             }
-        
-        //== ==//
-            //グローバル変数化
+
+            //$dbFormDataはグローバル変数化
             global $dbFormData;
 
             //ユーザーデータがあった場合

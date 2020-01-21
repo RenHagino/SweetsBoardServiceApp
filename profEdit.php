@@ -134,7 +134,7 @@
             <!--プロフィールリスト-->
             <section class="prof-list section-right">
                 <div class="form-container">
-                    <!--TODO: フォームタグにenctypeを追加していることに注意 これをつけないとフォームから添付ファイルを送れないので画像を取り扱えない-->
+                    <!--フォームタグにenctypeを追加していることに注意 これをつけないとフォームから添付ファイルを送れないので画像を取り扱えない-->
                     <form class="form form-m prof-form" method="post" enctype="multipart/form-data">
                         <h2 class="prof-list__title">
                             プロフィール編集
@@ -144,8 +144,8 @@
                         </div>
                         <!--名前-->
                         <label class="label <?php if(!empty($err_msg['username'])) echo 'err'?>" >
-                            名前:<br> <!--value属性にはDBから取ってきた情報を入れる-->
-                            <input class="input" type="text" name="username" value="<?php echo getFormData('username')?>" > <!--TODO リファクタリング profEdit(lesson14を参照)-->
+                            名前:<br> 
+                            <input class="input" type="text" name="username" value="<?php echo getFormData('username')?>" >
                         </label>
                         <div class="area-msg">
                             <?php if(!empty($err_msg['username'])) echo $err_msg['username']?>

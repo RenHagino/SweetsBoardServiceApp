@@ -141,30 +141,33 @@
     //================================
     //===== 入力フォームをサイズ別にデザイン =>>>>そもそも要る？ 
     //================================
-        //.input--s{
-        //    width: 200px; //金額フォームはhtmlに直接widthのスタイルを適用している
-        //    height: 40px;
-        //    font-size: $font-size_m;
-        //    margin-top: $space_m;
-        //    border: double 5px $color_default;
-        //}
-        //
+        .input-s{
+            width: 175px; //金額フォームはhtmlに直接widthのスタイルを適用している
+            height: 40px;
+            font-size: $font-size_m;
+            text-align: center;
+            margin-top: $space_m;
+            border: 1px solid $color_default;
+        }
+        
         ////入力フォーム中  //=>商品名、店名、金額、詳細
-        //.input-m{
-        //    width: 400px; //金額フォームはhtmlに直接widthのスタイルを適用している
-        //    height: 50px;
-        //    font-size: $font-size_l;
-        //    margin-top: $space_m;
-        //    border: double 5px $color_default;
-        //}
+        .input-m{
+            width: 200px; //金額フォームはhtmlに直接widthのスタイルを適用している
+            height: 50px;
+            font-size: $font-size_l;
+            text-align: center;
+            margin-top: $space_m;
+            border: double 5px $color_default;
+        }
         ////入力フォーム大 //=>テキストエリア
-        //.input-l{
-        //    width: 500px;
-        //    height: 200px;
-        //    margin-top: $space_l;
-        //    font-size: $font-size_xl;
-        //    border: double 5px $color_default;
-        //}
+        .input-l{
+            width: 400px;
+            height: 100px;
+            font-size: $font-size_xl;
+            text-align: center;
+            margin-top: $space_l;
+            border: double 5px $color_default;
+        }
 
 
     

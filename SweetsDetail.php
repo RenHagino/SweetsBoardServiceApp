@@ -57,29 +57,39 @@
         <!--ヘッダー-->
         <!--詳細画面ではいらない？-->
         <h2 class="main-title main-title__sweetsdetail">
-            スイーツ詳細画面
+            スイーツの詳細
         </h2>
         <!--メインセクション-->
         <section class="main">
-            <section class="sweets-detail">
+            <!--==========================-->
+            <!--スイーツ詳細(情報)-->
+            <!--==========================-->
+            <section class="sweets-detail__info">
                 <!--スイーツの名前とカテゴリー-->
-                <div class="sweets-detail__name">
+                <div class="name">
                     <?php echo sanitize($viewData['name']); ?>
                 </div>
                 <!--カテゴリー-->
-                <span class="sweets-detail__category">
+                <span class="category">
                     <p><?php echo sanitize($viewData['category_name']); ?></p>
                 </span>
                 <!--値段表示-->
-                <div class="sweets-detail__price">
+                <div class="price">
                     <p>¥<?php echo sanitize(number_format($viewData['price'])); ?></p>
                 </div>
                 <!--お気に入りボタン isFavでDBにすでにお気に入り登録されていた場合、アイコンをactiveにして色をつけておく。-->
-                <i class="fa fa-heart icn-like js-like-click <?php if(isFav($_SESSION['user_id'], $viewData['id'])){ echo 'active'; }?>"
-                    aria-hidden="true"
-                    data-sweetsid = "<?php echo sanitize($viewData['id']); ?>" >
-                 </i>
-
+                <div class="like">
+                    <!--isFav関数を使って-->
+                    <i class="fas fa-heart icn-like js-like-click <?php if(isFav($_SESSION['user_id'], $viewData['id'])){ echo 'active'; }?>"
+                        aria-hidden="true"
+                        data-sweetsid = "<?php echo sanitize($viewData['id']); ?>" >
+                    </i>
+                </div>
+            </section>
+            <!--==========================-->
+            <!--スイーツ詳細(メイン=>画像&コメント)-->
+            <!--==========================-->
+            <section class="sweets-detail__main">
                 <!--スイーツ画像-->
                 <div class="sweets-imgs-container">
                     <div class="img-main">
@@ -92,17 +102,22 @@
                     </div>
                 </div>
                 <!--スイーツの詳細-->
-                <div class="sweets-detail__comment">
+                <div class="comment">
                     <p><?php echo sanitize($viewData['comment']);?></p>
                 </div>
             </section>
         </section>
         <!--バナーセクション-->
-        <section class="under-banner product-buy">
+        <section class="sweets-detail__undermenu">
             <!--商品一覧に戻るボタン。 appendGetParamが無いと２ページ目の商品の詳細画面から戻るボタンを押した時に１ページ目に戻るのでappendGetParamは必要-->
             <div class="btn-container item-left">
                 <!--戻った時に該当商品のページ数まで含めて戻れるようにappendGetParamをつけている。 s_idは商品のIDだが、リンクに必要ないので取り除くパラメータに指定している。-->
-                <a class="btn btn-m btn-back" href="home.php<?php echo appendGetParam(array('s_id')); ?>">&lt; 商品一覧に戻る </a>
+                <a class="btn btn-m" href="home.php<?php echo appendGetParam(array('s_id')); ?>">&lt; 商品一覧に戻る </a>
+            </div>
+            <!--出品者とチャットをするボタン TODO:掲示板ページを追加する-->
+            <div class="btn-container item-right">
+                <!--戻った時に該当商品のページ数まで含めて戻れるようにappendGetParamをつけている。 s_idは商品のIDだが、リンクに必要ないので取り除くパラメータに指定している。-->
+                <a class="btn btn-m" href="home.php<?php echo appendGetParam(array('s_id')); ?>">出品者とチャットをする &gt;</a>
             </div>
         </section>
         <!--フッター呼び出し-->

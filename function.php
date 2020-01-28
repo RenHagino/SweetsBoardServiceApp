@@ -297,117 +297,145 @@ $err_msg = array();
         }
     }
 
-    //=========================================================
-    //== スイーツのリスト取得関数   home.phpで使用
-    //=========================================================
-    function getSweetsList($currentMinNum=1, $category, $sort, $span = 12){
+    //====================================================================
+    //== スイーツのリスト取得関数   home.phpで使用　$categoryと$sortは商品の絞り込みと並び替えで使う
+    //====================================================================
+    function getSweetsList($currentMinNum=1, $sort, $span = 12){
         //デバッグ
-        debug('商品情報を取得します。');
+        debug('getSweetsListで商品情報を取得します。');
+        debug('引数の$sortの中身'.print_r($sort,true));
         
         //DB処理
         try{
-            //==  SQL1 カテゴリ選択用の処理 == //
-                debug('「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「');
-                debug('「「「「「「「「「「  カテゴリー選択用のSQLを実行します   「「「「「「「「「');
-                debug('「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「');
-
                 //DBへ接続
                 $dbh = dbConnect();
-                //sweetsテーブルからidを取得（＝＞スイーツが何件あるかを判別する）
-                $sql = 'SELECT id FROM sweets WHERE delete_flg = 0'; //ID数を取得して総レコード数をカウントする
-                //商品カテゴリーを取得。
-                    //home.phpで$categoryのGETパラメータがある場合が空の場合sqlをつなげる
-                if(!empty($category)) $sql .= 'WHERE category_name ='.$category;
-                //ソート順を取得 
-                //home.phpで$sortが空ではない場合それぞれのcaseの$sqlを 'SLECT id FROM sweetsにつなげる'
+
+            //=============================================
+            //SQL1 総件数と件ページ数用のSQLを作成
+            //=============================================
+                /*1-1sweetsテーブルからidを取得しスイーツが何件あるかを判別する
+                    home.phpの$currentMinNumと$dbSweetsDataに値を与える*/
+                $sql = ' SELECT id FROM sweets '; 
+                
+                
+                //1-2ソート順を取得 
+                //home.phpで$sortが空ではない場合それぞれのcaseの$sqlを 'SELECT id FROM sweetsにつなげる'
                 if(!empty($sort)){
+                    debug('home.phpで$sortが確認できました。');
                     switch($sort){
-                        case 1: //昇順に並び替えのsqlを 「$sql .= 'WHERE category_name ='.$category;」につなげる
-                            $sql .= 'ORDER BY price ASC';
-                            break;
-                        case 2: //降順に並び替えのsqlを「$sql .= 'WHERE category_name ='.$category;」につなげる
-                            $sql .= 'ORDER BY price DESC';
-                            break;
+                      case 1:
+                        debug('現在のソート順は1です。');
+                        /** TOCHEK
+                         * sqlをつなげるときは半角スペースもつなげないと
+                         * SLECT id From sweetsORDER BY price ASC
+                         * のようになってバグが起きるので注意
+                         * もしくは元になる$sqlを定義するときに半角スペースを入れる癖をつけておく。
+                        */
+                        $sql .=  'ORDER BY price ASC ';
+                        break;
+                      case 2:
+                        debug('現在のソート順は2です。');
+                        $sql .= 'ORDER BY price DESC';
+                        break;
                     }
                 }
+
                 //プレースホルダー
                 $data = array();
-                
                 //クエリ実行
                 $stmt = queryPost($dbh,$sql,$data);
-
-                //総レコード数と総ページ数を変数に格納
-                $rst['total'] = $stmt->rowCount(); //総レコード数 home.phpで echo getSweetsData['total']; として呼び出す
-                $rst['total_page'] = ceil($rst['total']/$span); //総ページ数  home.phpで echo getSweetsData['total_page']; として呼び出す
+                //クエリが成功した場合
+                //$rstのreturnは下の$rst['data']を定義してから行う(2度returnを行おうとするとエラーになる)
+                $rst['total'] = $stmt->rowCount(); //総レコード数 home.phpで echo dbSweetsData['total']; として呼び出す
+                $rst['total_page'] = ceil($rst['total']/$span); //総ページ数  home.phpで echo dbSweetsData['total_page']; として呼び出す
+                //デバッグ
+                debug('スイーツの総件数です:'.print_r($rst['total'],true));
+                debug('home.phpの総ページ数:'.print_r($rst['total_page'],true));
                 
                 //クエリが失敗した場合
                 if(!$stmt){
-                    debug('クエリに失敗しました１。');
-                    debug('総レコード数と総ページ数が取得できませんでした');
+                    //デバッグ
+                    debug('クエリに失敗しました');
                     return false;
-                }else{
-    
-                    debug('クエリに成功しました１');
-                    debug('スイーツの総件数:'.print_r($rst['total'],true));
-                    debug('home.phpの総ページ数:'.print_r($rst['total_page'],true));
-                    debug('総レコード数と総ページ数が取得できました');
                 }
+
+
             //===========================================//
-            //==== SQL2 検索機能用のコード 検索機能 ===//
+            //SQL2 ページング用のSQLを作成
+            //  1ページに表示する 画像の件数を$spanと$currentMinNumを定義し
+            //  画像のデータ$rst['data']をhome.phpにreturnする
             //===========================================//
-                debug('「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「');
-                debug('「「「「「「「  カテゴリーと値段による並び替えののSQLを実行します 「「「「「');
-                debug('「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「');
-                //商品データを全て取得
+                //2-1 商品データを全て取得
                 $sql = 'SELECT * FROM sweets WHERE delete_flg = 0';
-                //$categoryがあった場合、そのカテゴリーに属するスイーツのデータを全て取得する
-                if(!empty($category)) $sql .= ' WHERE category_name = '.$category;
-                //ソートがあった場合、
+
+                
+                //2-2 $sortがあった場合、価格順で並び替えられるようにする
                 if(!empty($sort)){
                     switch($sort){
                     case 1:
                         $sql .= ' ORDER BY price ASC';
+                        debug('値段が安い順に並び替えました');
                         break;
                     case 2:
                         $sql .= ' ORDER BY price DESC';
+                        debug('値段が高い順に並び替えました');
                         break;
                     }
                 }
+                
+                //2-3 商品が何件取得できたかを判別するSQL
+                //$spanと$currentMinNumはhome.phpで定義している
+                $sql .= ' LIMIT '.$span.' OFFSET '.$currentMinNum;
+                $data = array();
+                debug('商品が何件取得できたかを判別するSQLの結果：'.$sql);
+                // クエリ実行
+                $stmt = queryPost($dbh, $sql, $data);
+                
+                
+                //dataには画像のデータが入っている
+                    // [0] => Array
+                    // (
+                    //     [id] => 62
+                    //     [name] => ケーキB
+                    //     [store_name] => ケーキや
+                    //     [category_id] => 1
+                    //     [comment] => $pic1の二つの処理の順番を逆にした
+                    //     [price] => 333
+                    //     [pic1] => upload_img/4ca4b5b3cfc9e10cbafc2f9fcaa86ba574da1ea7.jpeg
+                    //     [pic2] => 
+                    //     [pic3] => 
+                    //     [user_id] => 6
+                    //     [delete_flg] => 0
+                    //     [create_date] => 2019-08-09 13:58:58
+                    //     [update_date] => 2019-08-09 22:58:58
+                    // )
+
+               
+                //クエリが失敗した場合
+                if($stmt){
+                   //home.phpで echo getSweetsData['data']; として呼び出す
+                   $rst['data'] = $stmt->fetchAll(); 
+                    return $rst;
+                   debug('クエリに成功しました');
+                   debug('画像のデータ一覧が入っている$rst[data]の中身'.print_r($rst['data'],true));
+                //クエリが成功した場合
+                }else{
+                    debug('クエリに失敗しましたが');
+                    debug('総レコード数と総ページ数が取得できませんでした');
+                    return false;
+                }
             
-            //===========================================//
-            //== SQL3　全商品の取得数のSQL =======================//
-            //===========================================//
-            debug('「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「');
-            debug('「「「「「「「「「「  商品の取得数を判別します  「「「「「「「「「');
-            debug('「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「「');
-            //商品が何件取得できたかを判別するSQL
-            //$spanと$currentMinNumはhome.phpで定義している
-            $sql .= ' LIMIT '.$span.' OFFSET '.$currentMinNum;
-            $data = array();
-            debug('商品が何件取得できたかを判別するSQLの結果：'.$sql);
-            // クエリ実行
-            $stmt = queryPost($dbh, $sql, $data);
-            // クエリが成功したら、
-            if($stmt){
-                // クエリ結果のデータを全レコードを格納
-                $rst['data'] = $stmt->fetchAll();  //home.phpで echo getSweetsData['data']; として呼び出す
-                debug('$rst[data]の中身:'.print_r($rst['data'],true));
-                debug('クエリ結果の全レコードを取得しました。');
-                return $rst;
-            }else{
-                return false;
+            //=======================================
+            //3 例外処理
+            //=======================================
+            }catch(exception $e){
+                $e->getMessage();
             }
-
-
-        //例外処理
-        }catch(exception $e){
-            $e->getMessage();
         }
-    }
     
 
     //=========================================================
-    //== 自分の登録したスイーツの情報取得関数   自分で追加
+    //== 自分の登録したスイーツの情報取得関数   myRegistSweets.phpで使用
     //=========================================================
     function getMySweetsList($currentMyMinNum=1, $u_id, $span = 6){
         //デバッグ
@@ -490,11 +518,6 @@ $err_msg = array();
             //DB接続
             $dbh = dbConnect();
 
-            //sweetsテーブルとcategoryテーブルを分ける場合は内部結合で取得する
-            //$sql ='SELECT s.id, s.name, s.comment, s.price, s.pic1, s.pic2, s.pic3, s.user_id, s.create_date, s.update_date, c.name AS category
-            //    FROM Sweets AS s LEFT JOIN category AS c ON s.category_name = c.id  
-            //    WHERE s.id = :s_id AND s.delete_flg = 0 AND c.delete_flg = 0';
-
             //新しいSQL (スイーツテーブルとカテゴリーテーブルを分けていない想定)   
             $sql = 'SELECT id, name, store_name, category_name, comment, price, pic1, pic2, pic3, user_id, create_date, update_date
                 FROM sweets
@@ -518,9 +541,9 @@ $err_msg = array();
         
     }
 
-    //=============================================
-    //お気に入り登路したスイーツの情報取得関数
-    //=============================================
+    //===============================================
+    //お気に入り登路したスイーツの情報取得関数 myRegistSweets.phpで使用
+    //===============================================
     function getMySweets($u_id){
         debug('自分のお気に入りのスイーツ情報を取得します');
         debug('ユーザーID:'.$u_id);
@@ -656,32 +679,6 @@ $err_msg = array();
     }
 
     //=============================================
-    //カテゴリーデータ取得関数  home.phpで使用
-    //=============================================
-    function getCategory(){
-        debug('カテゴリー情報を取得します');
-        try{
-            //DBへ接続
-            $dbh = dbConnect();
-            //SQL
-            $sql = 'SELECT category_name FROM sweets';
-            //プレースホルダー
-            $data = array(); 
-            //クエリ実行
-            $stmt = queryPost($dbh,$sql,$data);
-
-            //クエリが成功したら
-            if($stmt){
-                return $stmt->fetchAll(); //取得したデータを返す
-            }else{
-                return false; //falseを返す
-            }
-        }catch(Exception $e){
-            error_log('エラー発生:'.$e->getMessage() );
-        }
-    }
-
-    //=============================================
     //サニタイズ関数 
     //=============================================
     
@@ -708,31 +705,33 @@ $err_msg = array();
             //$dbFormDataはグローバル変数化
             global $dbFormData;
 
-            //ユーザーデータがあった場合
+            //フォームデータがあった場合
             if(!empty($dbFormData)){
 
                 //ユーザーデータあり、フォームにエラーがあった場合
                 if(!empty($err_msg[$str])){
                     //POSTにデータがあった場合（エラーが発生したフォーム部分の処理になる）
-                    if(isset($method[$str])){ //金額や郵便番号などのフォームの可能性があり、emptyだと0が入力されても入ってないと判定されてしまうのでissetにした
+                    if(isset($method[$str])){ //金額や郵便番号などのフォームの可能性があり、emptyだと0が入力されても入ってないと判定されてしまうのでissetにする
                         return sanitize($method[$str]);//POSTされたデータを受け入れる
                     //POSTにデータが無かった場合（一部分のフォームだけエラーが発生した場合の想定）
                     }else{
                         return sanitize($dbFormData[$str]);//もともとあったDBの情報をそのままフォーム上にに保持する
                     }
 
-                //ユーザーデータがあり、フォームにエラーが無かった場合
+                //フォームデータがあり、フォームにエラーが無かった場合
                 }else{
                     //POSTにデータがあり、DBにある情報と差異が見られた場合
                     if(isset($method[$str]) && $method[$str] !== $dbFormData[$str]){
-                        return sanitize($method[$str]); //POSTされたデータに更新する
+                        //POSTされたデータに更新する
+                        return sanitize($method[$str]); 
                     //変更していない場合（ データがPOSTされなかった場合）
                     }else{
-                        return sanitize($dbFormData[$str]);//もともとの値を保持する
+                        //もともとの値を保持する
+                        return sanitize($dbFormData[$str]);
                     }
                 }
 
-        //そもそもユーザーデータが無かった場合
+        //そもそもフォームデータが無かった場合
         }else{
             //ポストされたデータがあればそれをreturnする
             if(isset($method[$str])){
@@ -1127,13 +1126,13 @@ $err_msg = array();
 
         //デバッグ
         //print_rで$u_idや$s_idをチェックすると中身が１になるので注意
-        debug('お気に入り情報があるか確認します');
+        debug('isFav関数でお気に入り情報があるか確認します');
         debug('自分のユーザーID:'.$u_id); 
         debug('スイーツID:'.$s_id);
         //DB処理
         try{
             $dbh = dbConnect();
-            //
+            
             $sql = 'SELECT * FROM  favorite WHERE user_id = :u_id AND sweets_id =  :s_id ';
             $data = array( ':u_id'=>$u_id, ':s_id'=>$s_id );
 
@@ -1150,7 +1149,7 @@ $err_msg = array();
             }
 
         }catch(Exception $e){
-            error_log('エラー発生:'.$e->getMessage() );
+            error_log('isFav関数でエラー発生:'.$e->getMessage() );
         }
     }
 

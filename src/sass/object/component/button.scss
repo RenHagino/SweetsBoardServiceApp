@@ -105,17 +105,7 @@
                 }
             }
 
-            //購入ボタン
-            &-buy{
-                padding: 0.5em 1em;
-                border-radius: 60px;
-                &:hover{
-                    background-color: $color_orange_normal;
-                    border: 1px solid $color_yellow_normal;
-                }
-            }
-
-            //マイページボタン
+            //マイページへ戻るボタン
             &-mypage{
                 padding: 0.5em 1em;
                 border-radius: 60px;
@@ -249,7 +239,24 @@
             }
         }
     }
-
+    //===========================
+    // お気に入りアイコン
+    //===========================
+    .icn-like{
+        color: $color_gray_heavy;
+        font-size: $font-size_xxl;
+        //ホバー
+        &:hover{
+            cursor: pointer;
+        }
+        //アクティブ状態
+        &.active{
+            color: $color_orange_normal;
+            font-size: $font-size_xxl;
+        }
+    }
+    
+  
 
 
 

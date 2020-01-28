@@ -18,11 +18,9 @@
     //==================================================
     // 変数に必要な情報を入れる =>ユーザー情報、商品データ、掲示板データ、お気に入りデータ
     $u_id = $_SESSION['user_id'];
-    $sweetsData = getMySweets($u_id);
     $favorite = getMyfavorite($u_id);
     $boardData = getMyMsgsAndBoard($u_id);
     //DBからデータが取れたかデバッグで確認
-    debug('取得した商品データ:'.print_r($sweetsData,true));
     debug('取得した掲示板データ:'.print_r($boardData,true));
     debug('取得したお気に入りスイーツデータ:'.print_r($favorite,true));
 

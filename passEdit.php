@@ -125,10 +125,12 @@ EOT;
         ?>
         <!--メイン-->
         <section class="main">
+            <h2 class="main-title main-title__passEdit">
+            パスワード変更画面
+            </h2>
             <div class="form-container">
                 <form method="post" class="form form-m pass-form">
                     <!--フォームタイトル-->
-                    <h2>パスワード変更</h2>
                     <div class="area-msg">
                         <?php if(!empty($err_msg['common'])) echo $err_msg['common']; ?>
                     </div>
@@ -158,7 +160,7 @@ EOT;
                     </div>
                     <!--ログインボタン-->
                     <div class="btn-container">
-                        <input type="submit" class="btn btn-mid" value="変更する">
+                        <input type="submit" class="btn btn-s" value="変更する">
                     </div>
                 </form>
             </div>

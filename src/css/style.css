@@ -6,9 +6,13 @@
   display: flex;
   flex-direction: column; }
 
+html {
+  width: 100%;
+  height: 100%; }
+
 body {
   width: 100%;
-  height: auto;
+  height: 100%;
   margin: 0 auto; }
   body .new-back-content {
     background-image: url(../../../../portfolio_sweetsboard/src/img/homesweets.png);
@@ -18,7 +22,7 @@ body {
     overflow: hidden;
     z-index: 0;
     width: 100%;
-    height: 800px; }
+    height: 100%; }
     body .new-back-content__title {
       padding: 40px 0;
       text-align: center;
@@ -92,6 +96,12 @@ body {
         background: #FFFF44;
         border: 1px solid #D3D3D3; }
       body .main-title__sweetsdetail:after {
+        background: #FFFF44;
+        border: 1px solid #D3D3D3; }
+      body .main-title__passEdit:before {
+        background: #FFFF44;
+        border: 1px solid #D3D3D3; }
+      body .main-title__passEdit:after {
         background: #FFFF44;
         border: 1px solid #D3D3D3; }
     body .main .section-left {
@@ -284,7 +294,7 @@ body {
       background: #f1f1f1; }
 
 .home-sidebar__form {
-  height: 750px;
+  height: 950px;
   box-sizing: border-box;
   padding: 15px;
   border: 2px solid #D3D3D3;
@@ -299,87 +309,105 @@ body {
     width: 100%;
     height: 40px; }
 
-.sweets-detail {
-  width: 100%;
-  height: auto;
+.sweets-detail__info {
+  width: 95%;
+  height: 100px;
+  margin: 15px auto;
   clear: both; }
-  .sweets-detail__name {
+  .sweets-detail__info .name {
     float: left;
     clear: both;
     width: auto;
-    height: 50px;
+    margin: 40px 0;
+    margin-left: 30px;
+    border: 2px #FF8856;
     box-sizing: border-box;
     font-size: 24px; }
-  .sweets-detail__category {
-    clear: both;
+  .sweets-detail__info .category {
     display: inline-block;
     width: 100px;
-    height: 30px;
+    margin: 30px 0;
+    margin-left: 30px;
+    padding: 5px;
     text-align: center;
     box-sizing: border-box;
-    background: #FFFFAA; }
-    .sweets-detail__category p {
+    background: #FFFFCC;
+    border: 1px solid #D3D3D3; }
+    .sweets-detail__info .category p {
       margin-top: 5px;
-      font-size: 18px; }
-  .sweets-detail__price {
+      font-size: 24px; }
+  .sweets-detail__info .price {
     clear: both;
     display: inline-block;
     width: 150px;
-    height: 30px;
+    margin: 30px 0;
+    margin-left: 30px;
+    padding: 5px;
     text-align: center;
     box-sizing: border-box;
-    border-radius: 10px;
-    background: #FF570D; }
-    .sweets-detail__price p {
+    background: #F0F0F0;
+    border: 1px solid #D3D3D3; }
+    .sweets-detail__info .price p {
       margin-top: 5px;
-      font-size: 18px; }
-  .sweets-detail .sweets-imgs-container {
+      font-size: 24px; }
+  .sweets-detail__info .like {
+    display: inline-block;
+    width: 150px;
+    margin: 40px 0;
+    margin-left: 30px; }
+
+.sweets-detail__main {
+  width: 90%;
+  height: auto;
+  margin: 0 auto;
+  clear: both; }
+  .sweets-detail__main .sweets-imgs-container {
     clear: both;
     width: 100%;
     height: 600px; }
-    .sweets-detail .sweets-imgs-container .img-main {
+    .sweets-detail__main .sweets-imgs-container .img-main {
       width: 70%;
       float: left;
       box-sizing: border-box;
       padding-left: 30px;
       padding-right: 30px; }
-      .sweets-detail .sweets-imgs-container .img-main img {
+      .sweets-detail__main .sweets-imgs-container .img-main img {
         width: 100%;
         height: 600px;
         box-sizing: border-box;
         border: 7px double #818181; }
-    .sweets-detail .sweets-imgs-container .img-sub {
+    .sweets-detail__main .sweets-imgs-container .img-sub {
       width: 30%;
       float: right;
       box-sizing: border-box;
       padding-right: 30px; }
-      .sweets-detail .sweets-imgs-container .img-sub img {
+      .sweets-detail__main .sweets-imgs-container .img-sub img {
         box-sizing: border-box;
         width: 100%;
         height: 200px;
         border: 7px double #818181; }
-  .sweets-detail__comment {
+  .sweets-detail__main .comment {
     width: 80%;
     height: 100px;
-    margin: 15px auto;
+    margin: 30px auto 0 auto;
     padding: 15px;
     background-color: #FFFFCC;
     border: 4px double #FF570D; }
-    .sweets-detail__comment p {
+    .sweets-detail__main .comment p {
       font-size: 24px;
       color: #333; }
 
-.under-banner {
+.sweets-detail__undermenu {
   width: 100%;
-  height: 100px;
-  text-align: center;
-  background-image: url(../img/footer-img.jpg); }
-  .under-banner .item-left {
+  height: auto;
+  display: block;
+  text-align: center; }
+  .sweets-detail__undermenu .item-left {
     float: left;
-    margin: 30px 0;
+    margin: 50px 0;
     margin-left: 30px; }
-  .under-banner .item-right {
-    margin: 30px 0;
+  .sweets-detail__undermenu .item-right {
+    margin: 50px 0;
     margin-right: 30px;
     float: right; }
 
@@ -471,6 +499,27 @@ body {
         left: 0; }
         .form-container .form .imgDrop-container .prev-img-prof {
           border-radius: 300px; }
+  .form-container .input-s {
+    width: 175px;
+    height: 40px;
+    font-size: 14px;
+    text-align: center;
+    margin-top: 10px;
+    border: 1px solid #444; }
+  .form-container .input-m {
+    width: 200px;
+    height: 50px;
+    font-size: 18px;
+    text-align: center;
+    margin-top: 10px;
+    border: double 5px #444; }
+  .form-container .input-l {
+    width: 400px;
+    height: 100px;
+    font-size: 24px;
+    text-align: center;
+    margin-top: 15px;
+    border: double 5px #444; }
   .form-container .form-s {
     width: 50%;
     height: auto;
@@ -582,12 +631,6 @@ body {
       .btn-container .btn-back:hover {
         background-color: #FF8856;
         border: 1px solid #FFFF44; }
-    .btn-container .btn-buy {
-      padding: 0.5em 1em;
-      border-radius: 60px; }
-      .btn-container .btn-buy:hover {
-        background-color: #FF8856;
-        border: 1px solid #FFFF44; }
     .btn-container .btn-mypage {
       padding: 0.5em 1em;
       border-radius: 60px; }
@@ -675,6 +718,15 @@ body {
       background-color: #FFFFBB;
       color: #424242;
       padding: 0.5em 1em; }
+
+.icn-like {
+  color: #8f8f8f;
+  font-size: 30px; }
+  .icn-like:hover {
+    cursor: pointer; }
+  .icn-like.active {
+    color: #FF8856;
+    font-size: 30px; }
 
 .board {
   width: 100%;

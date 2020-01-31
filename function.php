@@ -4,12 +4,14 @@
 ini_set('log_errors','on');
 //出力ファイルを設定
 ini_set('error_log','php.log');
-//ユーザー画面にエラーメッセージを表示するかどうか
-ini_set('display_errors', 'on');
+//tocheck: 開発時のみオンにするように
+ini_set('display_errors', 'off');
+
 
 //===デバッグ設定================//
-//サービスをリリースするときはfalseに設定し、
-//開発するときのみ、flgをtrueにする
+/*tochek: サービスをリリースするときは
+    falseに設定し、開発するときのみ
+    flgをtrueにする*/
 $debug_flg = true;
 
 function debug($str){
@@ -67,6 +69,7 @@ define('MSG15','認証キーが違います');
 define('MSG16','認証キーの有効期限が切れています');
 define('MSG17','半角数字で入力してください'); 
 define('MSG18','正しくありません。');
+//todo: サクセスメッセージを表示できるように実装
 define('SUC01', 'パスワードを変更しました');
 define('SUC02', 'プロフィールを変更しました');
 define('SUC03','メールを送信しました');

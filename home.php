@@ -100,7 +100,7 @@
                         </div>
                         <!--検索ボタン-->
                         <div class="btn-container">
-                            <input type="submit" value="検索する" class="btn btn-s search-btn"> <!--検索ボタン-->
+                            <input type="submit" value="検索する" class="btn btn-s search-btn js-search"> <!--検索ボタン-->
                         </div>
                     </form>
                     </div>

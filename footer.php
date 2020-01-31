@@ -8,7 +8,9 @@
     <script>
         $(function(){
             
+            //============================
             //SUCCESSメッセージ表示
+            //============================
             var $jsShowMsg = $('.js-show-msg');
             var msg = $jsShowMsg.text(); //.textで取得したDOMに入っているテキストを取り出してmsgという変数に入れている
             //半角や全角のタブ、スペースを""（空白）に指定し、そのあとに.lengthで文字数を取得している
@@ -19,8 +21,9 @@
                 //5秒かけて第一引数の処理を実行。　//第二引数に指定した時間をかけて第一引数に書いたメソッドを実行するのがsetTimeout
                 setTimeout( function(){$jsShowMsg.slideToggle('slow'); }, 5000);
             }
-
+            //============================
             //画像ライブプレビュー機能
+            //============================
                 var $dropArea = $('.area-drop'); //labelタグ
                 var $fileInput = $('.input-file');//type属性にfileを指定したinputタグ
                 //動作確認OK
@@ -120,6 +123,15 @@
                     });
                 });
             }
+            //====================
+            //絞り込み機能
+            //====================
+            var searchBtn = $('.js-search');
+            
+            searchBtn.on('click',function(e){
+                e.preventDefault();
+                console.log('クrっくされました');
+            });
             
         });
     </script>

@@ -1,0 +1,6 @@
+#ログ系ファイルを無視する？
+*.log
+#パッケージ管理系ファイルはどうする？
+/memo/
+#feature-add-pageを管理から外す
+feature-add-page/sample.php

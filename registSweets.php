@@ -275,7 +275,7 @@
                             画像1<br>
                             <label class="label area-drop area-drop-sweets <?php if(!empty($err_msg['pic1'])) echo 'err'; ?>">
                                 <input type="hidden" name="MAX_FILE_SIZE" value="3145728">
-                                <input type="file" name="pic1" class="input-file input-file-sweets"> <!--type属性にファイルを指定するとアップロード機能がつけられる。今回はopacityを0にしてwidthとheightを広げている。-->
+                                <input type="file" name="pic1" class="input-file input-file-sweets">
                                 <img src="<?php echo getFormData('pic1'); ?>" alt="" class="prev-img prev-img-sweets" style="<?php if(empty(getFormData('pic1'))) echo 'display:none;' ?>" > 
                                 画像1をクリックして選択
                             </label>

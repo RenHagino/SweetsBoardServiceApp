@@ -10,5 +10,5 @@ echo 'そのあとはワークツリーもリセットしましょう。
   git statusで確認してみましょう。';
 
 echo 'git commit ';
-echo '--ammend ';
+echo '--amend ';
 ?>

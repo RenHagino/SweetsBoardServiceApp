@@ -26,7 +26,7 @@
         $s_id = (!empty($_GET['s_id'])) ? $_GET['s_id'] : '' ;
         
         //DBからスイーツデータを取得 //Sweetsテーブルとカテゴリーテーブルを結合している。
-        $viewData = getSweetsOne($s_id);
+        $viewData = getSweetsInfo($s_id);
 
         //パラメータに不正な値が入っているかチェック
         if(empty($viewData)){

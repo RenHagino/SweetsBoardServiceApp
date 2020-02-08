@@ -513,7 +513,7 @@ $err_msg = array();
     // スイーツの情報取得関数   SweetsDetail.phpで使用 
     //  Sweetsテーブルとカテゴリーテーブルを外部結合してスイーツのカテゴリーも含めて情報を入手している。
     //=============================================
-    function getSweetsOne($s_id){
+    function getSweetsInfo($s_id){
         debug('スイーツ情報を取得します');
         debug('スイーツのID:'.$s_id);
 

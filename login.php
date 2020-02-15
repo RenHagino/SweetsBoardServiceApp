@@ -124,7 +124,7 @@
         </p>
         <section class="main login-form">
             <!--フォームタイトル-->
-            <h2 class="main-title main-title__login">ログイン</h2>
+            <h2 class="main-title main-title__login">ログイン画面</h2>
             <!--フォーム-->
             <div class="form-container">
                 <form method="post" class="form form-m login-form">

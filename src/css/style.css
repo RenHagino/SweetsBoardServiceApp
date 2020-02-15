@@ -294,7 +294,7 @@ body {
       background: #f1f1f1; }
 
 .home-sidebar__form {
-  height: 950px;
+  height: 900px;
   box-sizing: border-box;
   padding: 15px;
   border: 2px solid #D3D3D3;
@@ -305,9 +305,14 @@ body {
   .home-sidebar .side-contents .title {
     font-size: 18px;
     margin: 10px auto; }
-  .home-sidebar .side-contents .select {
-    width: 100%;
-    height: 40px; }
+  .home-sidebar .side-contents .category {
+    width: 80%;
+    height: 40px;
+    font-size: 18px; }
+  .home-sidebar .side-contents .sort {
+    width: 80%;
+    height: 40px;
+    font-size: 18px; }
 
 .sweets-detail__info {
   width: 95%;
@@ -414,8 +419,7 @@ body {
 .form-container {
   width: auto;
   height: auto;
-  text-align: center;
-  padding-bottom: 50px; }
+  text-align: center; }
   .form-container .form {
     margin: 0 auto;
     text-align: center;
@@ -431,7 +435,7 @@ body {
       padding: 3px, 5px;
       color: #f1f1f1;
       vertical-align: bottom; }
-    .form-container .form .selectBox {
+    .form-container .form .category_select {
       margin-top: 15px;
       width: 200px;
       height: 40px;
@@ -554,7 +558,7 @@ body {
       .form-container .form-m label .checkbox {
         transform: scale(1.5);
         margin: 0 10px; }
-  .form-container .intro-form {
+  .form-container .regist-form {
     background-image: linear-gradient(to top, #ffba60 0%, #fffd8e 100%); }
   .form-container .pass-form {
     background-image: linear-gradient(to top, #dbdbdb 0%, #888888 100%); }
@@ -769,9 +773,8 @@ body {
       text-align: right; }
 
 .pagenation {
-  margin: 10px auto;
+  margin: 20px auto 0 auto;
   width: auto;
-  height: 50px;
   list-style: none;
   display: flex;
   justify-content: center; }
@@ -836,7 +839,7 @@ body {
   box-sizing: border-box;
   margin-left: 1px;
   padding: 25px;
-  border: 2px solid #8f8f8f;
+  border: 2px solid #D3D3D3;
   display: flex;
   justify-content: space-between; }
 

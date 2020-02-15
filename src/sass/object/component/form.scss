@@ -5,7 +5,8 @@
     width: auto;
     height: auto;
     text-align: center;
-    padding-bottom: $space_5l;
+    //padding-bottom: $space_5l;
+    
     //====================
     //全てのフォーム
     //====================
@@ -36,13 +37,13 @@
         }
 
         //セレクトボックス
-        .selectBox{
+        .category_select{
             margin-top: $space_l;
             width: 200px;
             height: 40px;
             font-size: $font-size_l;
         }
-
+        
         //テキストカウントエリアjs用
         .count-text{
             margin-top: $space_l;
@@ -226,7 +227,7 @@
     //========================================
     //====  各フォーム固有の背景デザイン  ====================
     //========================================
-    .intro-form{
+    .regist-form{
         background-image: linear-gradient(to top, #ffba60 0%, #fffd8e 100%);
     }
     //.prof-form{

@@ -19,7 +19,6 @@
     // 変数に必要な情報を入れる =>ユーザー情報、商品データ、掲示板データ、お気に入りデータ
     $u_id = $_SESSION['user_id'];
     $favorite = getMyfavorite($u_id);
-    $boardData = getMyMsgsAndBoard($u_id);
     //DBからデータが取れたかデバッグで確認
     debug('取得した掲示板データ:'.print_r($boardData,true));
     debug('取得したお気に入りスイーツデータ:'.print_r($favorite,true));
@@ -62,6 +61,7 @@
                         if(!empty($favorite)):
                             foreach($favorite as $key => $val):
                     ?>
+                        <!-- TODO: appendGetParamの復習 -->
                         <a href="sweetsDetail.php<?php echo (!empty(appendGetParam()))? appendGetParam().'&s_id='.$val['id'] : '?s_id='.$val['id']; ?>" class="panel">
                             <div class="panel-head">
                                 <img src="<?php echo showImg(sanitize($val['pic1'])); ?>" alt="">
@@ -77,8 +77,8 @@
                             </div>
                         </a>
                     <?php
-                    endforeach;
-                    endif;
+                        endforeach;
+                        endif;
                     ?>
                     <!--TODO: 後で実装
                         お気に入りしたスイーツののページネーション -->

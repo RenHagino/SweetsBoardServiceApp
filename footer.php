@@ -74,17 +74,17 @@
             //===================================
             //画像切り替え
             //===================================
-             //変数にDOMを入れる
-             var $switchImgSubs = $('.js-switch-img-sub'),
-                 $switchImgMain = $('.js-switch-img-main');
-             
+            //変数にDOMを入れる
+            var $switchImgSubs = $('.js-switch-img-sub'),
+                $switchImgMain = $('.js-switch-img-main');
+            
              //実際の処理。サブイメージがクリックされたら、メインイメージと入れ替える。
-             $switchImgSubs.on('click',function(e){ 
-                 //サブイメージがクリックされた時、メイン画像のsrcを
-                 //ダブ画像のsrc($this.attr('src'))に書き換えている
-                 $switchImgMain.attr('src',$(this).attr('src'));
-             });
-             
+            $switchImgSubs.on('click',function(e){ 
+                //サブイメージがクリックされた時、メイン画像のsrcを
+                //ダブ画像のsrc($this.attr('src'))に書き換えている
+                $switchImgMain.attr('src',$(this).attr('src'));
+            });
+            
             //===================================
             //お気に入り機能 
             //===================================
@@ -123,16 +123,6 @@
                     });
                 });
             }
-            //====================
-            //絞り込み機能
-            //====================
-            var searchBtn = $('.js-search');
-            
-            searchBtn.on('click',function(e){
-                e.preventDefault();
-                console.log('クrっくされました');
-            });
-            
         });
     </script>
 </footer>

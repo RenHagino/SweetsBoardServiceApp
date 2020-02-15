@@ -24,23 +24,18 @@
 
         //スイーツのGETパラメータを取得
         $s_id = (!empty($_GET['s_id'])) ? $_GET['s_id'] : '' ;
+        //デバッグ
+        debug('現在見ているスイーツ詳細のID:'.$s_id);
         
         //DBからスイーツデータを取得 //Sweetsテーブルとカテゴリーテーブルを結合している。
-        $viewData = getSweetsInfo($s_id);
-
+        $viewData = getSweetsDetail($s_id);
+        debug('取得したDBのviewData:'.print_r($viewData,true));
+    
         //パラメータに不正な値が入っているかチェック
         if(empty($viewData)){
             error_log('エラー発生:指定ページに不正な値が入りましたよ');
             header("Location:home.php");
         }
-
-        //デバッグ
-        debug('取得したスイーツのGETパラメータ:'.print_r($s_id,true));
-        debug('取得したDBのviewData:'.print_r($viewData,true));
-    
-    ///=======================///////////////////////////////
-
-
 
     //デバッグ
     debug('＝＝＝＝＝＝＝＝＝＝＝  商品詳細画面：画面表示処理終了  ＝＝＝＝＝＝＝＝＝＝＝＝＝');

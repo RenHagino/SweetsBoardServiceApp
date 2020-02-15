@@ -1,9 +1,7 @@
 .pagenation{
-    margin: $space_m auto;
+    margin: $space_xl auto 0 auto;
     width: auto;
-    height: 50px;
-    //border: 5px double rgb(143,143,143);
-    list-style: none; //listの黒丸打ち消し
+    list-style: none;
     display: flex;
     justify-content: center;
     

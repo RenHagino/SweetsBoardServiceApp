@@ -16,8 +16,8 @@
     if(isset($_POST['sweetsId']) && isset($_SESSION['user_id']) && isLogin() ){
         
         debug('POST送信があります。');
-        //スイーツIDとユーザーIDを変数に入れる
-        $s_id = $_POST['sweetsId']; //footer.phpのajaxからPOSTされたもの
+        //スイーツIDとユーザーIDを変数に入れ
+        $s_id = $_POST['sweetsId'];   //footer.phpのajaxからPOSTされたもの
         $u_id = $_SESSION['user_id'];
 
         //デバッグ

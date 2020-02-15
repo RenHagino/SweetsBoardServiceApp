@@ -23,33 +23,27 @@
 //home.phpのサイドバー
 .home-sidebar{
     &__form{
-        height: 950px;
+        height: 900px;
         box-sizing: border-box;
-        //fmargin-right: 1px;
         padding: $space_l;
         border: 2px solid $color_gray_normal;
         text-align: center;
     }
     .side-contents{
         margin-top: $space_3l;
-        
         .title{
             font-size: $font-size_l;
             margin: $space_m auto; 
         }
-        .select{
-            width: 100%;
+        .category{
+            width: 80%;
             height: 40px;
+            font-size: $font-size_l;
+        }
+        .sort{
+            width: 80%;
+            height: 40px;
+            font-size: $font-size_l;
         }
     }
-    //カテゴリー
-    &__category{
-        
-    }
-    //ソート
-    &__sort{
-    }
-
-    //検索ボタンのスタイルはsearch.scssに記載
-
 }

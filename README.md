@@ -4,44 +4,44 @@
   このサービスは自分が食べた中でお気に入りのスイーツを他のユーザーに紹介したり、他のユーザーが紹介したスイーツをお気に入り登録できるサービスです。
   
 ## 機能一覧
-  ユーザー登録機能<br>
-  ログイン機能<br>
-  ログアウト機能<br>
-  退会機能<br>
-  プロフィール編集機能<br>
-  パスワード変更機能<br>
-  スイーツ投稿機能<br>
-  スイーツ一覧表示機能(ページネーションを搭載)<br>
-  スイーツお気に入り登録機能<br>
+ 1.ユーザー登録機能<br>
+ 2.ログイン機能<br>
+ 3.ログアウト機能<br>
+ 4.退会機能<br>
+ 5.プロフィール編集機能<br>
+ 6.パスワード変更機能<br>
+ 7.スイーツ投稿機能<br>
+ 8.スイーツ一覧表示機能(ページネーションを搭載)<br>
+ 9.スイーツお気に入り登録機能<br>
   
 ## 使用技術一覧
-  HTML<br>
-  CSS<br>
-  Sass(scss記法)<br>
-  jquery<br>
-  PHP<br>
-  MySQL<br>
+ 1.HTML<br>
+ 2.CSS<br>
+ 3.Sass(scss記法)<br>
+ 4.jquery<br>
+ 5.PHP<br>
+ 6.MySQL<br>
 
 ## 各画面の機能
- #新規訪問ページ(new.php)<br>
- #ホーム画面(home.php)<br>
- #ユーザー登録画面(signup.php)<br>
- #ログイン画面(login.php)<br>
- #ログアウト画面(logout.php)<br>
- #退会画面(withdraw.php)<br>
- #パスワード変更画面(paddEdit.php)<br>
- #マイページ画面(mypage.php)<br>
- #投稿スイーツ確認画面(myRegistSweets.php)<br>
- #プロフィール編集画面(profEdit.php)<br>
- #スイーツ登録(編集)画面(registSweets.php)<br>
- #スイーツ詳細画面(SweetsDetail.php)<br>
+ 1.新規訪問ページ(new.php)<br>
+ 2.ホーム画面(home.php)<br>
+ 3.ユーザー登録画面(signup.php)<br>
+ 4.ログイン画面(login.php)<br>
+ 5.ログアウト画面(logout.php)<br>
+ 6.退会画面(withdraw.php)<br>
+ 7.パスワード変更画面(paddEdit.php)<br>
+ 8.マイページ画面(mypage.php)<br>
+ 9.投稿スイーツ確認画面(myRegistSweets.php)<br>
+ 10.プロフィール編集画面(profEdit.php)<br>
+ 11.スイーツ登録(編集)画面(registSweets.php)<br>
+ 12.スイーツ詳細画面(SweetsDetail.php)<br>
 
-##　画面を持たないもしくは他の画面を構成するファイルの機能
- # head.php
- # header.php
- # footer.php
- # auth.php
- # ajaxLike.php
+## 画面を持たないもしくは他の画面を構成するファイルの機能
+ 1.head.php
+ 2.eader.php
+ 3.footer.php
+ 4.auth.php
+ 5.ajaxLike.php
  
  
   

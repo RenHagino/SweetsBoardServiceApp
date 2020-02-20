@@ -37,11 +37,11 @@
  12.スイーツ詳細画面(SweetsDetail.php)<br>
 
 ## 画面を持たないもしくは他の画面を構成するファイルの機能
- 1.head.php<br>
- 2.eader.php<br>
- 3.footer.php<br>
- 4.auth.php<br>
- 5.ajaxLike.php<br>
+ 1.ヘッド(head.php)<br>
+ 2.ヘッダー(header.php)<br>
+ 3.フッター(footer.php)<br>
+ 4.ログイン認証(auth.php)<br>
+ 5.お気に入り非同期通信(ajaxLike.php)<br>
  
  
   

@@ -41,7 +41,7 @@
  2.ヘッダー(header.php)<br>
  3.フッター(footer.php)<br>
  4.ログイン認証(auth.php)<br>
- 5.お気に入り非同期通信(ajaxLike.php)<br>
+ 5.お気に入り登録通信(ajaxLike.php)<br>
  
  
   

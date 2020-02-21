@@ -14,13 +14,18 @@
  8.スイーツ一覧表示機能(ページネーションを搭載)<br>
  9.スイーツお気に入り登録機能<br>
   
-## 使用技術一覧
- 1.HTML<br>
- 2.CSS<br>
+## 開発環境、使用言語一覧
+ 1.HTML5<br>
+ 2.CSS3<br>
  3.Sass(scss記法)<br>
- 4.jquery<br>
- 5.PHP<br>
- 6.MySQL<br>
+ 4.jquery ver3.4.1<br>
+ 5.PHP ver7.3.7<br>
+ 6.MySQL ver2.4.41<br>
+ ***パッケージ関連***
+ 1.npm ver6.13.4
+ 2.gulp ver4.0.2
+ 3.node ver13.6.4
+ 
 
 ## 各画面の機能
  1.新規訪問ページ(new.php)<br>

@@ -22,7 +22,7 @@
  5.PHP ver7.3.7<br>
  6.MySQL ver2.4.41<br>
  
- ***パッケージ関連***
+ ***パッケージ関連***<br>
  1.npm ver6.13.4<br>
  2.gulp ver4.0.2<br>
  3.node ver13.6.4<br>

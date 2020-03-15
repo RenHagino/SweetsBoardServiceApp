@@ -2,6 +2,9 @@
 *.log
 #パッケージ管理系ファイルはどうする？
 /memo/
+src/sweets_img/*
+src/sass/
+/src/css/
 #feature-add-pageを管理から外す
 feature-add-page/sample.php
 node_modules

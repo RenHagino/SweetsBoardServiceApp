@@ -41,32 +41,35 @@ body{
     }
      //背景ぼかし用の擬似要素CSS
     .new-back-content::before{
-            content: '';
-            background: inherit;
-            -webkit-filter: blur(5px);
-            -moz-filter: blur(5px);
-            -o-filter: blur(5px);
-            -ms-filter: blur(5px);
-            filter: blur(5px);
-            position: absolute;
-            top: -5px;
-            left: -5px;
-            right: -5px;
-            bottom: -5px;
-            z-index: -1;
-        }
-
-
-    //section class="main"
+        content: '';
+        background: inherit;
+        -webkit-filter: blur(5px);
+        -moz-filter: blur(5px);
+        -o-filter: blur(5px);
+        -ms-filter: blur(5px);
+        filter: blur(5px);
+        position: absolute;
+        top: -5px;
+        left: -5px;
+        right: -5px;
+        bottom: -5px;
+        z-index: -1;
+    }
+    .main_signup{
+        width: 70%;
+    }
+    .main_login{
+        width: 70%;
+    }
     .main{
         width: 100%;
         height: auto;
-        margin: 0 auto;
-        
+        padding:0 5%;
+        box-sizing: border-box;
+        margin: $space_3l auto;
+
         //メインセクションのタイトル
         &-title{
-            //TODO: フォントファミリーが変わらない！
-            font-family: $font-family_corp;
             text-align: center;
             padding: $space_4l 0;
             font-size: $font-size_xxl;
@@ -86,6 +89,77 @@ body{
                 margin-bottom: 8px;
                 margin-left: $space_xxl;
             }
+            //registSweets.php
+            &-myregist{
+                &:before{
+                    background: $color_paleorange_normal;
+                    width: 450px;
+                    height: 10px;
+                }
+                &:after{
+                    background: $color_paleorange_normal;
+                    width: 450px;
+                    height: 10px;
+                }
+            }
+            //mypage.php
+            &-mypage{
+                &:before{
+                    width: 350px;
+                    height: 3px;
+                    background: $color_default;
+                }
+                &:after{
+                    width: 350px;
+                    height: 3px;
+                    background: $color_default;
+                }
+            }
+            //registSweets.php
+            &-regist{
+                &:before{
+                    width: 350px;
+                    height: 3px;
+                    background: $color_gray_normal;
+                }
+                &:after{
+                    width: 350px;
+                    height: 3px;
+                    background: $color_gray_normal;
+                }
+            }
+            //passEdit.php
+            &-passedit{
+                &:before{
+                    background: $color_default;
+                }
+                &:after{
+                    background: $color_default;
+                }
+            }
+            //withdraw.php
+            &-withdraw{
+                &:before{
+                    background: $color_gray_normal;
+                    width: 450px;
+                    height: 5px;
+                }
+                &:after{
+                    background: $color_gray_normal;
+                    width: 450px;
+                    height: 5px;
+                }
+            }
+            //オレンジ色
+            &__orange{
+                &:before{
+                    background: $color_orange_normal;
+                }
+                &:after{
+                    background: $color_orange_normal;
+                }
+            }
+            
             //サインアップのタイトルの装飾カラー
             &__signup{
                 &:before{
@@ -95,77 +169,35 @@ body{
                     background: $color_orange_normal;
                 }
             }
-            //退会フォーム
-            &__withdraw{
-                &:before{
-                    background: $color_gray_normal;
-                }
-                &:after{
-                    background: $color_gray_normal;
-                }
-            }
             //スイーツ登録
-            &__registsweets{
+            &-yellow{
                 &:before{
                     background: $color_yellow_normal;
-                    border: 1px solid $color_gray_normal;
                 }
                 &:after{
                     background: $color_yellow_normal;
-                    border: 1px solid $color_gray_normal;
-                }
-            }
-            //ログイン
-            &__login{
-                &:before{
-                    background: $color_yellow_normal;
-                    border: 1px solid $color_gray_normal;
-                }
-                &:after{
-                    background: $color_yellow_normal;
-                    border: 1px solid $color_gray_normal;
-                }
-            }
-            //スイーツ詳細
-            &__sweetsdetail{
-                &:before{
-                    background: $color_yellow_normal;
-                    border: 1px solid $color_gray_normal;
-                }
-                &:after{
-                    background: $color_yellow_normal;
-                    border: 1px solid $color_gray_normal;
                 }
             }
             //パスワード変更画面
             &__passEdit{
                 &:before{
                     background: $color_yellow_normal;
-                    border: 1px solid $color_gray_normal;
                 }
                 &:after{
                     background: $color_yellow_normal;
-                    border: 1px solid $color_gray_normal;
                 }
             }
         }
+        //高さは各々のセクションに任せる
         .section-left{
             float: left;
             width: 15%;
-            height: 100%;
             box-sizing: border-box;
-            //min-height: 700px;
-            //padding: $space_3l;
-            //border: 5px solid #f1f1f1;
         }
         .section-right{
             float: right;
             width: 85%;
-            height: auto;;
             box-sizing: border-box;
-            //min-height: 700px;
-            //padding: $space_3l;
-            //border: 5px solid #f1f1f1;
         }
     }
 }

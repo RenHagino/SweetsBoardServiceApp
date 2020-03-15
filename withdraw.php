@@ -69,31 +69,27 @@ debug('画面表示終了');
     ?>
     <body>
         <!--ヘッダー呼び出し-->
-        <section class="main">
+        <section class="withdraw-form">
             <!--サインアップフォームのタイトル-->
-            <h2 class="main-title main-title__withdraw">
+            <h1 class="main-title main-title-withdraw">
                 退会フォーム
-            </h2>
+            </h1>
             <div class="form-container">
                 <form action="" method="post" class="form form-m withdraw-form"> 
-                    <h2>退会しますか？</h2>
+                    <h2>本当に退会しますか？</h2>
                     <div class="area-msg">
                         <?php
                             if(!empty($err_msg['common'])) echo $err_msg['common'];
                         ?>
                     </div>
                     <div class="btn-container">
+                        <a href="mypage.php" class="btn btn-s btn-back">&lt; マイページに戻る</a>
                         <!--$_POSTの中には name="ここに指定したもの"が入るので指定しないとエラーとなる-->
                         <input type="submit" name="submit" class="btn btn-s btn-withdraw" value="退会する">
                     </div>
-                    <div class="btn-container">
-                        <a href="mypage.php" class="btn btn-s btn-back">&lt; マイページに戻る</a>
-                    <div>
                 </form>
             </div>
         </section>
     </body>
-    <?php
-        require('footer.php');
-    ?>
+    
 </html>

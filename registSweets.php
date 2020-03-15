@@ -11,10 +11,6 @@
     //ログイン認証
     require('auth.php');
 
-    //========================================================
-    //= 画面処理 ===========================
-    //========================================================
-
     /// === 画面表示用データを取得 ===////
     // GETデータを格納
     $s_id = (!empty($_GET['s_id'])) ? $_GET['s_id'] : ''; //空でなければ''を選択
@@ -84,65 +80,72 @@
             debug('新規登録のバリデーションを行います');
             //スイーツのカテゴリー名入力チェック
             validRequired($category_id, 'category_id');
-            //スイーツ名未入力チェック
+            //スイーツ名の未入力と最大文字数チェック
             validRequired($name, 'name');
-            //最大文字数チェック
             validMaxName($name, 'name');
             //未入力チェック
             validRequired($store_name,'store_name');
             //最大文字数チェック
             validMaxName($store_name,'store_name');
-            //未入力チェック
-            validRequired($comment,'comment');
-            //最大文字数チェック
-            validMaxContent($comment, 'comment' );
             
             //金額の未入力,最大文字数、半角数字のバリデーションを行う
             validRequired($price, 'price');
             validMaxPrice($price, 'price');
             validNumber($price, 'price');
 
-        }else{//$dbFormDataがある場合getRegistSweetsでログイン中のユーザーのsweetsテーブルからデータを入手できた場合
+            //コメントの未入力、最大文字数チェック
+            validRequired($comment,'comment');
+            validMaxComment($comment, 'comment' );
+            
+
+            //画像１を必須にする
+            validRequiredPic($pic1, 'pic1');
+        
+        //============================================================================
+        //$dbFormDataがある場合getRegistSweetsに$s_id, $_SESSION['user_id']を
+        //を渡し、該当するスイーツがある場合、更新画面としてバリデーションチェックを行う       
+        //============================================================================
+        }else{
 
             //デバッグ
             debug('===============================');
-            debug('更新画面のバリデーションを行います');
+            debug('更新画面のバリデーsションを行います');
             debug('===============================');            
 
-            //POSTされたスウィーツのカテゴリーとDBに登録されているスウィーツの名前が一致しない場合
+            //カテゴリーの必須チェックと行う
             if($dbFormData['category_id'] !== $category_id){ 
-                //未入力チェック
                 validRequired($category_id, 'category_id');
             }
-
-            //POSTされたスウィーツの名前とDBに登録されているスウィーツの名前が一致しない場合
+            //スイーツの名前の必須チェックと最大文字数チェック
             if($dbFormData['name'] !== $name){ 
-                //未入力チェックと最大文字数チェックを行う
                 validRequired($name, 'name');
                 validMaxName($name, 'name');
             }
-            //POSTされた店名とDBに登録されているスウィーツの名前が一致しない場合
-            //未入力チェックと最大文字数チェックを行う
+            //店名の必須チェックと最大文字数チェック
             if($dbFormData['store_name'] !== $store_name){ 
                 validRequired($store_name, 'store_name');
                 validMaxName($store_name, 'store_name');
             }
-            //POSTされた詳細コメントとDBに登録されている詳細コメントが一致しない場合
-            //未入力チェックと最大文字数チェックを行う
+            //詳細コメントの未入力チェックと最大文字数チェックを行う
             if($dbFormData['comment'] !== $comment){
                 validRequired($comment, 'comment');
-                validMaxContent($comment, 'comment');
+                validMaxComment($comment, 'comment');
             }
-            //POSTされた金額欄の数値とDBに登録されている金額欄の数値が一致しない場合
-            //未入力チェックと最大文字数チェックと半角数字チェックを行うを行う
+            //値段の未入力チェックと最大文字数チェックと半角数字チェックを行うを行う
             if($dbFormData['price'] !== $price){ //前回まではキャストしていたが、ゆるい判定でもいい
                 validRequired($price, 'price');
                 validMaxPrice($price, 'price');
                 validNumber($price, 'price');
             }
+            //画像１の必須チェックを行う
+            validRequiredPic($pic1, 'pic1');
         }
 
-        //バリデーションを通過した場合
+
+        //============================================================
+        //バリデーションを通過した場合 $edit_flg($dbFormDataの有無でtrue,falseが切り替わる)
+        //のtrue, falseで走らせるSQLを切り替える。
+        //============================================================
         if(empty($err_msg)){
             debug('バリデーションを全て通過しました');
             //DB接続
@@ -170,7 +173,7 @@
 
                 //クエリ成功の場合
                 if($stmt){
-                    $_SESSION['msg-success'] = SUC04; //スイーツを新規に登録しました
+                    $_SESSION['msg-success'] = SUC04; 
                     debug('マイページへ遷移します');
                     header("Location:mypage.php"); 
                 }
@@ -200,9 +203,9 @@
         ?>
         <section class="main">
             <!--フォームのタイトル： エディットフラグで新規紹介か編集画面かを切り替える-->
-            <h2 class="main-title main-title__registsweets">
+            <h2 class="main-title main-title-default">
                 <?php echo (!$edit_flg) ? 'スイーツを紹介する' : 'スイーツを編集する';?>
-             </h2>
+            </h2>
             <div class="form-container">
                 <!--enctypeを追加したことに注意-->
                 <form class="form form-m regist-form" action ="" method="post" enctype="multipart/form-data">
@@ -217,7 +220,7 @@
                         カテゴリー<span class="label-require">必須</span><br>
                         <!--セレクトボックスで実装-->
                         <select class="category_select" name="category_id" id="">
-                            <option value="0" <?php if(getFormData('category_id')==0){echo 'selected';} ?>>
+                            <option value="" <?php if(getFormData('category_id')==""){echo 'selected';} ?>>
                             選択してください
                             </option>
                             <?php
@@ -268,14 +271,13 @@
 
                     <!--詳細文（テキストエリア） getFormDataを使う場所に注意。value=""は使えない　-->
                     <label  class="label <?php if(!empty($err_msg['comment'])) echo 'err'?>">
-                    詳細<span class="label-require">必須</span><br>
-                    <textarea class="input js-count" name="comment" cols="50" rows="3">
-                        <?php echo getFormData('comment'); ?>
-                    </textarea>
+                    スイーツの詳細<span class="label-require">必須</span><br>
+                    <!--テキストエリアタグを改行すると空文字が入るので注意-->
+                    <textarea class="input js-count" name="comment" cols="50" rows="3"><?php echo getFormData('comment'); ?></textarea>
                     </label> 
                     <!--TODO: jsで処理するので動作確認-->
                     <p class="count-text">
-                        <span class="js-count-view">0</span>/150文字
+                        <span class="js-count-view">0</span>/100文字
                     </p>
                     <div class="area-msg">
                         <?php if(!empty($err_msg['comment'])) echo $err_msg['comment']; ?>
@@ -283,21 +285,15 @@
 
                     <!--画像コンテナー-->
                     <div style="overflow:hidden;">
-
-                        <!--画像１-->
+                        <!--画像1-->
                         <div class="imgDrop-container container-sweets">
                             画像1<br>
                             <label class="label area-drop area-drop-sweets <?php if(!empty($err_msg['pic1'])) echo 'err'; ?>">
                                 <input type="hidden" name="MAX_FILE_SIZE" value="3145728">
                                 <input type="file" name="pic1" class="input-file input-file-sweets">
                                 <img src="<?php echo getFormData('pic1'); ?>" alt="" class="prev-img prev-img-sweets">
-                                画像1をクリックして選択
+                                画像１をクリックして選択<br>
                             </label>
-                            <div class="area-msg">
-                                <?php 
-                                if(!empty($err_msg['pic1'])) echo $err_msg['pic1'];
-                                ?>
-                            </div>
                         </div>
                         <!--画像２-->
                         <div class="imgDrop-container container-sweets">
@@ -329,6 +325,12 @@
                                 ?>
                             </div>
                         </div>
+                    </div>
+                    <!--画像１のエラーメッセージ表示エリア-->
+                    <div class="area-msg">
+                            <?php 
+                            if(!empty($err_msg['pic1'])) echo $err_msg['pic1'];
+                            ?>
                     </div>
                     
                     <!--送信ボタン-->

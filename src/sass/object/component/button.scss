@@ -28,6 +28,7 @@
             background-color: $color_gray_light;
             //デフォルトでホバーしたとき
             :hover{
+                text-decoration: none;
                 background-color: $color_orange_normal;
                 border: 1px solid $color_yellow_normal;
                 cursor: pointer;
@@ -134,6 +135,15 @@
                     border: 1px solid $color_yellow_normal;
                 }
             }
+            //検索ボタン
+            &-search{
+                padding: 0.5em 1em;
+                border-radius: 60px;
+                &:hover{
+                    background-color: $color_orange_normal;
+                    border: 1px solid $color_yellow_normal;
+                }
+            }
             //スイーツ登録ボタン
             &-regist{
                 padding: 0.5em 1em;
@@ -175,6 +185,8 @@
             }
             //退会する
             &-withdraw{
+                width: 190px;
+                margin: $space_xl 0;
                 padding: 0.5em 1em;
                 border-radius: 60px;
                 &:hover{

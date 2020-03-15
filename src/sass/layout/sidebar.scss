@@ -1,39 +1,79 @@
 .sidebar{
     display: table;
-    background-color: rgb(202, 202, 202);
     float: left;
-    box-sizing: border-box;// paddingやborderをheightの中に含める
-    padding: $space_3l;
-    min-height: 700px; //可変？
+    box-sizing: border-box;
     width: 15%;
-    border: 5px solid $color_gray_light;;
-    a{
-        color: $color_default;
-        font-size: $font-size_l;
-        line-height: 30px;
-        display: block;
-        text-align: left;
-        
-        &:hover{
-            background: $color_white;
+    background-color: $color_gray_light;
+    border: 1px solid $color_default;
+    //タイトル
+    &__title{
+        width: 100%;
+        height: 50px;
+        background-color: $color_blue_normal;
+        p{
+            font-weight: bold;
+            color: $color_yellow_light;
+            margin: 0 auto;
+            padding: $space_l 0 0 $space_5l;
         }
     }
-
+    //メニュー
+    &__menu{
+        padding: $space_3l;
+        //リンク
+        a{
+            color: $color_default;
+            font-size: $font-size_m;
+            line-height: 30px;
+            display: block;
+            text-align: left;
+            &:hover{
+                background: $color_yellow_light;
+            }
+        }
+    }
 }
+.prof-sidebar{
+    height: 1000px;
+}
+.mypage-sidebar{
+    height: 1055px;
+    margin-bottom: $space_3l;
+}
+
+//======================================
 //home.phpのサイドバー
+//======================================
 .home-sidebar{
+    height: 819px;
+    background-color: $color_gray_light;
+    box-sizing: border-box;
+    border: 1px solid $color_default;
+    //タイトル
+    &__title{
+        width: 100%;
+        height: 80px;
+        box-sizing: border-box;
+        background-color: $color_blue_normal;
+        border-bottom: 2px solid $color_gray_normal;
+        p{
+            font-weight: bold;
+            color: $color_yellow_light;
+            margin: 0 auto;
+            padding: $space_3l 0 0 $space_6l;
+        }
+    }
     &__form{
-        height: 900px;
         box-sizing: border-box;
         padding: $space_l;
-        border: 2px solid $color_gray_normal;
         text-align: center;
     }
     .side-contents{
         margin-top: $space_3l;
         .title{
+            color: $color_default;
             font-size: $font-size_l;
-            margin: $space_m auto; 
+            margin: $space_m auto;
         }
         .category{
             width: 80%;

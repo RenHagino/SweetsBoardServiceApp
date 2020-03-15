@@ -4,7 +4,6 @@ var minify_css = require('gulp-minify-css');
 var sass = require('gulp-sass');
 var imagemin = require('gulp-imagemin');
 var changed = require('gulp-changed');
-var cleanCSS = require("gulp-clean-css");
 var rename   = require("gulp-rename");
 
 
@@ -23,9 +22,7 @@ gulp.task('minify-css', function(){
   //圧縮後の吐き出し先を指定
   .pipe(gulp.dest('./dist/css/'));
 })
-  
 
- 
 //=================================
 //タスク２,画像圧縮
 //=================================
@@ -70,7 +67,7 @@ gulp.task('sass', gulp.series(function(){
 
 
 //================================
-//タスク３, SCSSのファイル監視　gulp.ver4で記述
+//タスク３, SCSSのファイル監視gulp.ver4で記述
 // scssファイルに変更があればgulp-sassを発動する
 //================================
 gulp.task('watch-css', gulp.series(function(){

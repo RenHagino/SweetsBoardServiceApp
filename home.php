@@ -51,7 +51,7 @@
     debug('現在ページのGETソート順:'.print_r($sort,true));
     debug('現在のページのカテゴリーID:'.print_r($category,true));
     debug('現在の表示レコードの最小数:'.print_r($currentMinNum,true));
-    debug('DBのスイーツデータの中身:'.print_r($dbSweetsData,true));
+    debug('DBのスイーツデータの中身(1ページに表示):'.print_r($dbSweetsData,true));
     debug('「「「「「「「「「「「「「「 ページ関係の変数デバッグ終了「「「「「「「「「「「「「「「');
     debug('「「「「「「 画面表示処理終了「「「「「「「「「「「「「「「「「');
 
@@ -68,18 +68,47 @@
     <body>
         <div class="main-contents_wrapper">
             <!--main-->
-            <div class="main">
+            <div class="main home_main">
+
+                <!--検索結果件数-->
+                <section class="search-result">
+                        <div class="search-result__left">
+                            <?php if(!empty($dbSweetsData)){
+                                echo '<span class="total-num">'.sanitize($dbSweetsData['total']).'</span>個のスイーツが見つかりました！！！';
+                            }else{
+                                echo  '<span class="total-num">スイーツが見つかりませんでした</span>';
+                            }
+                            ?>
+                        </div>
+                        <!--全データの中、今表示しているのが何件〜何件であるかを示す部分-->
+                        <div class="search-result__right"> 
+                            <span class="num">
+                                <!--ここを$currentMinNum + 1にしないと１ページ目だと０件目から１９件目まで表示になってしまう-->
+                                <?php echo (!empty($dbSweetsData['data'])) ? $currentMinNum+1 : 0 ; ?>
+                            </span>件から ー 
+                            <span class="num">
+                                <!--2ページ目の場合は-->
+                                <?php echo $currentMinNum+count($dbSweetsData['data']); ?>
+                            </span>件を表示しています/
+                            <span class="num">
+                                <?php echo sanitize($dbSweetsData['total'])?>
+                            </span>件中
+                        </div>
+                    </section>
                 <!--サイドバーセクション-->
                 <section class="home-sidebar section-left">
+                    <div class="home-sidebar__title">
+                        <p>絞り込み</p>
+                    </div>
                     <form  action="" method="get" class="form home-sidebar__form">
                         <div class="side-contents">
                             <!--カテゴリー選択-->
-                            <h1 class="title">カテゴリーで絞り込み</h1>
+                            <h1 class="title">カテゴリーで<br>絞り込み</h1>
                             <span class="icn_select"></span>
                             <select name="c_id" class="category">
                                 <!--getFormData()でGETデータのc_idが0の場合、-->
                                 <option value="0" <?php if(getFormData('c_id', true) == 0){echo 'selected';} ?>>
-                                    カテゴリー選択
+                                    選択
                                 </option>
                                 <?php 
                                     foreach($categoryData as $key => $val){
@@ -95,7 +124,7 @@
                         <!--TODO: エラーメッセージをみて解決-->
                         <!--表示順（ソート）--> <!--ここは金額が安い順か高い順かだけで実装しているので選択肢が二つしかないのでforeachは使わない-->
                         <div class="side-contents">
-                            <h1 class="title">表示順</h1>
+                            <h1 class="title">表示順を変更</h1>
                             <select name="sort" class="sort">
                                 <!--getFormDataでGETパラメータを取得し、その数値によってechoさせる値を変化させる trueを指定することで$_GETになる-->
                                 <option value="0" <?php if(getFormData('sort',true) == 0 ){echo 'selected'; }?> >選択</option>
@@ -105,7 +134,7 @@
                         </div>
                         <!--検索ボタン-->
                         <div class="side-contents btn-container">
-                            <input type = "submit" value="検索する" class="btn btn-s search-btn">
+                            <input type = "submit" value="検索する" class="btn btn-s btn-search">
                         </div>
                     </form>
                 </section>
@@ -114,36 +143,11 @@
                 ----メインセクション---
                 ///////////////////////////////////////////////////////-->
                 <section class="main-section section-right">
-                    <!--検索結果件数-->
-                    <div class="search-result">
-                        <div class="search-result__left">
-                            <?php if(!empty($dbSweetsData)){
-                                echo '<span class="total-num">'.sanitize($dbSweetsData['total']).'</span>個のスイーツが見つかりました！！！';
-                            }else{
-                                echo  '<span class="total-num">スイーツが見つかりませんでした</span>';
-                            }
-                            ?>
-                        </div>
-                         <!--全データの中、今表示しているのが何件〜何件であるかを示す部分-->
-                        <div class="search-result__right"> 
-                            <span class="num">
-                                <!--ここを$currentMinNum + 1にしないと１ページ目だと０件目から１９件目まで表示になってしまう-->
-                                <?php echo (!empty($dbSweetsData['data'])) ? $currentMinNum+1 : 0 ; ?>
-                            </span>件から ー 
-                            <span class="num">
-                                <!--2ページ目の場合は-->
-                                <?php echo $currentMinNum+count($dbSweetsData['data']); ?>
-                            </span>件を表示しています/
-                            <span class="num">
-                                <?php echo sanitize($dbSweetsData['total'])?>
-                            </span>件中
-                        </div>
-                    </div>
-                    <!--スイーツの画像表示部分-->
+                    <!--スイーツの画像リスト-->
                     <div class="panel-list">
                         <!--foreach始まり。-->
                         <?php
-                            foreach($dbSweetsData['data'] as $key => $val): //TODO:ここはコロン？セミコロン？
+                            foreach($dbSweetsData['data'] as $key => $val): 
                         ?>
                         <!--パネルのどこかをクリックするとクリックしたスイーツの詳細画面(SweetsDetail.com)に飛べるようになっている-->
                         <!--変更前：productDetail.comにスイーツのID(s_id)を繋げ、ページ数(&p=)に$currentPageNumを指定してつなげる-->
@@ -156,14 +160,13 @@
                             </div>
                             <!-- パネルボディ : -->
                             <div class="panel-body">
-                                <!--パネルタイトル-->
-                                <p class="panel-body__title">
-                                    <?php echo sanitize($val['name']); ?>
-                                    <span class="panel-body__title__price">
-                                        <!-- number_format関数を使って千の位ごとに値段表示にカンマをつける-->
-                                        ¥<?php echo sanitize(number_format($val['price'])); ?>
-                                    <span>
-                                </p>
+                                <!--スイーツの名前-->
+                                <p class="panel-body__title"><?php echo sanitize($val['name']); ?></p><br>
+                                <!--スイーツの値段-->
+                                <span class="panel-body__price">
+                                    <!-- number_format関数を使って千の位ごとに値段表示にカンマをつける-->
+                                    ¥<?php echo sanitize(number_format($val['price'])); ?>
+                                <span>
                             </div>
                         </a>
                         <!--foreach終了-->
@@ -171,14 +174,14 @@
                             endforeach;
                             ?>
                     </div>
-                     <!--====================
-                         //ページネーション
+                    <!--====================
+                         //ページネーション付与
                     =====================-->
                     <?php 
                         pagenation($currentPageNum, $dbSweetsData['total_page']); 
                     ?>
                 </section>
-            </div><!--class="main"-->
+            </div>
             <!--フッター-->
             <?php
             require('footer.php');

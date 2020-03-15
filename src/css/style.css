@@ -49,12 +49,17 @@ body {
     right: -5px;
     bottom: -5px;
     z-index: -1; }
+  body .main_signup {
+    width: 70%; }
+  body .main_login {
+    width: 70%; }
   body .main {
     width: 100%;
     height: auto;
-    margin: 0 auto; }
+    padding: 0 5%;
+    box-sizing: border-box;
+    margin: 30px auto; }
     body .main-title {
-      font-family: "Amatic SC", cursive;
       text-align: center;
       padding: 40px 0;
       font-size: 30px; }
@@ -72,53 +77,72 @@ body {
         width: 400px;
         margin-bottom: 8px;
         margin-left: 25px; }
+      body .main-title-myregist:before {
+        background: #FFFFBB;
+        width: 450px;
+        height: 10px; }
+      body .main-title-myregist:after {
+        background: #FFFFBB;
+        width: 450px;
+        height: 10px; }
+      body .main-title-mypage:before {
+        width: 350px;
+        height: 3px;
+        background: #444; }
+      body .main-title-mypage:after {
+        width: 350px;
+        height: 3px;
+        background: #444; }
+      body .main-title-regist:before {
+        width: 350px;
+        height: 3px;
+        background: #D3D3D3; }
+      body .main-title-regist:after {
+        width: 350px;
+        height: 3px;
+        background: #D3D3D3; }
+      body .main-title-passedit:before {
+        background: #444; }
+      body .main-title-passedit:after {
+        background: #444; }
+      body .main-title-withdraw:before {
+        background: #D3D3D3;
+        width: 450px;
+        height: 5px; }
+      body .main-title-withdraw:after {
+        background: #D3D3D3;
+        width: 450px;
+        height: 5px; }
+      body .main-title__orange:before {
+        background: #FF8856; }
+      body .main-title__orange:after {
+        background: #FF8856; }
       body .main-title__signup:before {
         background: #FF8856; }
       body .main-title__signup:after {
         background: #FF8856; }
-      body .main-title__withdraw:before {
-        background: #D3D3D3; }
-      body .main-title__withdraw:after {
-        background: #D3D3D3; }
-      body .main-title__registsweets:before {
-        background: #FFFF44;
-        border: 1px solid #D3D3D3; }
-      body .main-title__registsweets:after {
-        background: #FFFF44;
-        border: 1px solid #D3D3D3; }
-      body .main-title__login:before {
-        background: #FFFF44;
-        border: 1px solid #D3D3D3; }
-      body .main-title__login:after {
-        background: #FFFF44;
-        border: 1px solid #D3D3D3; }
-      body .main-title__sweetsdetail:before {
-        background: #FFFF44;
-        border: 1px solid #D3D3D3; }
-      body .main-title__sweetsdetail:after {
-        background: #FFFF44;
-        border: 1px solid #D3D3D3; }
+      body .main-title-yellow:before {
+        background: #FFFF44; }
+      body .main-title-yellow:after {
+        background: #FFFF44; }
       body .main-title__passEdit:before {
-        background: #FFFF44;
-        border: 1px solid #D3D3D3; }
+        background: #FFFF44; }
       body .main-title__passEdit:after {
-        background: #FFFF44;
-        border: 1px solid #D3D3D3; }
+        background: #FFFF44; }
     body .main .section-left {
       float: left;
       width: 15%;
-      height: 100%;
       box-sizing: border-box; }
     body .main .section-right {
       float: right;
       width: 85%;
-      height: auto;
       box-sizing: border-box; }
 
 .footer {
   height: 100px;
   width: 100%;
-  background: linear-gradient(to bottom, #FC9A5C, #FFF0AF);
+  margin-top: 30px;
+  background-image: url("../../../../portfolio_sweetsboard/src/img/pattern-simpleyellow.jpg");
   text-align: center;
   display: table;
   background-color: #f1f1f1; }
@@ -130,7 +154,7 @@ body {
 .header {
   width: 100%;
   height: 150px;
-  background: linear-gradient(to bottom, #FC9A5C, #FFF0AF); }
+  background-image: url("../../../../portfolio_sweetsboard/src/img/pattern-simpleyellow.jpg"); }
   .header .site-width {
     width: 100%;
     height: 150px;
@@ -156,41 +180,39 @@ body {
           text-align: center;
           text-decoration: none;
           color: #3a3a3a; }
-      .header .site-width .top-nav li:hover {
-        text-decoration: underline black; }
 
 .list {
   width: 100%;
   height: auto; }
-
-.fav-list {
-  width: 100%;
-  height: auto;
-  background-color: #FFFFBB;
-  border: 5px solid #F0F0F0;
-  overflow: hidden; }
-  .fav-list__title {
+  .list__title {
     text-align: center;
-    margin: 15px;
-    font-size: 35px;
-    text-shadow: 1px 1px 1px #FF8856;
-    color: #FFFF44; }
-  .fav-list__title:before {
+    margin-top: 30px;
+    font-size: 30px; }
+  .list__title:before {
     content: '';
     display: inline-block;
     width: 300px;
     height: 2px;
-    background-color: #FF570D;
+    background-color: #444;
     margin-right: 15px;
     margin-bottom: 10px; }
-  .fav-list__title:after {
+  .list__title:after {
     content: '';
     display: inline-block;
     width: 300px;
     height: 2px;
-    background-color: #FF570D;
+    background-color: #444;
     margin-left: 15px;
     margin-bottom: 10px; }
+
+.fav-list {
+  height: 1055px;
+  box-sizing: border-box;
+  border-top: 1px solid #444;
+  border-right: 1px solid #444;
+  border-bottom: 1px solid #444;
+  background-image: url("../../../../portfolio_sweetsboard/src/img/pattern-grayheart.jpg");
+  overflow: hidden; }
   .fav-list .panel {
     width: 33%;
     height: 300px;
@@ -213,6 +235,8 @@ body {
       text-align: center;
       box-sizing: border-box;
       padding: 10px; }
+      .fav-list .panel-body .title {
+        color: #444; }
 
 .mysweets-list {
   width: 90%;
@@ -220,12 +244,8 @@ body {
   text-align: center;
   padding: 30px;
   margin: 0 auto 50px auto;
-  background-color: #F0F0F0;
+  background-image: url("../../../../portfolio_sweetsboard/src/img/stripe_1.jpg");
   overflow: hidden; }
-  .mysweets-list__title {
-    margin: 15px;
-    font-size: 24px;
-    color: #fff5c6; }
   .mysweets-list .panel {
     width: 33%;
     height: 400px;
@@ -236,7 +256,6 @@ body {
     padding: 0 15px;
     border-radius: 400px; }
     .mysweets-list .panel:hover {
-      border: 4px double #FF570D;
       background-color: #FF8856; }
     .mysweets-list .panel-head {
       width: 100%;
@@ -257,108 +276,136 @@ body {
       .mysweets-list .panel-body__title {
         display: inline-block;
         width: auto;
-        font-size: 24px; }
+        font-size: 18px; }
       .mysweets-list .panel-body__price {
         display: inline-block;
         width: auto;
         font-size: 18px;
         margin-left: 15px; }
 
-.board-list {
-  width: 100%;
-  height: auto;
-  background-color: red; }
-
 .prof-list {
-  background-color: #FFFFDD;
-  overflow: hidden; }
-  .prof-list__title {
-    font-size: 24px; }
+  overflow: hidden;
+  background-image: url("../../../../portfolio_sweetsboard/src/img/pattern-whitesquare.jpg");
+  height: 1000px;
+  margin-bottom: 30px;
+  border-top: 1px solid #444;
+  border-right: 1px solid #444;
+  border-bottom: 1px solid #444; }
 
 .sidebar {
   display: table;
-  background-color: #cacaca;
   float: left;
   box-sizing: border-box;
-  padding: 30px;
-  min-height: 700px;
   width: 15%;
-  border: 5px solid #F0F0F0; }
-  .sidebar a {
-    color: #444;
-    font-size: 18px;
-    line-height: 30px;
-    display: block;
-    text-align: left; }
-    .sidebar a:hover {
-      background: #f1f1f1; }
+  background-color: #F0F0F0;
+  border: 1px solid #444; }
+  .sidebar__title {
+    width: 100%;
+    height: 50px;
+    background-color: #003366; }
+    .sidebar__title p {
+      font-weight: bold;
+      color: #FFFF66;
+      margin: 0 auto;
+      padding: 15px 0 0 50px; }
+  .sidebar__menu {
+    padding: 30px; }
+    .sidebar__menu a {
+      color: #444;
+      font-size: 14px;
+      line-height: 30px;
+      display: block;
+      text-align: left; }
+      .sidebar__menu a:hover {
+        background: #FFFF66; }
 
-.home-sidebar__form {
-  height: 900px;
+.prof-sidebar {
+  height: 1000px; }
+
+.mypage-sidebar {
+  height: 1055px;
+  margin-bottom: 30px; }
+
+.home-sidebar {
+  height: 819px;
+  background-color: #F0F0F0;
   box-sizing: border-box;
-  padding: 15px;
-  border: 2px solid #D3D3D3;
-  text-align: center; }
-
-.home-sidebar .side-contents {
-  margin-top: 30px; }
-  .home-sidebar .side-contents .title {
-    font-size: 18px;
-    margin: 10px auto; }
-  .home-sidebar .side-contents .category {
-    width: 80%;
-    height: 40px;
-    font-size: 18px; }
-  .home-sidebar .side-contents .sort {
-    width: 80%;
-    height: 40px;
-    font-size: 18px; }
+  border: 1px solid #444; }
+  .home-sidebar__title {
+    width: 100%;
+    height: 80px;
+    box-sizing: border-box;
+    background-color: #003366;
+    border-bottom: 2px solid #D3D3D3; }
+    .home-sidebar__title p {
+      font-weight: bold;
+      color: #FFFF66;
+      margin: 0 auto;
+      padding: 30px 0 0 60px; }
+  .home-sidebar__form {
+    box-sizing: border-box;
+    padding: 15px;
+    text-align: center; }
+  .home-sidebar .side-contents {
+    margin-top: 30px; }
+    .home-sidebar .side-contents .title {
+      color: #444;
+      font-size: 18px;
+      margin: 10px auto; }
+    .home-sidebar .side-contents .category {
+      width: 80%;
+      height: 40px;
+      font-size: 18px; }
+    .home-sidebar .side-contents .sort {
+      width: 80%;
+      height: 40px;
+      font-size: 18px; }
 
 .sweets-detail__info {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  align-items: center;
   width: 95%;
-  height: 100px;
-  margin: 15px auto;
-  clear: both; }
+  height: 50px;
+  margin: 15px auto; }
   .sweets-detail__info .name {
-    float: left;
-    clear: both;
+    display: inline-block;
     width: auto;
-    margin: 40px 0;
+    height: auto;
     margin-left: 30px;
     border: 2px #FF8856;
     box-sizing: border-box;
     font-size: 24px; }
-  .sweets-detail__info .category {
-    display: inline-block;
-    width: 100px;
-    margin: 30px 0;
-    margin-left: 30px;
-    padding: 5px;
-    text-align: center;
-    box-sizing: border-box;
-    background: #FFFFCC;
-    border: 1px solid #D3D3D3; }
-    .sweets-detail__info .category p {
+    .sweets-detail__info .name p {
       margin-top: 5px;
       font-size: 24px; }
   .sweets-detail__info .price {
-    clear: both;
     display: inline-block;
-    width: 150px;
-    margin: 30px 0;
+    width: auto;
+    height: auto;
+    margin-left: 10px;
+    text-align: center;
+    box-sizing: border-box; }
+    .sweets-detail__info .price p {
+      margin-top: 5px;
+      font-size: 24px; }
+  .sweets-detail__info .category {
+    display: inline-block;
+    width: auto;
+    height: auto;
     margin-left: 30px;
-    padding: 5px;
     text-align: center;
     box-sizing: border-box;
-    background: #F0F0F0;
-    border: 1px solid #D3D3D3; }
-    .sweets-detail__info .price p {
+    border-bottom: double 3px #FF8856; }
+    .sweets-detail__info .category p {
       margin-top: 5px;
       font-size: 24px; }
   .sweets-detail__info .like {
     display: inline-block;
-    width: 150px;
-    margin: 40px 0;
+    width: auto;
+    height: auto;
+    padding: 10px;
     margin-left: 30px; }
 
 .sweets-detail__main {
@@ -396,8 +443,8 @@ body {
     height: 100px;
     margin: 30px auto 0 auto;
     padding: 15px;
-    background-color: #FFFFCC;
-    border: 4px double #FF570D; }
+    background-image: url("../../../../portfolio_sweetsboard/src/img/pattern-simpleyellow.jpg");
+    border: 1px solid #444; }
     .sweets-detail__main .comment p {
       font-size: 24px;
       color: #333; }
@@ -503,27 +550,6 @@ body {
         left: 0; }
         .form-container .form .imgDrop-container .prev-img-prof {
           border-radius: 300px; }
-  .form-container .input-s {
-    width: 175px;
-    height: 40px;
-    font-size: 14px;
-    text-align: center;
-    margin-top: 10px;
-    border: 1px solid #444; }
-  .form-container .input-m {
-    width: 200px;
-    height: 50px;
-    font-size: 18px;
-    text-align: center;
-    margin-top: 10px;
-    border: double 5px #444; }
-  .form-container .input-l {
-    width: 400px;
-    height: 100px;
-    font-size: 24px;
-    text-align: center;
-    margin-top: 15px;
-    border: double 5px #444; }
   .form-container .form-s {
     width: 50%;
     height: auto;
@@ -537,38 +563,47 @@ body {
         width: 400px;
         height: 30px;
         margin: 10px auto;
-        border: double 3px #f1f1f1;
+        border: double 4px #D3D3D3;
         font-size: 14px; }
       .form-container .form-s label .checkbox {
         transform: scale(1.5);
         margin: 0 10px; }
   .form-container .form-m {
-    width: 70%;
     height: auto;
     box-sizing: border-box;
     padding: 30px; }
+    .form-container .form-m h2 {
+      font-size: 24px; }
     .form-container .form-m label {
       height: auto; }
       .form-container .form-m label .input {
         width: 500px;
         height: 50px;
         margin: 15px 0;
-        border: double 3px #f1f1f1;
+        border: double 4px #D3D3D3;
         font-size: 18px; }
       .form-container .form-m label .checkbox {
         transform: scale(1.5);
         margin: 0 10px; }
   .form-container .regist-form {
-    background-image: linear-gradient(to top, #ffba60 0%, #fffd8e 100%); }
-  .form-container .pass-form {
-    background-image: linear-gradient(to top, #dbdbdb 0%, #888888 100%); }
-  .form-container .login-form {
+    width: 70%;
     margin: 30px auto;
-    background-image: linear-gradient(to top, #dbdbdb 0%, #888888 100%); }
-  .form-container .signup-form {
-    background-color: #F0F0F0; }
+    background-image: linear-gradient(to top, #FF8856 0%, #FFFFBB 100%); }
+  .form-container .default-form {
+    width: 70%;
+    margin: 30px auto;
+    background-image: url("../../../../portfolio_sweetsboard/src/img/pattern-whitesquare.jpg"); }
+  .form-container .pass-form {
+    width: 70%;
+    margin: 30px auto;
+    background-image: url("../../../../portfolio_sweetsboard/src/img/pattern-whitesquare.jpg"); }
   .form-container .withdraw-form {
-    background-image: linear-gradient(to top, #dbdbdb 0%, #888888 100%); }
+    width: 70%;
+    height: 300px;
+    margin: 30px auto;
+    background-image: url("../../../../portfolio_sweetsboard/src/img/pattern-whitesquare.jpg"); }
+    .form-container .withdraw-form .btn-container {
+      margin: 40px 0; }
   .form-container .form-right {
     float: right;
     background-color: #ffc4c4; }
@@ -592,6 +627,7 @@ body {
     color: #333333;
     background-color: #F0F0F0; }
     .btn-container .btn :hover {
+      text-decoration: none;
       background-color: #FF8856;
       border: 1px solid #FFFF44;
       cursor: pointer; }
@@ -654,6 +690,12 @@ body {
       .btn-container .btn-logout:hover {
         background-color: #FF8856;
         border: 1px solid #FFFF44; }
+    .btn-container .btn-search {
+      padding: 0.5em 1em;
+      border-radius: 60px; }
+      .btn-container .btn-search:hover {
+        background-color: #FF8856;
+        border: 1px solid #FFFF44; }
     .btn-container .btn-regist {
       padding: 0.5em 1em;
       border-radius: 60px; }
@@ -681,6 +723,8 @@ body {
         background-color: #FF8856;
         border: 1px solid #FFFF44; }
     .btn-container .btn-withdraw {
+      width: 190px;
+      margin: 20px 0;
       padding: 0.5em 1em;
       border-radius: 60px; }
       .btn-container .btn-withdraw:hover {
@@ -773,8 +817,8 @@ body {
       text-align: right; }
 
 .pagenation {
-  margin: 20px auto 0 auto;
-  width: auto;
+  margin-top: 30px;
+  width: 100%;
   list-style: none;
   display: flex;
   justify-content: center; }
@@ -803,43 +847,51 @@ body {
 
 .panel-list {
   width: auto;
-  height: auto;
-  display: flex;
-  flex-wrap: wrap;
-  padding: 10px; }
+  height: 819px;
+  box-sizing: border-box;
+  background-image: url("../../../../portfolio_sweetsboard/src/img/pattern-grayleaves.jpg");
+  padding: 10px;
+  border-top: 1px solid #444;
+  border-right: 1px solid #444;
+  border-bottom: 1px solid #444; }
   .panel-list .panel {
+    display: block;
+    float: left;
     box-sizing: border-box;
-    margin-bottom: 50px;
+    margin-bottom: 80px;
     padding: 0 10px;
     width: 25%;
     height: 200px;
     color: #333;
-    text-decoration: none;
-    line-height: 1.2em; }
+    text-decoration: none; }
     .panel-list .panel:hover {
-      text-decoration: underline; }
+      text-decoration: none; }
     .panel-list .panel-head img {
       width: 100%;
       height: 100%; }
     .panel-list .panel-body {
-      width: auto;
+      width: 100%;
       height: auto;
       margin: 10px auto;
       display: flex;
       justify-content: center; }
+      .panel-list .panel-body:hover {
+        background-color: #FFFFAA;
+        text-decoration: none; }
       .panel-list .panel-body__title {
-        font-size: 18px;
-        margin: 0; }
-        .panel-list .panel-body__title__price {
-          font-size: 14px; }
+        font-size: 18px; }
+      .panel-list .panel-body__price {
+        font-size: 18px; }
 
 .search-result {
-  width: auto;
+  width: 100%;
   height: 80px;
   box-sizing: border-box;
-  margin-left: 1px;
   padding: 25px;
-  border: 2px solid #D3D3D3;
+  border-top: 1px solid #444;
+  border-right: 1px solid #444;
+  border-left: 1px solid #444;
+  background-image: url("../../../../portfolio_sweetsboard/src/img/pattern-simpleyellow.jpg");
   display: flex;
   justify-content: space-between; }
 

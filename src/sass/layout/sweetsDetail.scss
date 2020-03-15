@@ -1,58 +1,58 @@
 .sweets-detail__info{
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    align-items: center;
     width: 95%;
-    height: 100px;
-    //border: 1px solid $color_gray_light;
+    height: 50px;
     margin: $space_l auto;
-    //スイーツのタイトル
-     clear: both;
 
+    //名前
     .name{
-        float: left;
-        clear: both;
+        display: inline-block;
         width: auto;
-        margin: $space_4l 0;
+        height: auto;
         margin-left: $space_3l;
         border: 2px $color_orange_normal;
         box-sizing: border-box;
         font-size: $font-size_xl;
-    }
-    .category{
-        //clear: both;
-        display: inline-block;
-        width: 100px;
-        margin: $space_3l 0;
-        margin-left: $space_3l;
-        padding: $space_s;
-        text-align: center;
-        box-sizing: border-box;
-        background: $color_paleorange_light;
-        border: 1px solid $color_gray_normal;
         & p{
             margin-top: $space_s;
             font-size: $font-size_xl;
         }
     }
+    //値段
     .price{
-        clear: both;
         display: inline-block;
-        width: 150px;
-        margin: $space_3l 0;
-        margin-left: $space_3l;
-        padding: $space_s;
+        width: auto;
+        height: auto;
+        margin-left: $space_m;
         text-align: center;
         box-sizing: border-box;
-        background: $color_gray_light;
-        border: 1px solid $color_gray_normal;
+        & p{
+            margin-top: $space_s;
+            font-size: $font-size_xl;
+        }
+    }
+    //カテゴリー
+    .category{
+        display: inline-block;
+        width: auto;
+        height: auto;
+        margin-left: $space_3l;
+        text-align: center;
+        box-sizing: border-box;
+        border-bottom: double 3px $color_orange_normal;
         & p{
             margin-top: $space_s;
             font-size: $font-size_xl;
         }
     }
     .like{
-        //clear: both;
         display: inline-block;
-        width: 150px;
-        margin: $space_4l 0;
+        width: auto;
+        height: auto;
+        padding: $space_m;
         margin-left: $space_3l;
     }
 }
@@ -63,7 +63,7 @@
     margin: 0 auto;
     //background: rgb(255, 226, 226);
     //スイーツのタイトル
-     clear: both;
+    clear: both;
     //=================================
     //= 画像コンテナー
     //=================================
@@ -103,16 +103,14 @@
             }
         }
     }
-    //===================
-    //スイーツの詳細コメント
-    //===================
+    //コメント
     .comment{
         width: 80%;
         height: 100px;
         margin: $space_3l auto 0 auto;
         padding: $space_l;
-        background-color: $color_paleorange_light;
-        border: 4px double $color_orange_heavy;
+        background-image: url("../../../../portfolio_sweetsboard/src/img/pattern-simpleyellow.jpg");
+        border: 1px solid $color_default;
         p{
             font-size: $font-size_xl;
             color: #333;

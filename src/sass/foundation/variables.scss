@@ -14,7 +14,6 @@ $color_pink: #e3a8b1;
 $color_gray_light: #F0F0F0;
 $color_gray_normal: #D3D3D3;
 $color_gray_heavy: #8f8f8f;
-
 //肌色
 $color_paleorange_light: #FFFFCC;
 $color_paleorange_normal: #FFFFBB;
@@ -24,8 +23,11 @@ $color_yellow_light: #FFFF66;
 $color_yellow_normal: #FFFF44;
 $color_yellow_heavy: #FFFF22;
 //オレンジ色
+$color_orange_light: #faa27d;
 $color_orange_normal: #FF8856;
 $color_orange_heavy: #FF570D;
+//藍色
+$color_blue_normal: #003366;
 //赤色(エラーメッセージ)
 $color_err: #ff3a54;
 
@@ -58,6 +60,9 @@ $space_xxl: 25px;
 $space_3l: 30px;
 $space_4l: 40px;
 $space_5l: 50px;
+$space_6l: 60px;
+$space_7l: 70px;
+$space_8l: 80px;
 
 //フォントファミリー
 $font-family_corp:'Amatic SC', cursive;

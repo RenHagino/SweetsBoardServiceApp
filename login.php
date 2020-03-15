@@ -28,7 +28,7 @@
         //パスワードの半角英数字、最大文字数、最小文字数をチェック
         validHalf($pass, 'pass');
         validMaxPass($pass,'pass');
-        validMinLen($pass,'pass');
+        validMinPass($pass,'pass');
 
         //未入力チェック
         validRequired($email,'email');
@@ -46,7 +46,7 @@
                 $dbh = dbConnect();
                 //TODO: function.phpのEmail重複チェックと同じようにAND delete_flg = 0 を追加。
                 //退会したユーザーのアドレスを拾って退会しているのにログインできるようにしないため。
-                $sql = 'SELECT password,id  FROM users WHERE email = :email  AND delete_flg = 0 ';
+                $sql = 'SELECT password, id  FROM users WHERE email = :email  AND delete_flg = 0 ';
                 $data = array(':email' => $email);
                 //クエリ実行
                 $stmt = queryPost($dbh, $sql, $data);
@@ -92,15 +92,15 @@
                 //パスワードが一致しなかったら
                 }else{
                     debug('パスワードがアンマッチです');
-                    $err_msg['pass'] = MSG09;//メールまたはパスワードにしないと「パスワードが違う」となった場合にメールアドレスは合っていると分かるので悪用される可能性がある
+                    $err_msg['pass'] = MSG09;
                 }
 
             }catch(Exception $e){
                 error_log('エラー発生:'. $e->getMessage()); //error_logとdebug間違えないように
                 $err_msg['common'] = MSG07;
                 }
-        }//バリデーション通過したら
-    }//POST送信があれば
+        }
+    }
 
     debug('login.php ===========画面表示処理終了==========================');
 ?> 
@@ -122,12 +122,10 @@
         <p class="js-show-msg show-slide">
             <?php echo getSessionFlash('msg-success');?>
         </p>
-        <section class="main login-form">
-            <!--フォームタイトル-->
-            <h2 class="main-title main-title__login">ログイン画面</h2>
-            <!--フォーム-->
+        <section class="main">
+            <h2 class="main-title main-title-yellow">ログイン画面</h2>
             <div class="form-container">
-                <form method="post" class="form form-m login-form">
+                <form method="post" class="form form-m default-form">
                     <div class="area-msg">
                         <?php if(!empty($err_msg['common'])) echo $err_msg['common']; ?>
                     </div>
@@ -155,10 +153,6 @@
                     <div class="btn-container">
                         <input type="submit" class="btn btn-s btn-login" value="ログイン">
                     </div>
-                    <!--パスワードを忘れた方-->
-                    <a href="passRemindSend.php">
-                        <h3 class="pass_remind_jump">パスワードを忘れた方はここをクリック！</h3>
-                    </a>
                 </form>
             </div>
         </section>

@@ -51,7 +51,7 @@
     <body>
         <!--ヘッダー-->
         <!--詳細画面ではいらない？-->
-        <h2 class="main-title main-title__sweetsdetail">
+        <h2 class="main-title main-title-yellow">
             スイーツの詳細
         </h2>
         <!--メインセクション-->
@@ -62,16 +62,16 @@
             <section class="sweets-detail__info">
                 <!--スイーツの名前とカテゴリー-->
                 <div class="name">
-                    <?php echo sanitize($viewData['name']); ?>
+                <p><?php echo sanitize($viewData['name']); ?></p>
                 </div>
-                <!--カテゴリー-->
-                <span class="category">
-                    <p><?php echo sanitize($viewData['category_name']); ?></p>
-                </span>
                 <!--値段表示-->
                 <div class="price">
                     <p>¥<?php echo sanitize(number_format($viewData['price'])); ?></p>
                 </div>
+                <!--カテゴリー-->
+                <span class="category">
+                    <p>カテゴリー：<?php echo sanitize($viewData['category_name']); ?></p>
+                </span>
                 <!--お気に入りボタン isFavでDBにすでにお気に入り登録されていた場合、アイコンをactiveにして色をつけておく。-->
                 <div class="like">
                     <!--isFav関数を使ってお気に入り登録がすでにされているスイーツが判別する。-->
@@ -107,12 +107,11 @@
             <!--商品一覧に戻るボタン。 appendGetParamが無いと２ページ目の商品の詳細画面から戻るボタンを押した時に１ページ目に戻るのでappendGetParamは必要-->
             <div class="btn-container item-left">
                 <!--戻った時に該当商品のページ数まで含めて戻れるようにappendGetParamをつけている。 s_idは商品のIDだが、リンクに必要ないので取り除くパラメータに指定している。-->
-                <a class="btn btn-m" href="home.php<?php echo appendGetParam(array('s_id')); ?>">&lt; 商品一覧に戻る </a>
+                <a class="btn btn-m" href="home.php<?php echo appendGetParam(array('s_id')); ?>">&lt; 商品一覧 </a>
             </div>
-            <!--出品者とチャットをするボタン TODO:掲示板ページを追加する-->
             <div class="btn-container item-right">
                 <!--戻った時に該当商品のページ数まで含めて戻れるようにappendGetParamをつけている。 s_idは商品のIDだが、リンクに必要ないので取り除くパラメータに指定している。-->
-                <a class="btn btn-m" href="home.php<?php echo appendGetParam(array('s_id')); ?>">出品者とチャットをする &gt;</a>
+                <a class="btn btn-m" href="mypage.php">マイページ &gt;</a>
             </div>
         </section>
         <!--フッター呼び出し-->

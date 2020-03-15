@@ -49,32 +49,33 @@ session_regenerate_id();
 
 //===定数を設定=============================================//
 define('MSG01','入力必須です');
-define('MSG02', 'Emailの形式で入力してください');
+define('MSG01B', '画像1は必須です');
+define('MSG02', 'Emailの形式で入力してください<br>(半角英数字と@のみ利用可能)');
 define('MSG03','パスワード（再入力）が合っていません');
 define('MSG04','半角英数字のみご利用いただけます');
-define('MSG05','6文字以上で入力してください');
-define('MSG06A','255文字未満で入力してください');
+define('MSG05A','パスワードは6文字以上で入力してください');
+define('MSG05B','パスワードは15文字以下で入力してください');
+define('MSG05C','パスワードとパスワード再入力の値が一致しません');
+define('MSG06A','100文字以下で入力してください');
 define('MSG06B','30文字以下で入力してください');
-define('MSG06C','20文字以下で入力してください');
+define('MSG06C','15文字以下で入力してください');
 define('MSG06D','15文字以下で入力してください');
 define('MSG06E', '6ケタ以下で入力してください');
 define('MSG07', 'エラーが発生しました。しばらく経ってからやり直してください。');
-define('MSG08', 'そのEmailは既に登録されています');
+define('MSG08', 'そのEmailアドレスは他のユーザーが使用しています');
 define('MSG09', 'メールアドレスまたはパスワードが違います'); 
 define('MSG10','半角数字のみ入力できます');
 define('MSG12', '古いパスワードが違います');
-define('MSG13', '古いパスワードと同じです');
+define('MSG13', '新しく設定するパスワードと現在設定されているパスワードが同じです');
 define('MSG14','文字で入力してください');
 define('MSG15','認証キーが違います');
 define('MSG16','認証キーの有効期限が切れています');
 define('MSG17','半角数字で入力してください'); 
 define('MSG18','正しくありません。');
 //todo: サクセスメッセージを表示できるように実装
-define('SUC01', 'パスワードを変更しました');
-define('SUC02', 'プロフィールを変更しました');
-define('SUC03','メールを送信しました');
-define('SUC04','スイーツを新規に登録しました');
-define('SUC05','登録した人とチャットをしてみよう！');
+define('SUC01', 'パスワードを変更しました！');
+define('SUC02', 'プロフィールを変更しました！');
+define('SUC04','スイーツが登録されました！');
 
 //===グローバル変数==========================================//
 //エラーメッセージ格納用の配列
@@ -126,35 +127,22 @@ $err_msg = array();
             $err_msg['common'] = MSG07; //ログインの文字の下のdivに表示
         }
     }
+
+    //====================================
     //パスワードチェック
+    //====================================
     function validPass($str, $key){
     //半角英数字チェック
     validHalf($str, $key);
     //最大文字数チェック
-    validMaxContent($str, $key);
+    validMaxPass($str, $key);
     //最小文字数チェック
-    validMinLen($str, $key);
-    }
-
-    //パスワードの同値チェック（入力と再入力）
-    function validMatch($str1,$str2,$key){
-        if($str1 !== $str2){
-            global $err_msg;
-            $err_msg[$key]= MSG03;
-        }
-    }
-
-    //最小文字数チェック //$minはDBの設定と照らし合わせて指定する
-    function validMinLen($str,$key,$min=6){//関数を呼び出す時に指定すれば$maxの値を変えることも可能
-        if(mb_strlen($str) < $min){
-            global $err_msg;
-            $err_msg[$key] = MSG05; //6文字以上で入力してね
-        }
+    validMinPass($str, $key);
     }
 
     //最大文字数チェック //$maxはDBの設定と照らし合わせて指定する
     //関数を呼び出す時に指定すれば$maxの値を変えることも可能
-    function validMaxContent($str,$key,$max=255){ 
+    function validMaxComment($str,$key,$max=100){ 
         if(mb_strlen($str) > $max){
             global $err_msg;
             $err_msg[$key] = MSG06A;
@@ -166,16 +154,29 @@ $err_msg = array();
             $err_msg[$key] = MSG06B;
         }
     }
-    function validMaxName($str,$key,$max=20){ 
+    function validMaxName($str,$key,$max=15){ 
         if(mb_strlen($str) > $max){
             global $err_msg;
             $err_msg[$key] = MSG06C;
         }
     }
+    //パスワード系統バリデーション
+    function validMinPass($str,$key,$min=6){
+        if(mb_strlen($str) < $min){
+            global $err_msg;
+            $err_msg[$key] = MSG05A;
+        }
+    }
     function validMaxPass($str,$key,$max=15){ 
         if(mb_strlen($str) > $max){
             global $err_msg;
-            $err_msg[$key] = MSG06D;
+            $err_msg[$key] = MSG05B;
+        }
+    }
+    function validMatchPass($str1,$str2,$key){
+        if($str1 !== $str2){
+            global $err_msg;
+            $err_msg[$key]= MSG05C;
         }
     }
     function validMaxPrice($str,$key,$max=6){ 
@@ -193,15 +194,20 @@ $err_msg = array();
         }
     }
 
-    /*半角数字チェック
-        =>スイーツの金額のバリデーションに使う*/
+    //半角数字チェック=>スイーツの金額のバリデーションに使う
     function validNumber($str, $key){
     if(!preg_match("/^[0-9]+$/", $str)){
-      global $err_msg;
-      $err_msg[$key] = MSG17;
+        global $err_msg;
+        $err_msg[$key] = MSG17;
+        }
     }
-  }
-  
+    //画像必須バリデーション(pic1のみ)
+    function validRequiredPic($str, $key){
+        if($str === ''){ 
+        global $err_msg; 
+        $err_msg[$key] = MSG01B;
+        }
+    }
     /*電話番号形式チェック、郵便番号形式チェック、半角数字チェックは今回は作らない*/
     //出身地文字数チェックチェックは最大文字数チェックでOK。
 
@@ -267,8 +273,62 @@ $err_msg = array();
     }
 
 
+    //===================================================
+    // お気に入りスイーツ取得関数(ページネーションあり) mypage.phpで使用
+    //  1,sweetsテーブルとfavoriteテーブルを結合し、お気に入りの総数と総ページ数を取得
+    //  2,sweetsテーブルとfavoriteテーブルを結合し、$listSpan
+    //===================================================
+    function getFavSweetsList($currentMinNum=1, $listSpan, $u_id){
+        //例外処理開始
+        try{
+            //デバッグ
+            debug('mypage.phpでお気に入り登録されているスイーツを表示します');
+            //SQL準備
+            $dbh = dbConnect();
+            //sqlが通らない場合はLIMIT以降をはずして別にsqlを作ってみる
+            $sql = 'SELECT * FROM favorite AS f LEFT JOIN  sweets AS s ON f.sweets_id = s.id WHERE f.user_id = :u_id';
+            $data = array(':u_id'=> $u_id);
+            $stmt = queryPost($dbh, $sql, $data);
+            //この2つのデータが必要 dbFavSweetsData['total'],['total_page']として呼び出せる
+            $rst['total'] = $stmt->rowCount();
+            $rst['total_page'] = ceil($rst['total']/$listSpan);
+            debug('rstの[total]の結果:'.print_r($rst['total'], true));
+            debug('rstの[total_page]の結果'.print_r($rst['total_page'], true));
+            //クエリ判定
+            if($stmt){
+                debug('getFavSweetsListクエリ-1に成功しました');
+            }else{
+                debug('getFavSweetsListクエリ-1に失敗しました');
+                return false;
+            }
+
+            //========================================================
+            //お気に入りスイーツの総数と総ページ数を取得した後に1ページに表示する値を取得する
+            //========================================================
+            
+            //$sql= 'SELECT * FROM favorite WHERE user_id = :u_id LIMIT '.$listSpan.' OFFSET '.$currentMinNum;
+            $sql= 'SELECT * FROM favorite AS f LEFT JOIN sweets AS s ON f.sweets_id = s.id WHERE f.user_id = :u_id LIMIT '.$listSpan.' OFFSET '.$currentMinNum;
+            $data = array('u_id'=>$u_id);
+            $stmt = queryPost($dbh,$sql,$data);
+            //クエリ判定
+            if($stmt){
+                //$rst['data']は1ページに表示する分だけが入っている
+                $rst['data'] = $stmt -> fetchAll();
+                debug('getFavSweetsListクエリ-2に成功しました');
+                debug('クエリ結果の全レコードを取得しました。');
+                debug('$rst[data]の結果:'.print_r($rst['data'],true));
+                return $rst;
+            }else{
+                debug('getFavSweetsListクエリ-2に成功しました');
+                return false;
+            }
+        //例外処理
+        }catch(Exception $e){
+            error_log('エラー発生：'.$e->getMessage());
+        }
+    }
     //=============================================
-    //スイーツ情報取得関数 　
+    //スイーツ情報取得関数 registSweets.phpで使用
     //=============================================
     function getRegistSweets($u_id, $s_id){
         debug('商品情報を取得します');
@@ -405,7 +465,7 @@ $err_msg = array();
                     //     [name] => ケーキB
                     //     [store_name] => ケーキや
                     //     [category_id] => 1
-                    //     [comment] => $pic1の二つの処理の順番を逆にした
+                    //     [comment] => $pic1の2つの処理の順番を逆にした
                     //     [price] => 333
                     //     [pic1] => upload_img/4ca4b5b3cfc9e10cbafc2f9fcaa86ba574da1ea7.jpeg
                     //     [pic2] => 
@@ -426,11 +486,7 @@ $err_msg = array();
                     debug('画像のデータと総レコード数と総ページ数が取得できませんでした');
                     return false;
                 }
-            
-                
-            //=======================================
             //3 例外処理
-            //=======================================
             }catch(Exception $e){
                 error_log('getSweetsListでエラー発生:'.$e->getMessage());
             }
@@ -508,8 +564,6 @@ $err_msg = array();
             $e->getMessage();
         }
     }
-
-
     //=============================================
     // スイーツの情報取得関数   SweetsDetail.phpで使用 
     //  Sweetsテーブルとカテゴリーテーブルを外部結合してスイーツのカテゴリーも含めて情報を入手している。
@@ -548,7 +602,7 @@ $err_msg = array();
     }
 
     //===============================================
-    //お気に入り登路したスイーツの情報取得関数 myRegistSweets.phpで使用
+    //自分の出品したスイーツの情報取得関数 myRegistSweets.phpで使用
     //===============================================
     function getMySweets($u_id){
         debug('自分の出品したスイーツ情報のを取得します');
@@ -832,7 +886,7 @@ $err_msg = array();
                 //MIMEタイプを自動でチェックする
                 $type = @exif_imagetype($file['tmp_name']);
                 if(!in_array($type,[IMAGETYPE_GIF, IMAGETYPE_JPEG, IMAGETYPE_PNG], true)){
-                    //in_arrayで調べた$typeの中身が第二引数に指定した三つに一致しなかった場合
+                    //in_arrayで調べた$typeの中身が第2引数に指定した三つに一致しなかった場合
                     throw new RuntimeException('画像形式が未対応です'); 
                 }
 
@@ -858,103 +912,42 @@ $err_msg = array();
             }
         }
     }
-
-    //=============================================
-    //画像処理
-    //=============================================
-    function uploadImg2($file,$key){
-        debug('画像アップロード処理開始');
-        debug('FILE情報：'.print_r($file,true));
-
-        if (isset($file['error']) && is_int($file['error'])) {
-        
-        try{
-            // バリデーション
-            // $file['error'] の値を確認。配列内には「UPLOAD_ERR_OK」などの定数が入っている。
-            //「UPLOAD_ERR_OK」などの定数はphpでファイルアップロード時に自動的に定義される。定数には値として0や1などの数値が入っている。
-            switch ($file['error']) {
-                case UPLOAD_ERR_OK: // OK
-                    break;
-                case UPLOAD_ERR_NO_FILE:   // ファイル未選択の場合
-                    throw new RuntimeException('ファイルが選択されていません');
-                case UPLOAD_ERR_INI_SIZE:  // php.ini定義の最大サイズが超過した場合
-                case UPLOAD_ERR_FORM_SIZE: // フォーム定義の最大サイズ超過した場合
-                    throw new RuntimeException('ファイルサイズが大きすぎます');
-                default: // その他の場合
-                    throw new RuntimeException('その他のエラーが発生しました');
-            }
-
-            // $file['mime']の値はブラウザ側で偽装可能なので、MIMEタイプを自前でチェックする
-            // exif_imagetype関数は「IMAGETYPE_GIF」「IMAGETYPE_JPEG」などの定数を返す
-            $type = @exif_imagetype($file['tmp_name']);
-            if (!in_array($type, [IMAGETYPE_GIF, IMAGETYPE_JPEG, IMAGETYPE_PNG], true)) { // 第三引数にはtrueを設定すると厳密にチェックしてくれるので必ずつける
-                throw new RuntimeException('画像形式が未対応です');
-            }
-
-            // ファイルデータからSHA-1ハッシュを取ってファイル名を決定し、ファイルを保存する
-            // ハッシュ化しておかないとアップロードされたファイル名そのままで保存してしまうと同じファイル名がアップロードされる可能性があり、
-            // DBにパスを保存した場合、どっちの画像のパスなのか判断つかなくなってしまう
-            // image_type_to_extension関数はファイルの拡張子を取得するもの
-            $path = 'upload_img/'.sha1_file($file['tmp_name']).image_type_to_extension($type);
-            if(!move_uploaded_file($file['tmp_name'], $path)) { //ファイルを移動する
-                throw new RuntimeException('ファイル保存時にエラーが発生しました');
-            }
-            // 保存したファイルパスのパーミッション（権限）を変更する
-            chmod($path, 0644);
-            debug('ファイルは正常にアップロードされました');
-            debug('ファイルパス：'.$path);
-            return $path;
-        
-            }catch (RuntimeException $e) {
-                debug($e->getMessage());
-                global $err_msg;
-                $err_msg[$key] = $e->getMessage();
-            }
-        }
-    }
     //=================================
     // 画像削除関数
     //=================================
-        function deleteImg($pic,$s_id){
-            debug('画像１〜３判別情報:'.print_r($pic,true));
-            debug('スイーツのID:'.$s_id);
-            debug('IDが'.$s_id.'のスイーツの画像'.print_r($pic,true).'を削除します');
-            
-            try{
-                //DB接続
-                $dbh = dbConnect();
-                ////SQL
-                $sql = 'DELETE :pic FROM sweets WHERE id = :s_id';
-                ////プレースホルダー
-                $data = array(':pic'=>$pic, ':s_id'=>$s_id);
-
-                //クエリー
-                $stmt = queryPost($dbh, $sql, $data);
-
-                //クエリ判定
-                if($stmt){
-                    debug('画像の削除に成功しました');
-                    return true;
-                }else{
-                    debug('画像の削除に失敗しました');
-                    return false;
-                }
-
-            }catch(Exception $e){
-                error_log('エラー発生:'.$e->getMessage() );
+    function deleteImg($pic,$s_id){
+        debug('画像１〜３判別情報:'.print_r($pic,true));
+        debug('スイーツのID:'.$s_id);
+        debug('IDが'.$s_id.'のスイーツの画像'.print_r($pic,true).'を削除します');
+        
+        try{
+            //DB接続
+            $dbh = dbConnect();
+            ////SQL
+            $sql = 'DELETE :pic FROM sweets WHERE id = :s_id';
+            ////プレースホルダー
+            $data = array(':pic'=>$pic, ':s_id'=>$s_id);
+            //クエリー
+            $stmt = queryPost($dbh, $sql, $data);
+            //クエリ判定
+            if($stmt){
+                debug('画像の削除に成功しました');
+                return true;
+            }else{
+                debug('画像の削除に失敗しました');
+                return false;
             }
+        }catch(Exception $e){
+            error_log('エラー発生:'.$e->getMessage() );
         }
-
-
-
-
-
+    }
     //============================================================
     //== home.phpの出品された商品のページング処理関数 ==///
     // $currentPageNum : 現在のページ数
     // $totalPageNum : 総ページ数
     // $link : 検索用GETパラメータリンク
     // $pageColNum : ページネーション表示数
+    //============================================================
     function pagenation( $currentPageNum, $totalPageNum, $link = '', $pageColNum = 5){
         // 現在のページが、総ページ数と同じ　かつ　総ページ数が表示項目数以上なら、左にリンク４個出す
         if( $currentPageNum == $totalPageNum && $totalPageNum >= $pageColNum){
@@ -976,7 +969,7 @@ $err_msg = array();
         }elseif($totalPageNum < $pageColNum){
             $minPageNum = 1;
             $maxPageNum = $totalPageNum;
-        // それ以外は左に２個出す。
+        // それ以外は左に2個出す。
         }else{
             $minPageNum = $currentPageNum - 2;
             $maxPageNum = $currentPageNum + 2;
@@ -1007,52 +1000,62 @@ $err_msg = array();
     }
 
     //============================================================
-    //　mypage.phpのお気に入り商品のページング
+    //mypage.phpのお気に入り商品のページング
     //============================================================
     //== home.phpの出品された商品のページング処理関数 ==///
     // $currentFavPageNum : 現在のページ数
-    // $totalPageNum : 総ページ数
+    // $totalFavPageNum : 総ページ数
     // $link : 検索用GETパラメータリンク
     // $pageColNum : ページネーション表示数
-    function favPagenation( $currentFavPageNum, $totalPageNum, $link = '', $pageColNum = 5){
-        // 現在のページが、総ページ数と同じ　かつ　総ページ数が表示項目数以上なら、左にリンク４個出す
-        if( $currentFavPageNum == $totalPageNum && $totalPageNum >= $pageColNum){
+    function favPagenation( $currentFavPageNum, $totalFavPageNum, $link = '', $pageColNum = 5){
+        //デバッグ
+        debug('現在のお気に入りのページ数:'.print_r($currentFavPageNum, true));
+        debug('お気に入りのページ数の総数:'.print_r($totalFavPageNum, true));
+
+        // 現在のページが、総ページ数と同じかつ総ページ数が表示項目数以上なら、左にリンク４個出す
+        if( $currentFavPageNum == $totalFavPageNum && $totalFavPageNum >= $pageColNum){
             $minPageNum = $currentFavPageNum - 4;
             $maxPageNum = $currentFavPageNum;
+            debug('結果5です');
         // 現在のページが、総ページ数の１ページ前なら、左にリンク３個、右に１個出す
-        }elseif( $currentFavPageNum == ($totalPageNum-1) && $totalPageNum >= $pageColNum){
+        }elseif( $currentFavPageNum == ($totalFavPageNum-1) && $totalFavPageNum >= $pageColNum){
             $minPageNum = $currentFavPageNum - 3;
             $maxPageNum = $currentFavPageNum + 1;
+            debug('結果4です');
         // 現ページが2の場合は左にリンク１個、右にリンク３個だす。
-        }elseif( $currentFavPageNum == 2 && $totalPageNum >= $pageColNum){
+        }elseif( $currentFavPageNum == 2 && $totalFavPageNum >= $pageColNum){
             $minPageNum = $currentFavPageNum - 1;
             $maxPageNum = $currentFavPageNum + 3;
-        // 現ページが1の場合は左に何も出さない。右に５個出す。 $totalPageNum = 5  $pageColNum = 
-        }elseif( $currentFavPageNum == 1 && $totalPageNum >= $pageColNum){
+            debug('結果3です');
+        // 現ページが1の場合は左に何も出さない。右に５個出す。 $totalFavPageNum = 5  $pageColNum = 
+        }elseif( $currentFavPageNum == 1 && $totalFavPageNum >= $pageColNum){
             $minPageNum = $currentFavPageNum;
             $maxPageNum = 5;
+            debug('結果2です');
         // 総ページ数が表示項目数より少ない場合は、総ページ数をループのMax、ループのMinを１に設定
-        }elseif($totalPageNum < $pageColNum){
+        }elseif($totalFavPageNum < $pageColNum){
             $minPageNum = 1;
-            $maxPageNum = $totalPageNum;
-        // それ以外は左に２個出す。
+            $maxPageNum = $totalFavPageNum;
+            debug('結果1です');
+        //それ以外は左に2個出す。
         }else{
             $minPageNum = $currentFavPageNum - 2;
             $maxPageNum = $currentFavPageNum + 2;
+            debug('結果0です');
         }
         //実際に吐き出すページネーションの中身
         echo '<div class="pagenation">';
             echo '<ul class="pagenation__list">';
             if($currentFavPageNum != 1){
-                echo '<li class="list__item"><a class="list__item__link" href="?p=1'.$link.'">&lt;</a></li>';
+                echo '<li class="list__item"><a class="list__item__link" href="?fav_p=1'.$link.'">&lt;</a></li>';
             }
             for($i = $minPageNum; $i <= $maxPageNum; $i++){
                 echo '<li class="list__item ';  
                 if($currentFavPageNum == $i ){ echo 'active'; } 
-                echo ' "><a class="list__item__link" href=" ?p='.$i.$link.' "> '.$i.'</a></li>';
+                echo ' "><a class="list__item__link" href=" ?fav_p='.$i.$link.' "> '.$i.'</a></li>';
             }
             if($currentFavPageNum != $maxPageNum && $maxPageNum > 1){
-                echo '<li class="list__item"><a class="list__item__link" href="?p='.$maxPageNum.$link.'">&gt;</a></li>';
+                echo '<li class="list__item"><a class="list__item__link" href="?fav_p='.$maxPageNum.$link.'">&gt;</a></li>';
             }
             echo '</ul>';
         echo '</div>';
@@ -1063,7 +1066,7 @@ $err_msg = array();
     //=========================================
     function showImg($path){
         if(empty($path)){
-            return 'img/sample_img1.jpg';
+            return '../../../../portfolio_sweetsboard/src/img/sample_img1.jpg';
         }else{
             return $path;
         }
@@ -1164,35 +1167,15 @@ $err_msg = array();
     //================================================//
 
     //DB接続関数(Xserver接続時)
-    function dbConnect(){
-        //DBの接続準備 xserverとxsurvどちらが正解？
-        $dsn = 'mysql:dbname=reol0405_sboardappdb;
-                    host=mysql8050.xserver.jp;
-                    charset=utf8';
-
-        $user = 'reol0405_mysql28';
-        $password = 'harenn28';
-        $options = array(
-            // SQL実行失敗時にはエラーコードのみ設定。ここを変えてエラーを特定できることもある
-            //tocheck: 開発の時にはERRMODE_EXCEPTIONにし、サーバーに公開時にはERRMODE_SILENTにする
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-            // デフォルトフェッチモードを連想配列形式に設定
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            // バッファードクエリを使う(一度に結果セットをすべて取得し、サーバー負荷を軽減)
-            // SELECTで得た結果に対してもrowCountメソッドを使えるようにする
-            PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true,
-        );
-        $dbh = new PDO($dsn, $user, $password, $options);
-        return $dbh; 
-    }
-
-    //DB接続関数(localhostで開発時)
     //function dbConnect(){
-    //   //DBの接続準備 xserverとxsurvどちらが正解？
-    //   $dsn = 'mysql:dbname=boardapp;host=localhost;charset=utf8';
-    //   $user = 'root';
-    //   $password = 'root';
-    //   $options = array(
+    //    //DBの接続準備 xserverとxsurvどちらが正解？
+    //    $dsn = 'mysql:dbname=reol0405_sboardappdb;
+    //                host=mysql8050.xserver.jp;
+    //                charset=utf8';
+//
+    //    $user = 'reol0405_mysql28';
+    //    $password = 'harenn28';
+    //    $options = array(
     //        // SQL実行失敗時にはエラーコードのみ設定。ここを変えてエラーを特定できることもある
     //        //tocheck: 開発の時にはERRMODE_EXCEPTIONにし、サーバーに公開時にはERRMODE_SILENTにする
     //        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -1206,6 +1189,25 @@ $err_msg = array();
     //    return $dbh; 
     //}
 
+    //DB接続関数(localhostで開発時)
+    function dbConnect(){
+        //DBの接続準備 xserverとxsurvどちらが正解？
+        $dsn = 'mysql:dbname=boardapp;host=localhost;charset=utf8';
+        $user = 'root';
+        $password = 'root';
+        $options = array(
+            // SQL実行失敗時にはエラーコードのみ設定。ここを変えてエラーを特定できることもある
+            //tocheck: 開発の時にはERRMODE_EXCEPTIONにし、サーバーに公開時にはERRMODE_SILENTにする
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            // デフォルトフェッチモードを連想配列形式に設定
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            // バッファードクエリを使う(一度に結果セットをすべて取得し、サーバー負荷を軽減)
+            // SELECTで得た結果に対してもrowCountメソッドを使えるようにする
+            PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true,
+        );
+        $dbh = new PDO($dsn, $user, $password, $options);
+        return $dbh; 
+    }
 
     //クエリ関数変更後（getUser関数や）
     //クエリの成功、失敗の判定はこの関数内で行う
@@ -1229,5 +1231,4 @@ $err_msg = array();
             debug('成功したSQL:'.print_r($stmt,true));
             return $stmt; 
     }
-
 ?>

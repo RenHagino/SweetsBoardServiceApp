@@ -24,8 +24,8 @@
     debug('お気に入りページ1ページに表示する数:'.print_r($listSpan,true));
     debug('現在のお気にいり一覧の最小数'.print_r($currentFavMinNum, true));
     debug('現在のお気にいり一覧のページ数(GET)'.print_r($currentFavPageNum, true));
-    debug('現在のお気に入り一覧の総ページ数:'.print_r($dbFavSweetsData['total_page']));
-    debug('現在のお気に入り一覧のデータの中身:'.print_r($dbFavSweetsData['data'],true));
+    debug('現在のお気に入り一覧の総ページ数:'.print_r($dbFavSweetsData['total_page'], true));
+    debug('現在のお気に入り一覧のデータの中身:'.print_r($dbFavSweetsData['data'], true));
 
 
 ?>

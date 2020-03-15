@@ -4,3 +4,4 @@
 /memo/
 #feature-add-pageを管理から外す
 feature-add-page/sample.php
+node_modules

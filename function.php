@@ -25,12 +25,12 @@ function debug($str){
 function debugLogStart(){
     debug('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>画面表示処理開始>>>>>>>>>>>>>');
     debug('セッションID'.session_id() );
-    debug('セッション変数の中身'.print_r($_SESSION,true) );
+    debug('セッション変数の中身'.print_r($_SESSION,true));
     debug('現在日時タイムスタンプ:'.time() );
     //もし、ログイン日時とログイン期限のセッションに何かしらの値が入っていた場合 ＝ ログインの形跡があった場合、
-    if(!empty($_SESSION['login_date']) && !empty($_SESSION['login_limit']) ){
+    if(!empty($_SESSION['login_date']) && !empty($_SESSION['login_limit'])){
         //そのセッションの中身を表示する
-        debug( 'ログイン日時タイムスタンプ:'.($_SESSION['login_date']+ $_SESSION['login_limit']) );
+        debug( 'ログイン日時タイムスタンプ:'.($_SESSION['login_date']+ $_SESSION['login_limit']));
     }
 }
 
@@ -1163,14 +1163,18 @@ $err_msg = array();
     //==== DB接続系の関数 ==============================//
     //================================================//
 
-    //DB接続関数
+    //DB接続関数(Xserver接続時)
     function dbConnect(){
-        //DBの接続準備
-        $dsn = 'mysql:dbname=boardapp;host=localhost;charset=utf8';
-        $user = 'root';
-        $password = 'root';
+        //DBの接続準備 xserverとxsurvどちらが正解？
+        $dsn = 'mysql:dbname=reol0405_sboardappdb;
+                    host=mysql8050.xserver.jp;
+                    charset=utf8';
+
+        $user = 'reol0405_mysql28';
+        $password = 'harenn28';
         $options = array(
             // SQL実行失敗時にはエラーコードのみ設定。ここを変えてエラーを特定できることもある
+            //tocheck: 開発の時にはERRMODE_EXCEPTIONにし、サーバーに公開時にはERRMODE_SILENTにする
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             // デフォルトフェッチモードを連想配列形式に設定
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
@@ -1179,21 +1183,32 @@ $err_msg = array();
             PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true,
         );
         $dbh = new PDO($dsn, $user, $password, $options);
-        return $dbh; //忘れずに！
+        return $dbh; 
     }
 
-    //クエリ実行関数
-    //function queryPost($dbh, $sql, $data){
-        //クエリ作成
-        //$stmt = $dbh->prepare($sql);
-        //プレースホルダーに値をセットし、SQLを実行
-        //$stmt -> execute($data);
-        //実行結果を返す
-        //return $stmt;
+    //DB接続関数(localhostで開発時)
+    //function dbConnect(){
+    //   //DBの接続準備 xserverとxsurvどちらが正解？
+    //   $dsn = 'mysql:dbname=boardapp;host=localhost;charset=utf8';
+    //   $user = 'root';
+    //   $password = 'root';
+    //   $options = array(
+    //        // SQL実行失敗時にはエラーコードのみ設定。ここを変えてエラーを特定できることもある
+    //        //tocheck: 開発の時にはERRMODE_EXCEPTIONにし、サーバーに公開時にはERRMODE_SILENTにする
+    //        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+    //        // デフォルトフェッチモードを連想配列形式に設定
+    //        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    //        // バッファードクエリを使う(一度に結果セットをすべて取得し、サーバー負荷を軽減)
+    //        // SELECTで得た結果に対してもrowCountメソッドを使えるようにする
+    //        PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true,
+    //    );
+    //    $dbh = new PDO($dsn, $user, $password, $options);
+    //    return $dbh; 
     //}
 
+
     //クエリ関数変更後（getUser関数や）
-    //今まで呼び出し元で行っていたクエリの成功、失敗の判定を関数内で行うようにした
+    //クエリの成功、失敗の判定はこの関数内で行う
     function queryPost($dbh, $sql, $data){
         
         //クエリ作成
@@ -1207,7 +1222,7 @@ $err_msg = array();
                 debug('クエリは失敗しました');
                 debug('失敗したSQL:'.print_r($stmt,true));
                 $err_msg['common'] = MSG07;
-                return 0; //なぜ０を返す？
+                return 0; 
             }
             //成功した場合
             debug('クエリは成功しました');

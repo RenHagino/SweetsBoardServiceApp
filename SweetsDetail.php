@@ -74,7 +74,7 @@
                 </div>
                 <!--お気に入りボタン isFavでDBにすでにお気に入り登録されていた場合、アイコンをactiveにして色をつけておく。-->
                 <div class="like">
-                    <!--isFav関数を使って-->
+                    <!--isFav関数を使ってお気に入り登録がすでにされているスイーツが判別する。-->
                     <i class="fas fa-heart icn-like js-like-click <?php if(isFav($_SESSION['user_id'], $viewData['id'])){ echo 'active'; }?>"
                         aria-hidden="true"
                         data-sweetsid = "<?php echo sanitize($viewData['id']); ?>" >

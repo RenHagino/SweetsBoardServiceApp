@@ -1,10 +1,9 @@
 #ログ系ファイルを無視する？
 *.log
 #パッケージ管理系ファイルはどうする？
-/memo/
-src/sweets_img/*
+/node_modules/
+src/sweets_img/
 src/sass/
-/src/css/
-#feature-add-pageを管理から外す
-feature-add-page/sample.php
-node_modules
+src/css/
+node_modules/
+

@@ -1,11 +1,13 @@
-#ログ系ファイル
+##ログ系ファイル
 *.log
-#開発のみで使う画像の入ったディレクトリ
+##開発のみで使う画像の入ったディレクトリ
 src/sweets_img/
-#開発時に使うsassと圧縮前のcssが入ったディレクトリ
+##開発時に使うsassと圧縮前のcssが入ったディレクトリ
 src/sass/
 src/css/
-#パッケージ管理系ファイルディレクトリ
+##パッケージ管理系ファイルディレクトリ
 node_modules/
 gulpfile.js
+package.json
+package.lock.json
 

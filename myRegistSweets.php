@@ -50,11 +50,12 @@
                 foreach($sweetsData as $key => $val):
         ?>  
           <div class="panel">
-            <!--パネル-->
-            <a href="registSweets.php<?php echo (!empty(appendGetParam())) ? appendGetParam().'$s_id'.$val['id']:'?s_id='.$val['id']; ?>" class="panel-head" >
-              <!--パネルヘッド-->
-              <img src="<?php echo showImg(sanitize($val['pic1']));?>" alt="">
-            </a>
+            <!--パネルヘッド-->
+            <div class="panel-head">
+              <a href="registSweets.php<?php echo (!empty(appendGetParam())) ? appendGetParam().'$s_id'.$val['id']:'?s_id='.$val['id']; ?>">
+                <img src="<?php echo showImg(sanitize($val['pic1']));?>" alt="">
+              </a>
+            </div>
             <!--パネルボディ-->
             <div class="panel-body">
               <p class="panel-body__title">

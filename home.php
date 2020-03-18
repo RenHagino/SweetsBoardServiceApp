@@ -13,20 +13,17 @@
     //ログイン認証要求
     require('auth.php');
 
-    //==============================
-    // 画面処理 : 画面表示用のデータを取得
-    //==============================
-
     //現在のページのGETパラメータを取得
-    $currentPageNum = (!empty($_GET['p'])) ? $_GET['p'] : 1; //デフォルトページは１に設定
+    $currentPageNum = (!empty($_GET['p'])) ? $_GET['p'] : 1; 
+    debug('現在の$_GET["currentPageNum"]の中身=>'.print_r($currentPageNum, true));
     
-    //カテゴリーを取得 (現在選択しているカテゴリーのGETID)
+    //カテゴリーのGETパラメータを取得
     $category = (!empty($_GET['c_id'])) ? $_GET['c_id'] : 0;
-    debug('現在のページの$categoryの中身'.print_r($category, true));
+    debug('現在の$_GET["category"]の中身=>'.print_r($category, true));
     
-    //ソート順を指定するためにGETパラメータのsortキーを取得 
+    //ソートのGETパラメータを取得
     $sort = (!empty($_GET['sort'])) ? $_GET['sort'] : 0;
-    debug('現在の金額によるソート順=>'.print_r($sort,true));
+    debug('現在の$_GET["sort"]の中身=>'.print_r($_GET['sort'],true));
 
     //パラメータに不正な値が入っているかチェック。入っていたらトップページへ飛ばす（リダイレクト）
     if(!is_int( (int)$currentPageNum )){ //(int)を変数の前につけることで変数の中身をint型にキャストできる。
@@ -46,14 +43,13 @@
     //カテゴリーデータを取得
     $categoryData = getCategoryData();
     //変数をデバッグ
-    debug('「「「「「「　ページ関係の 変数をデバッグします「「「「「「「「「「「「「「「');
+    debug('「「「「「「 ページ関係の 変数をデバッグします「「「「「「「「「「「「「「「');
     debug('現在のページ数のGETパラメータ:'.print_r($currentPageNum,true));
     debug('現在ページのGETソート順:'.print_r($sort,true));
     debug('現在のページのカテゴリーID:'.print_r($category,true));
     debug('現在の表示レコードの最小数:'.print_r($currentMinNum,true));
     debug('DBのスイーツデータの中身(1ページに表示):'.print_r($dbSweetsData,true));
-    debug('「「「「「「「「「「「「「「 ページ関係の変数デバッグ終了「「「「「「「「「「「「「「「');
-    debug('「「「「「「 画面表示処理終了「「「「「「「「「「「「「「「「「');
+    debug('「「「「「「 ページ関係の変数デバッグ終了「「「「「「「「「「「「「「「');
 
 ?>
 <!--HTML-->
@@ -113,7 +109,8 @@
                                 <?php 
                                     foreach($categoryData as $key => $val){
                                 ?> 
-                                <option value="<?php echo $val['id'] ?>" <?php if(getFormData('c_id', true) == $val['id'] ){ echo 'selected';}?>>
+                                <option value="<?php echo $val['id'] ?>" 
+                                        <?php if(getFormData('c_id', true) == $val['id'] ){ echo 'selected';}?>>
                                         <?php echo $val['name']; ?>
                                 </option>
                                 <?php
@@ -178,7 +175,7 @@
                          //ページネーション付与
                     =====================-->
                     <?php 
-                        pagenation($currentPageNum, $dbSweetsData['total_page']); 
+                        pagenation($currentPageNum, $dbSweetsData['total_page'], $category, $sort); 
                     ?>
                 </section>
             </div>

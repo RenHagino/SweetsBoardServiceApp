@@ -376,20 +376,12 @@ $err_msg = array();
             //=============================================
                 /*1-1sweetsテーブルからidを取得しスイーツが何件あるかを判別する
                     home.phpの$currentMinNumと$dbSweetsDataに値を与える*/
+                //カテゴリーと値段による絞り込み、並び替えを実装。
                 $sql = ' SELECT id FROM sweets '; 
-                
-                //1-2カテゴリーによる絞り込みを実装 (home.php$categoryで判別)
                 if(!empty($category)) $sql .= ' WHERE category_id = '.$category;
-                //1-3ソート順を取得 (home.phpの$sortで判別)
                 if(!empty($sort)){
                     debug('home.phpで$sortが確認できました。');
                     switch($sort){
-                        /** TOCHEK
-                         * sqlをつなげるときは半角スペースもつなげないと
-                         * SLECT id From sweetsORDER BY price ASC
-                         * のようになってバグが起きるので注意
-                         * もしくは元になる$sqlを定義するときに半角スペースを入れる癖をつけておく。
-                        */
                         case 1:
                             debug('値段が安い順に並び替えました');
                             $sql .=  ' ORDER BY price ASC ';
@@ -399,14 +391,14 @@ $err_msg = array();
                             $sql .= ' ORDER BY price DESC ';
                             break;
                     }
+                }else{
+                    debug('値段よる並び替えはありません');
                 }
-
-                //プレースホルダー
                 $data = array();
-                //クエリ実行
                 $stmt = queryPost($dbh,$sql,$data);
                 //$rstのreturnは下の$rst['data']を定義してから行う(2度returnを行おうとするとエラーになる)
-                $rst['total'] = $stmt->rowCount(); //総レコード数 home.phpで echo dbSweetsData['total']; として呼び出す
+                //総レコード数 home.phpで echo dbSweetsData['total']; として呼び出す
+                $rst['total'] = $stmt->rowCount(); 
                 $rst['total_page'] = ceil($rst['total']/$listSpan); //総ページ数  home.phpで echo dbSweetsData['total_page']; として呼び出す
                 //デバッグ
                 debug('スイーツの総件数です:'.print_r($rst['total'],true));
@@ -414,7 +406,6 @@ $err_msg = array();
                 
                 //クエリが失敗した場合
                 if(!$stmt){
-                    //デバッグ
                     debug('getSweetsListのSQLは失敗しました');
                     return false;
                 }else{
@@ -948,8 +939,9 @@ $err_msg = array();
     // $link : 検索用GETパラメータリンク
     // $pageColNum : ページネーション表示数
     //============================================================
-    function pagenation( $currentPageNum, $totalPageNum, $link = '', $pageColNum = 5){
-        // 現在のページが、総ページ数と同じ　かつ　総ページ数が表示項目数以上なら、左にリンク４個出す
+    function pagenation( $currentPageNum, $totalPageNum, $category, $sort, $link = '', $pageColNum = 5){
+
+        // 現在のページが、総ページ数と同じかつ総ページ数が表示項目数以上なら、左にリンク４個出す
         if( $currentPageNum == $totalPageNum && $totalPageNum >= $pageColNum){
             $minPageNum = $currentPageNum - 4;
             $maxPageNum = $currentPageNum;
@@ -982,13 +974,12 @@ $err_msg = array();
             if($currentPageNum != 1){
                 echo '<li class="list__item"><a class="list__item__link" href="?p=1'.$link.'">&lt;</a></li>';
             }
-
             //ページネーションのボタンを表示する
             //$minPageNumが$maxPageNumより少ない限りページネーションのボタンをふやす
             for($i = $minPageNum; $i <= $maxPageNum; $i++){
                 echo '<li class="list__item ';  
                 if($currentPageNum == $i ){ echo 'active'; } 
-                echo ' "><a class="list__item__link" href=" ?p='.$i.$link.' "> '.$i.'</a></li>';
+                echo ' "><a class="list__item__link" href=" ?p='.$i.$link.'&c_id='.$category.'&sort='.$sort.' "> '.$i.'</a></li>';
             }
 
             //現在のページが最大ページではなく、最大ページが1以上の場合は進むボタン(>)を表示する
@@ -1078,7 +1069,7 @@ $err_msg = array();
     // $del_key : 付与から取り除きたいGETパラメータのキー
      //=>productDetail.phpではs_id(スイーツのID)を取り除いてページ数のGETパラメータだけを付与するようにしている。
     function appendGetParam($arr_del_key = array()){
-        //GETパラメータが存在した場合(URLに?をつけるので$strに用意sルウ)
+        //GETパラメータが存在した場合(URLに?をつけるので$strに格納する)
         if(!empty($_GET)){ 
             $str = '?';
             /*GETパラメータをkey=>valの形で分解して

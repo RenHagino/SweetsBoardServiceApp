@@ -15,7 +15,7 @@
  9.スイーツ並び替え機能(値段とカテゴリー)(home.php)<br>
  10.スイーツお気に入り登録機能(sweetsDetail.php)<br>
   
-## 開発環境、使用言語一覧
+***開発環境、使用言語一覧***<br>
  1.HTML5<br>
  2.CSS3<br>
  3.Sass(scss記法)<br>
@@ -44,11 +44,11 @@
  12.スイーツ詳細画面(SweetsDetail.php)<br>
 
 ## 画面を持たないもしくは他の画面を構成するファイルの機能
- 1.ヘッド(head.php)<br>
- 2.ヘッダー(header.php)<br>
- 3.フッター(footer.php)<br>
- 4.ログイン認証(auth.php)<br>
- 5.お気に入り登録通信(ajaxLike.php)<br>
+ # 1.ヘッド(head.php)<br>
+ # 2.ヘッダー(header.php)<br>
+ # 3.フッター(footer.php)<br>
+ # 4.ログイン認証(auth.php)<br>
+ # 5.お気に入り登録通信(ajaxLike.php)<br>
  
  
   

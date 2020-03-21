@@ -1,9 +1,9 @@
 # SweetsBoardServiceApp
 
-## サービス概要
+# ***サービス概要***
   このサービスは自分が食べた中でお気に入りのスイーツを他のユーザーに紹介したり、他のユーザーが紹介したスイーツをお気に入り登録できるサービスです。
   
-## 機能一覧
+# ***機能一覧***<br>
  1.ユーザー登録機能(signup.php)<br>
  2.ログイン機能(login.php)<br>
  3.ログアウト機能(logout.php)<br>
@@ -15,7 +15,7 @@
  9.スイーツ並び替え機能(値段とカテゴリー)(home.php)<br>
  10.スイーツお気に入り登録機能(sweetsDetail.php)<br>
   
-***開発環境、使用言語一覧***<br>
+# ***開発環境、使用言語一覧***<br>
  1.HTML5<br>
  2.CSS3<br>
  3.Sass(scss記法)<br>
@@ -29,26 +29,26 @@
  3.node ver13.6.4<br>
  
 
-## 各画面の機能
- 1.新規訪問ページ(new.php)<br>
- 2.ホーム画面(home.php)<br>
- 3.ユーザー登録画面(signup.php)<br>
- 4.ログイン画面(login.php)<br>
- 5.ログアウト画面(logout.php)<br>
- 6.退会画面(withdraw.php)<br>
- 7.パスワード変更画面(paddEdit.php)<br>
- 8.マイページ画面(mypage.php)<br>
- 9.投稿スイーツ確認画面(myRegistSweets.php)<br>
- 10.プロフィール編集画面(profEdit.php)<br>
- 11.スイーツ登録(編集)画面(registSweets.php)<br>
- 12.スイーツ詳細画面(SweetsDetail.php)<br>
+# ***各画面の機能***<br>
+ ## 1.新規訪問ページ(new.php)<br>
+ ## 2.ホーム画面(home.php)<br>
+ ## 3.ユーザー登録画面(signup.php)<br>
+ ## 4.ログイン画面(login.php)<br>
+ ## 5.ログアウト画面(logout.php)<br>
+ ## 6.退会画面(withdraw.php)<br>
+ ## 7.パスワード変更画面(paddEdit.php)<br>
+ ## 8.マイページ画面(mypage.php)<br>
+ ## 9.投稿スイーツ確認画面(myRegistSweets.php)<br>
+ ## 10.プロフィール編集画面(profEdit.php)<br>
+ ## 11.スイーツ登録(編集)画面(registSweets.php)<br>
+ ## 12.スイーツ詳細画面(SweetsDetail.php)<br>
 
-## 画面を持たないもしくは他の画面を構成するファイルの機能
- # 1.ヘッド(head.php)<br>
- # 2.ヘッダー(header.php)<br>
- # 3.フッター(footer.php)<br>
- # 4.ログイン認証(auth.php)<br>
- # 5.お気に入り登録通信(ajaxLike.php)<br>
+# ***画面を持たないもしくは他の画面を構成するファイルの機能***<br>
+ ## 1.ヘッド(head.php)<br>
+ ## 2.ヘッダー(header.php)<br>
+ ## 3.フッター(footer.php)<br>
+ ## 4.ログイン認証(auth.php)<br>
+ ## 5.お気に入り登録通信(ajaxLike.php)<br>
  
  
   

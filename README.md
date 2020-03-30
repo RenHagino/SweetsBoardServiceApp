@@ -1,7 +1,7 @@
 # ***サービス名***
   SweetsBoardService
-# ***webページ*
-  http://sweetsboardservice.com/new.php**
+# ***webページ***
+  http://sweetsboardservice.com/new.php
   
 # ***サービス概要***
   このサービスは自分が食べたお気に入りのスイーツを他のユーザーに紹介したり、他のユーザーが紹介したスイーツをお気に入り登録できるサービスです。

@@ -85,12 +85,12 @@
     ・画面下部にはホーム画面(home.php)とマイページ(mypage.php)に遷移するためのボタンが設置されており、クリックするとそれぞれの画面に遷移する。
     
 # ***画面を持たないもしくは他の画面を構成するファイルの機能***<br>
- ## 1.ヘッド(head.php)<br>
- ## 2.ヘッダー(header.php)<br>
- ## 3.フッター(footer.php)<br>
- ## 4.ログイン認証(auth.php)<br>
- ## 5.ログアウト(logout.php)<br>
- ## 5.お気に入り登録通信(ajaxLike.php)<br>
+ ### 1.ヘッド(head.php)<br>
+ ### 2.ヘッダー(header.php)<br>
+ ### 3.フッター(footer.php)<br>
+ ### 4.ログイン認証(auth.php)<br>
+ ### 5.ログアウト(logout.php)<br>
+ ### 6.お気に入り登録通信(ajaxLike.php)<br>
  
  
   

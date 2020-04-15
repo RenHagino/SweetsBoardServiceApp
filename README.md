@@ -1,6 +1,7 @@
 # ***サービス名***
   SweetsBoardService
-# ***webページ***
+# ***動作確認用URL***
+  テストログイン用アカウント=> メールアドレス:email0001@gmail.com パスワード:pass0001@gmail.com
   http://sweetsboardservice.com/new.php
   
 # ***サービス概要***

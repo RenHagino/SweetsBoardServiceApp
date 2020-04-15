@@ -2,9 +2,9 @@
   SweetsBoardService
 # ***動作確認用URL***
   ### URL
-    http://sweetsboardservice.com/new.php<br>
+    http://sweetsboardservice.com/new.php
   ### テストログイン用アカウント<br>
-    メールアドレス:email0001@gmail.com<br>
+    メールアドレス:email0001@gmail.com
     パスワード:pass0001@gmail.com
   
 # ***サービス概要***

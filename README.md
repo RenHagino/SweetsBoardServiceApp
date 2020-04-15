@@ -1,8 +1,10 @@
 # ***サービス名***
   SweetsBoardService
 # ***動作確認用URL***
-  http://sweetsboardservice.com/new.php
-  テストログイン用アカウント=> メールアドレス:email0001@gmail.com パスワード:pass0001@gmail.com
+  URL => http://sweetsboardservice.com/new.php<br>
+  テストログイン用アカウント<br>
+    メールアドレス:email0001@gmail.com<br>
+    パスワード:pass0001@gmail.com
   
 # ***サービス概要***
   このサービスは自分が食べたお気に入りのスイーツを他のユーザーに紹介したり、他のユーザーが紹介したスイーツをお気に入り登録できるサービスです。

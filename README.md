@@ -1,8 +1,9 @@
 # ***サービス名***
   SweetsBoardService
 # ***動作確認用URL***
-  URL => http://sweetsboardservice.com/new.php<br>
-  テストログイン用アカウント<br>
+  ### URL
+    http://sweetsboardservice.com/new.php<br>
+  ### テストログイン用アカウント<br>
     メールアドレス:email0001@gmail.com<br>
     パスワード:pass0001@gmail.com
   

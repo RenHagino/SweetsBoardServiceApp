@@ -11,22 +11,20 @@
     //ログイン認証
     require('auth.php');
 
-    //========================================================
-    //= 画面処理 ===========================
-    //========================================================
-
     /// === 画面表示用データを取得 ===////
     // GETデータを格納
     $s_id = (!empty($_GET['s_id'])) ? $_GET['s_id'] : ''; //空でなければ''を選択
-    //DBからスイーツのデータを取得 //ログイン中のユーザーIDに基づいて getSweetsの第二引数は取りたいスウィーツのID
-    $dbFormData = (!empty($s_id)) ? getSweets( $_SESSION['user_id'], $s_id): '';
-    
+    //DBからスイーツのデータを取得 //ログイン中のユーザーIDに基づいて getRegistSweetsの第二引数は取りたいスウィーツのID
+    $dbFormData = (!empty($s_id)) ? getRegistSweets( $_SESSION['user_id'], $s_id): '';
+    //カテゴリーデータを入手
+    $dbCategoryData = getCategoryData();
     //スイーツの新規登録か変種画面かの判断 
     $edit_flg =(!empty($dbFormData)) ? true : false; //DBにデータがあればtrue =編集画面; データがなければfalse = 編集画面
         
     //デバッグ
     debug('スウィーツID:'.$s_id);
-    debug('フォーム用DBデータ'.print_r($dbFormData,true));
+    debug('フォーム用DBデータ:'.print_r($dbFormData,true));
+    debug('DBカテゴリーデータ:'.print_r($dbCategoryData,true));
 
 
     //パラメータ改ざんチェック（GETパラメータはURLにあるのでいじられる可能性がある）
@@ -46,12 +44,10 @@
     
 
         //変数にユーザー情報を代入
-        $category_name = $_POST['category_name'];
+        $category_id = $_POST['category_id'];
         $name = $_POST['name'];
         $store_name = $_POST['store_name'];
-        /*TODO: $priceに入れる値はどうする？
-            入力結果が0もしくは空文字の場合は0を入れる
-            $price = (!empty($_POST['price']))? $_POST['price'] : 0;*/
+        //$price = (!empty($_POST['price']))? $_POST['price'] : 0;
         $price = $_POST['price'];
         $comment = $_POST['comment'];
         
@@ -81,68 +77,73 @@
             //デバッグ
             debug('新規登録のバリデーションを行います');
             //スイーツのカテゴリー名入力チェック
-            validRequired($category_name, 'category_name');
-            //スイーツカテゴリー名の最大文字数チェック
-            validMaxName($category_name, 'category_name');
-            //スイーツ名未入力チェック
+            validRequired($category_id, 'category_id');
+            //スイーツ名の未入力と最大文字数チェック
             validRequired($name, 'name');
-            //最大文字数チェック
             validMaxName($name, 'name');
             //未入力チェック
             validRequired($store_name,'store_name');
             //最大文字数チェック
             validMaxName($store_name,'store_name');
-            //未入力チェック
-            validRequired($comment,'comment');
-            //最大文字数チェック
-            validMaxContent($comment, 'comment' );
             
             //金額の未入力,最大文字数、半角数字のバリデーションを行う
             validRequired($price, 'price');
             validMaxPrice($price, 'price');
             validNumber($price, 'price');
 
-        }else{//$dbFormDataがある場合getSweetsでログイン中のユーザーのsweetsテーブルからデータを入手できた場合
+            //コメントの未入力、最大文字数チェック
+            validRequired($comment,'comment');
+            validMaxComment($comment, 'comment' );
+            
+
+            //画像１を必須にする
+            validRequiredPic($pic1, 'pic1');
+        
+        //============================================================================
+        //$dbFormDataがある場合getRegistSweetsに$s_id, $_SESSION['user_id']を
+        //を渡し、該当するスイーツがある場合、更新画面としてバリデーションチェックを行う       
+        //============================================================================
+        }else{
 
             //デバッグ
             debug('===============================');
-            debug('更新画面のバリデーションを行います');
+            debug('更新画面のバリデーsションを行います');
             debug('===============================');            
 
-            //POSTされたスウィーツのカテゴリーとDBに登録されているスウィーツの名前が一致しない場合
-            if($dbFormData['category_name'] !== $category_name){ 
-                //未入力チェック
-                validRequired($category_name, 'category_name');
+            //カテゴリーの必須チェックと行う
+            if($dbFormData['category_id'] !== $category_id){ 
+                validRequired($category_id, 'category_id');
             }
-
-            //POSTされたスウィーツの名前とDBに登録されているスウィーツの名前が一致しない場合
+            //スイーツの名前の必須チェックと最大文字数チェック
             if($dbFormData['name'] !== $name){ 
-                //未入力チェックと最大文字数チェックを行う
                 validRequired($name, 'name');
                 validMaxName($name, 'name');
             }
-            //POSTされた店名とDBに登録されているスウィーツの名前が一致しない場合
-            //未入力チェックと最大文字数チェックを行う
+            //店名の必須チェックと最大文字数チェック
             if($dbFormData['store_name'] !== $store_name){ 
                 validRequired($store_name, 'store_name');
                 validMaxName($store_name, 'store_name');
             }
-            //POSTされた詳細コメントとDBに登録されている詳細コメントが一致しない場合
-            //未入力チェックと最大文字数チェックを行う
+            //詳細コメントの未入力チェックと最大文字数チェックを行う
             if($dbFormData['comment'] !== $comment){
                 validRequired($comment, 'comment');
-                validMaxContent($comment, 'comment');
+                validMaxComment($comment, 'comment');
             }
-            //POSTされた金額欄の数値とDBに登録されている金額欄の数値が一致しない場合
-            //未入力チェックと最大文字数チェックと半角数字チェックを行うを行う
+            //値段の未入力チェックと最大文字数チェックと半角数字チェックを行うを行う
             if($dbFormData['price'] !== $price){ //前回まではキャストしていたが、ゆるい判定でもいい
                 validRequired($price, 'price');
                 validMaxPrice($price, 'price');
                 validNumber($price, 'price');
             }
+            //画像１の必須チェックを行う
+            validRequiredPic($pic1, 'pic1');
         }
 
-        //バリデーションを通過した場合
+
+        //============================================================
+        //バリデーションを通過した場合 $edit_flg($dbFormDataの有無でtrue,falseが切り替わる)
+        //のtrue, falseで走らせるSQLを切り替える。
+        //============================================================
         if(empty($err_msg)){
             debug('バリデーションを全て通過しました');
             //DB接続
@@ -153,13 +154,13 @@
                 //SQL１ 更新の場合
                 if($edit_flg){
                     debug('DB更新です');
-                    $sql = 'UPDATE sweets SET name = :name, store_name = :store_name, category_name = :category_name, price = :price, comment = :comment, pic1 = :pic1, pic2 = :pic2, pic3 = :pic3 WHERE user_id = :u_id AND id = :s_id';
-                    $data = array(':name'=>$name, ':store_name'=>$store_name, ':category_name'=>$category_name, ':price'=>$price, ':comment'=>$comment, ':pic1'=>$pic1, ':pic2'=>$pic2, ':pic3'=>$pic3, ':u_id'=>$_SESSION['user_id'], ':s_id'=>$s_id );
+                    $sql = 'UPDATE sweets SET name = :name, category_id = :category_id, store_name = :store_name, price = :price, comment = :comment, pic1 = :pic1, pic2 = :pic2, pic3 = :pic3 WHERE user_id = :u_id AND id = :s_id';
+                    $data = array(':name'=>$name,':category_id'=>$category_id, ':store_name'=>$store_name, ':price'=>$price, ':comment'=>$comment, ':pic1'=>$pic1, ':pic2'=>$pic2, ':pic3'=>$pic3, ':u_id'=>$_SESSION['user_id'], ':s_id'=>$s_id );
                 //SQL２ 新規登録の場合
                 }else{
                     debug('新規登録です');
-                    $sql = 'INSERT into sweets ( name, store_name, category_name, price, comment, pic1, pic2, pic3, user_id, create_date) values (:name, :store_name, :category_name, :price, :comment, :pic1, :pic2, :pic3, :u_id, :date)';
-                    $data = array(':name'=>$name, ':store_name'=>$store_name, ':category_name'=>$category_name, ':price'=>$price, ':comment'=>$comment, ':pic1'=>$pic1, ':pic2'=>$pic2, ':pic3'=>$pic3, ':u_id'=>$_SESSION['user_id'], ':date'=>date('Y-m-d H:i:s'));
+                    $sql = 'INSERT into sweets (name, category_id, store_name, price, comment, pic1, pic2, pic3, user_id, create_date) values (:name, :category_id, :store_name, :price, :comment, :pic1, :pic2, :pic3, :u_id, :date)';
+                    $data = array(':name'=>$name, ':category_id'=>$category_id, ':store_name'=>$store_name, ':price'=>$price, ':comment'=>$comment, ':pic1'=>$pic1, ':pic2'=>$pic2, ':pic3'=>$pic3, ':u_id'=>$_SESSION['user_id'], ':date'=>date('Y-m-d H:i:s'));
                 }
                 //SQLの内容をデバッグ
                 debug('SQL:'.$sql);
@@ -170,7 +171,7 @@
 
                 //クエリ成功の場合
                 if($stmt){
-                    $_SESSION['msg-success'] = SUC04; //スイーツを新規に登録しました
+                    $_SESSION['msg-success'] = SUC03; 
                     debug('マイページへ遷移します');
                     header("Location:mypage.php"); 
                 }
@@ -200,26 +201,40 @@
         ?>
         <section class="main">
             <!--フォームのタイトル： エディットフラグで新規紹介か編集画面かを切り替える-->
-            <h2 class="main-title main-title__registsweets">
+            <h2 class="main-title main-title-default">
                 <?php echo (!$edit_flg) ? 'スイーツを紹介する' : 'スイーツを編集する';?>
-             </h2>
+            </h2>
             <div class="form-container">
                 <!--enctypeを追加したことに注意-->
-                <form class="form form-m intro-form" action ="" method="post" enctype="multipart/form-data">
+                <form class="form form-m regist-form" action ="" method="post" enctype="multipart/form-data">
                     
                     <!--共通エリアメッセージ-->
                     <div class="area-msg">
                         <?php if(!empty($err_msg['common'])) echo $err_msg['common']; ?>
                     </div>
 
-                    <!--カテゴリー TODO:仕組みを要復習。ソースコードをいじって動作を確認してみる-->
-                    <label class="label <?php if(!empty($err_msg['category_name'])) echo 'err'?>" >
+                    <!--カテゴリー -->
+                    <label class="label <?php if(!empty($err_msg['category_id'])) echo 'err'?>" >
                         カテゴリー<span class="label-require">必須</span><br>
-                        <!--カテゴリーをインプットタグで実装してみた-->
-                        <input type="text" class="input" name="category_name" value="<?php echo getFormData('category_name');?>">
+                        <!--セレクトボックスで実装-->
+                        <select class="category_select" name="category_id" id="">
+                            <option value="" <?php if(getFormData('category_id')==""){echo 'selected';} ?>>
+                            選択してください
+                            </option>
+                            <?php
+                                foreach($dbCategoryData as $key => $val){
+                            ?>
+                                <!--foreachで取得した$valのなかにid,name,delete_flg, create_date, update_dateが入っている-->
+                                <option value="<?php echo $val['id'];?>" <?php if(getFormData('category_id') == $val['id']){echo 'selected';}?>>
+                                    <?php echo $val['name'];?>
+                                </option>
+                            <?php 
+                                }
+                            ?>
+                        </select>
                     </label>
                     <div class="area-msg">
-                        <?php if(!empty($err_msg['category_name'])) echo $err_msg['category_name'] ?>
+                        <?php if(!empty($err_msg['category_id'])) echo $err_msg['category_id'] ?>
                     </div><br>
 
                     <!--商品名-->
@@ -254,14 +269,13 @@
 
                     <!--詳細文（テキストエリア） getFormDataを使う場所に注意。value=""は使えない　-->
                     <label  class="label <?php if(!empty($err_msg['comment'])) echo 'err'?>">
-                    詳細<span class="label-require">必須</span><br>
-                    <textarea class="input js-count" name="comment" cols="50" rows="3">
-                        <?php echo getFormData('comment'); ?>
-                    </textarea>
+                    スイーツの詳細<span class="label-require">必須</span><br>
+                    <!--テキストエリアタグを改行すると空文字が入るので注意-->
+                    <textarea class="input js-count" name="comment" cols="50" rows="3"><?php echo getFormData('comment'); ?></textarea>
                     </label> 
-                    <!--TODO: jsで処理するので動作確認-->
+                    <!--現在入力されているコメントの入力数をカウント-->
                     <p class="count-text">
-                        <span class="js-count-view">0</span>/150文字
+                        <span class="js-count-view">0</span>/100文字
                     </p>
                     <div class="area-msg">
                         <?php if(!empty($err_msg['comment'])) echo $err_msg['comment']; ?>
@@ -269,21 +283,15 @@
 
                     <!--画像コンテナー-->
                     <div style="overflow:hidden;">
-
-                        <!--画像１-->
+                        <!--画像1-->
                         <div class="imgDrop-container container-sweets">
                             画像1<br>
                             <label class="label area-drop area-drop-sweets <?php if(!empty($err_msg['pic1'])) echo 'err'; ?>">
                                 <input type="hidden" name="MAX_FILE_SIZE" value="3145728">
-                                <input type="file" name="pic1" class="input-file input-file-sweets"> <!--type属性にファイルを指定するとアップロード機能がつけられる。今回はopacityを0にしてwidthとheightを広げている。-->
-                                <img src="<?php echo getFormData('pic1'); ?>" alt="" class="prev-img prev-img-sweets" style="<?php if(empty(getFormData('pic1'))) echo 'display:none;' ?>" > 
-                                画像1をクリックして選択
+                                <input type="file" name="pic1" class="input-file input-file-sweets">
+                                <img src="<?php echo getFormData('pic1'); ?>" alt="" class="prev-img prev-img-sweets">
+                                画像１をクリックして選択<br>
                             </label>
-                            <div class="area-msg">
-                                <?php 
-                                if(!empty($err_msg['pic1'])) echo $err_msg['pic1'];
-                                ?>
-                            </div>
                         </div>
                         <!--画像２-->
                         <div class="imgDrop-container container-sweets">
@@ -291,7 +299,7 @@
                             <label class="label area-drop area-drop-sweets <?php if(!empty($err_msg['pic2'])) echo 'err'; ?>">
                                 <input type="hidden" name="MAX_FILE_SIZE" value="3145728">
                                 <input type="file" name="pic2" class="input-file input-file-sweets">
-                                <img src="<?php echo getFormData('pic2'); ?>" alt="" class="prev-img prev-img-sweets" style="<?php if(empty(getFormData('pic2'))) echo 'display:none;' ?>" >
+                                <img src="<?php echo getFormData('pic2'); ?>" alt="" class="prev-img prev-img-sweets">
                                 画像2をクリックして選択
                             </label>
                             <div class="area-msg">
@@ -306,7 +314,7 @@
                             <label class="label area-drop area-drop-sweets <?php if(!empty($err_msg['pic3'])) echo 'err'; ?>">
                                 <input type="hidden" name="MAX_FILE_SIZE" value="3145728">
                                 <input type="file" name="pic3" class="input-file input-file-sweets">
-                                <img src="<?php echo getFormData('pic3'); ?>" alt="" class="prev-img prev-img-sweets" style="<?php if(empty(getFormData('pic3'))) echo 'display:none;' ?>" >
+                                <img src="<?php echo getFormData('pic3'); ?>" alt="" class="prev-img prev-img-sweets">
                                 画像3をクリックして選択
                             </label>
                             <div class="area-msg">
@@ -315,6 +323,12 @@
                                 ?>
                             </div>
                         </div>
+                    </div>
+                    <!--画像１のエラーメッセージ表示エリア-->
+                    <div class="area-msg">
+                            <?php 
+                            if(!empty($err_msg['pic1'])) echo $err_msg['pic1'];
+                            ?>
                     </div>
                     
                     <!--送信ボタン-->

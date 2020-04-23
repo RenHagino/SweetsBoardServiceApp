@@ -22,13 +22,13 @@
     require('head.php');
   ?>
   <body>
-    <!--メイン(背景画像)-->
+    <!--メイン-->
     <div class="new-back-content">
       <!--ウェブサービスのタイトル-->
       <h1 class="new-back-content__title">SweetsBoard</h1>
       <p class="new-back-content__sentence">
         スイーツボードへようこそ<br>
-        あなたにとって最高のスイーツを共有してみませんか？
+        あなたの食べたスイーツをみんなに共有してみませんか？
       <p>
       <!--コンテナー-->
       <div class="btn-container_new">

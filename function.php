@@ -4,12 +4,14 @@
 ini_set('log_errors','on');
 //出力ファイルを設定
 ini_set('error_log','php.log');
-//ユーザー画面にエラーメッセージを表示するかどうか
-ini_set('display_errors', 'on');
+//tocheck: 開発時のみオンにするように
+ini_set('display_errors', 'off');
+
 
 //===デバッグ設定================//
-//サービスをリリースするときはfalseに設定し、
-//開発するときのみ、flgをtrueにする
+/*tochek: サービスをリリースするときは
+    falseに設定し、開発するときのみ
+    flgをtrueにする*/
 $debug_flg = true;
 
 function debug($str){
@@ -23,12 +25,12 @@ function debug($str){
 function debugLogStart(){
     debug('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>画面表示処理開始>>>>>>>>>>>>>');
     debug('セッションID'.session_id() );
-    debug('セッション変数の中身'.print_r($_SESSION,true) );
+    debug('セッション変数の中身'.print_r($_SESSION,true));
     debug('現在日時タイムスタンプ:'.time() );
     //もし、ログイン日時とログイン期限のセッションに何かしらの値が入っていた場合 ＝ ログインの形跡があった場合、
-    if(!empty($_SESSION['login_date']) && !empty($_SESSION['login_limit']) ){
+    if(!empty($_SESSION['login_date']) && !empty($_SESSION['login_limit'])){
         //そのセッションの中身を表示する
-        debug( 'ログイン日時タイムスタンプ:'.($_SESSION['login_date']+ $_SESSION['login_limit']) );
+        debug( 'ログイン日時タイムスタンプ:'.($_SESSION['login_date']+ $_SESSION['login_limit']));
     }
 }
 
@@ -47,31 +49,33 @@ session_regenerate_id();
 
 //===定数を設定=============================================//
 define('MSG01','入力必須です');
-define('MSG02', 'Emailの形式で入力してください');
+define('MSG01B', '画像1は必須です');
+define('MSG02', 'Emailの形式で入力してください<br>(半角英数字と@のみ利用可能)');
 define('MSG03','パスワード（再入力）が合っていません');
 define('MSG04','半角英数字のみご利用いただけます');
-define('MSG05','6文字以上で入力してください');
-define('MSG06A','255文字未満で入力してください');
+define('MSG05A','パスワードは6文字以上で入力してください');
+define('MSG05B','パスワードは15文字以下で入力してください');
+define('MSG05C','パスワードとパスワード再入力の値が一致しません');
+define('MSG06A','100文字以下で入力してください');
 define('MSG06B','30文字以下で入力してください');
-define('MSG06C','20文字以下で入力してください');
+define('MSG06C','15文字以下で入力してください');
 define('MSG06D','15文字以下で入力してください');
 define('MSG06E', '6ケタ以下で入力してください');
 define('MSG07', 'エラーが発生しました。しばらく経ってからやり直してください。');
-define('MSG08', 'そのEmailは既に登録されています');
+define('MSG08', 'そのEmailアドレスは他のユーザーが使用しています');
 define('MSG09', 'メールアドレスまたはパスワードが違います'); 
 define('MSG10','半角数字のみ入力できます');
 define('MSG12', '古いパスワードが違います');
-define('MSG13', '古いパスワードと同じです');
+define('MSG13', '新しく設定するパスワードと現在設定されているパスワードが同じです');
 define('MSG14','文字で入力してください');
 define('MSG15','認証キーが違います');
 define('MSG16','認証キーの有効期限が切れています');
 define('MSG17','半角数字で入力してください'); 
 define('MSG18','正しくありません。');
-define('SUC01', 'パスワードを変更しました');
-define('SUC02', 'プロフィールを変更しました');
-define('SUC03','メールを送信しました');
-define('SUC04','スイーツを新規に登録しました');
-define('SUC05','登録した人とチャットをしてみよう！');
+//サクセスメッセージ一覧
+define('SUC01', 'パスワードを変更しました！');
+define('SUC02', 'プロフィールを変更しました！');
+define('SUC03','スイーツが登録されました！');
 
 //===グローバル変数==========================================//
 //エラーメッセージ格納用の配列
@@ -123,35 +127,22 @@ $err_msg = array();
             $err_msg['common'] = MSG07; //ログインの文字の下のdivに表示
         }
     }
+
+    //====================================
     //パスワードチェック
+    //====================================
     function validPass($str, $key){
     //半角英数字チェック
     validHalf($str, $key);
     //最大文字数チェック
-    validMaxContent($str, $key);
+    validMaxPass($str, $key);
     //最小文字数チェック
-    validMinLen($str, $key);
+    validMinPass($str, $key);
     }
-
-    //パスワードの同値チェック（入力と再入力）
-    function validMatch($str1,$str2,$key){
-        if($str1 !== $str2){
-            global $err_msg;
-            $err_msg[$key]= MSG03;
-        }
-    }
-
-    //最小文字数チェック //$minはDBの設定と照らし合わせて指定する
-    function validMinLen($str,$key,$min=6){//関数を呼び出す時に指定すれば$maxの値を変えることも可能
-        if(mb_strlen($str) < $min){
-            global $err_msg;
-            $err_msg[$key] = MSG05; //6文字以上で入力してね
-        }
-    }
-
-    //最大文字数チェック //$maxはDBの設定と照らし合わせて指定する
-    //関数を呼び出す時に指定すれば$maxの値を変えることも可能
-    function validMaxContent($str,$key,$max=255){ 
+    
+    //最大文字数チェック 
+    //関数を呼び出す時に指定すれば$maxの値を変えることが可能
+    function validMaxComment($str,$key,$max=100){ 
         if(mb_strlen($str) > $max){
             global $err_msg;
             $err_msg[$key] = MSG06A;
@@ -163,16 +154,29 @@ $err_msg = array();
             $err_msg[$key] = MSG06B;
         }
     }
-    function validMaxName($str,$key,$max=20){ 
+    function validMaxName($str,$key,$max=15){ 
         if(mb_strlen($str) > $max){
             global $err_msg;
             $err_msg[$key] = MSG06C;
         }
     }
+    //パスワード系統バリデーション
+    function validMinPass($str,$key,$min=6){
+        if(mb_strlen($str) < $min){
+            global $err_msg;
+            $err_msg[$key] = MSG05A;
+        }
+    }
     function validMaxPass($str,$key,$max=15){ 
         if(mb_strlen($str) > $max){
             global $err_msg;
-            $err_msg[$key] = MSG06D;
+            $err_msg[$key] = MSG05B;
+        }
+    }
+    function validMatchPass($str1,$str2,$key){
+        if($str1 !== $str2){
+            global $err_msg;
+            $err_msg[$key]= MSG05C;
         }
     }
     function validMaxPrice($str,$key,$max=6){ 
@@ -190,19 +194,20 @@ $err_msg = array();
         }
     }
 
-    /*半角数字チェック
-        =>スイーツの金額のバリデーションに使う*/
+    //半角数字チェック=>スイーツの金額のバリデーションに使う
     function validNumber($str, $key){
     if(!preg_match("/^[0-9]+$/", $str)){
-      global $err_msg;
-      $err_msg[$key] = MSG17;
+        global $err_msg;
+        $err_msg[$key] = MSG17;
+        }
     }
-  }
-  
-    /*電話番号形式チェック、郵便番号形式チェック、半角数字チェックは今回は作らない*/
-    //出身地文字数チェックチェックは最大文字数チェックでOK。
-
-
+    //画像必須バリデーション(pic1のみ)
+    function validRequiredPic($str, $key){
+        if($str === ''){ 
+        global $err_msg; 
+        $err_msg[$key] = MSG01B;
+        }
+    }
 
     //=============================================
     //ユーザー情報取得関数 (profEdit.phpで使用)
@@ -234,10 +239,10 @@ $err_msg = array();
     }
     
     //=============================================
-    //お気に入りスイーツ情報取得関数
+    //お気に入りスイーツ情報取得関数 mypage.phpで使用
     //=============================================
     function getMyFavorite($u_id){
-        debug('自分のお気に入り情報を取得します');
+        debug('自分のお気に入り登録したスイーツの情報を取得します');
         debug('自分のユーザーID'.$u_id);
 
         //DB処理
@@ -252,7 +257,6 @@ $err_msg = array();
 
             //クエリ判定
             if($stmt){
-                //クエリ結果の全レコードを返却
                 return $stmt -> fetchAll();
             }else{
                 return false;
@@ -265,10 +269,64 @@ $err_msg = array();
     }
 
 
+    //===================================================
+    // お気に入りスイーツ取得関数(ページネーションあり) mypage.phpで使用
+    //  1,sweetsテーブルとfavoriteテーブルを結合し、お気に入りの総数と総ページ数を取得
+    //  2,sweetsテーブルとfavoriteテーブルを結合し、$listSpan
+    //===================================================
+    function getFavSweetsList($currentMinNum=1, $listSpan, $u_id){
+        //例外処理開始
+        try{
+            //デバッグ
+            debug('mypage.phpでお気に入り登録されているスイーツを表示します');
+            //SQL準備
+            $dbh = dbConnect();
+            //sqlが通らない場合はLIMIT以降をはずして別にsqlを作ってみる
+            $sql = 'SELECT * FROM favorite AS f LEFT JOIN  sweets AS s ON f.sweets_id = s.id WHERE f.user_id = :u_id';
+            $data = array(':u_id'=> $u_id);
+            $stmt = queryPost($dbh, $sql, $data);
+            //この2つのデータが必要 dbFavSweetsData['total'],['total_page']として呼び出せる
+            $rst['total'] = $stmt->rowCount();
+            $rst['total_page'] = ceil($rst['total']/$listSpan);
+            debug('rstの[total]の結果:'.print_r($rst['total'], true));
+            debug('rstの[total_page]の結果'.print_r($rst['total_page'], true));
+            //クエリ判定
+            if($stmt){
+                debug('getFavSweetsListクエリ-1に成功しました');
+            }else{
+                debug('getFavSweetsListクエリ-1に失敗しました');
+                return false;
+            }
+
+            //========================================================
+            //お気に入りスイーツの総数と総ページ数を取得した後に1ページに表示する値を取得する
+            //========================================================
+            
+            //$sql= 'SELECT * FROM favorite WHERE user_id = :u_id LIMIT '.$listSpan.' OFFSET '.$currentMinNum;
+            $sql= 'SELECT * FROM favorite AS f LEFT JOIN sweets AS s ON f.sweets_id = s.id WHERE f.user_id = :u_id LIMIT '.$listSpan.' OFFSET '.$currentMinNum;
+            $data = array('u_id'=>$u_id);
+            $stmt = queryPost($dbh,$sql,$data);
+            //クエリ判定
+            if($stmt){
+                //$rst['data']は1ページに表示する分だけが入っている
+                $rst['data'] = $stmt -> fetchAll();
+                debug('getFavSweetsListクエリ-2に成功しました');
+                debug('クエリ結果の全レコードを取得しました。');
+                debug('$rst[data]の結果:'.print_r($rst['data'],true));
+                return $rst;
+            }else{
+                debug('getFavSweetsListクエリ-2に成功しました');
+                return false;
+            }
+        //例外処理
+        }catch(Exception $e){
+            error_log('エラー発生：'.$e->getMessage());
+        }
+    }
     //=============================================
-    //スイーツ情報取得関数 
+    //スイーツ情報取得関数 registSweets.phpで使用
     //=============================================
-    function getSweets($u_id, $s_id){
+    function getRegistSweets($u_id, $s_id){
         debug('商品情報を取得します');
         debug('ユーザーID:'.$u_id);
         debug('スウィーツID'.$s_id);
@@ -291,7 +349,6 @@ $err_msg = array();
             }else{
                 return false;
             }
-
         }catch(Exception $e){
             error_log('エラー発生:'.$e->getMessage());
         }
@@ -300,7 +357,7 @@ $err_msg = array();
     //====================================================================
     //== スイーツのリスト取得関数   home.phpで使用　$categoryと$sortは商品の絞り込みと並び替えで使う
     //====================================================================
-    function getSweetsList($currentMinNum=1, $sort, $span = 12){
+    function getSweetsList($currentMinNum, $category, $sort, $listSpan){
         //デバッグ
         debug('getSweetsListで商品情報を取得します。');
         debug('引数の$sortの中身'.print_r($sort,true));
@@ -315,61 +372,56 @@ $err_msg = array();
             //=============================================
                 /*1-1sweetsテーブルからidを取得しスイーツが何件あるかを判別する
                     home.phpの$currentMinNumと$dbSweetsDataに値を与える*/
+                //カテゴリーと値段による絞り込み、並び替えを実装。
                 $sql = ' SELECT id FROM sweets '; 
-                
-                
-                //1-2ソート順を取得 
-                //home.phpで$sortが空ではない場合それぞれのcaseの$sqlを 'SELECT id FROM sweetsにつなげる'
+                if(!empty($category)) $sql .= ' WHERE category_id = '.$category;
                 if(!empty($sort)){
                     debug('home.phpで$sortが確認できました。');
                     switch($sort){
-                      case 1:
-                        debug('現在のソート順は1です。');
-                        /** TOCHEK
-                         * sqlをつなげるときは半角スペースもつなげないと
-                         * SLECT id From sweetsORDER BY price ASC
-                         * のようになってバグが起きるので注意
-                         * もしくは元になる$sqlを定義するときに半角スペースを入れる癖をつけておく。
-                        */
-                        $sql .=  'ORDER BY price ASC ';
-                        break;
-                      case 2:
-                        debug('現在のソート順は2です。');
-                        $sql .= 'ORDER BY price DESC';
-                        break;
+                        case 1:
+                            debug('値段が安い順に並び替えました');
+                            $sql .=  ' ORDER BY price ASC ';
+                            break;
+                        case 2:
+                            debug('値段が高い順に並び替えました');
+                            $sql .= ' ORDER BY price DESC ';
+                            break;
                     }
+                }else{
+                    debug('値段よる並び替えはありません');
                 }
-
-                //プレースホルダー
                 $data = array();
-                //クエリ実行
                 $stmt = queryPost($dbh,$sql,$data);
-                //クエリが成功した場合
                 //$rstのreturnは下の$rst['data']を定義してから行う(2度returnを行おうとするとエラーになる)
-                $rst['total'] = $stmt->rowCount(); //総レコード数 home.phpで echo dbSweetsData['total']; として呼び出す
-                $rst['total_page'] = ceil($rst['total']/$span); //総ページ数  home.phpで echo dbSweetsData['total_page']; として呼び出す
+                //総レコード数 home.phpで echo dbSweetsData['total']; として呼び出す
+                $rst['total'] = $stmt->rowCount(); 
+                $rst['total_page'] = ceil($rst['total']/$listSpan); //総ページ数  home.phpで echo dbSweetsData['total_page']; として呼び出す
                 //デバッグ
                 debug('スイーツの総件数です:'.print_r($rst['total'],true));
                 debug('home.phpの総ページ数:'.print_r($rst['total_page'],true));
                 
                 //クエリが失敗した場合
                 if(!$stmt){
-                    //デバッグ
-                    debug('クエリに失敗しました');
+                    debug('getSweetsListのSQLは失敗しました');
                     return false;
+                }else{
+                    debug('getSweetsListのSQLは成功しました');
                 }
 
 
             //===========================================//
             //SQL2 ページング用のSQLを作成
-            //  1ページに表示する 画像の件数を$spanと$currentMinNumを定義し
+            //  1ページに表示する 画像の件数を$listSpanと$currentMinNumを定義し
             //  画像のデータ$rst['data']をhome.phpにreturnする
             //===========================================//
                 //2-1 商品データを全て取得
-                $sql = 'SELECT * FROM sweets WHERE delete_flg = 0';
-
+                $sql = 'SELECT * FROM sweets';
                 
-                //2-2 $sortがあった場合、価格順で並び替えられるようにする
+                //2-2 カテゴリーがあった場合、並び替えを実行する
+                if(!empty($category)){
+                    $sql .= ' WHERE category_id = '.$category;
+                } 
+                //2-3 $sortがあった場合、価格順で並び替えられるようにする
                 if(!empty($sort)){
                     switch($sort){
                     case 1:
@@ -382,12 +434,13 @@ $err_msg = array();
                         break;
                     }
                 }
-                
+
                 //2-3 商品が何件取得できたかを判別するSQL
-                //$spanと$currentMinNumはhome.phpで定義している
-                $sql .= ' LIMIT '.$span.' OFFSET '.$currentMinNum;
+                //$listSpanはこの関数の()内で、$currentMinNumはhome.phpで定義している
+                $sql .= ' LIMIT '.$listSpan.' OFFSET '.$currentMinNum;
                 $data = array();
-                debug('商品が何件取得できたかを判別するSQLの結果：'.$sql);
+                debug('ページング用SQLの結果：'.$sql);
+
                 // クエリ実行
                 $stmt = queryPost($dbh, $sql, $data);
                 
@@ -399,7 +452,7 @@ $err_msg = array();
                     //     [name] => ケーキB
                     //     [store_name] => ケーキや
                     //     [category_id] => 1
-                    //     [comment] => $pic1の二つの処理の順番を逆にした
+                    //     [comment] => $pic1の2つの処理の順番を逆にした
                     //     [price] => 333
                     //     [pic1] => upload_img/4ca4b5b3cfc9e10cbafc2f9fcaa86ba574da1ea7.jpeg
                     //     [pic2] => 
@@ -409,27 +462,20 @@ $err_msg = array();
                     //     [create_date] => 2019-08-09 13:58:58
                     //     [update_date] => 2019-08-09 22:58:58
                     // )
-
-               
-                //クエリが失敗した場合
                 if($stmt){
-                   //home.phpで echo getSweetsData['data']; として呼び出す
-                   $rst['data'] = $stmt->fetchAll(); 
+                    //home.phpで echo dbSweetsData['data']; として呼び出す
+                    $rst['data'] = $stmt->fetchAll(); 
                     return $rst;
-                   debug('クエリに成功しました');
-                   debug('画像のデータ一覧が入っている$rst[data]の中身'.print_r($rst['data'],true));
-                //クエリが成功した場合
+                    debug('クエリに成功しましたが');
+                    debug('画像のデータ一覧が入っている$rst[data]の中身'.print_r($rst['data'],true));
                 }else{
                     debug('クエリに失敗しましたが');
-                    debug('総レコード数と総ページ数が取得できませんでした');
+                    debug('画像のデータと総レコード数と総ページ数が取得できませんでした');
                     return false;
                 }
-            
-            //=======================================
             //3 例外処理
-            //=======================================
-            }catch(exception $e){
-                $e->getMessage();
+            }catch(Exception $e){
+                error_log('getSweetsListでエラー発生:'.$e->getMessage());
             }
         }
     
@@ -460,7 +506,8 @@ $err_msg = array();
                 $stmt = queryPost($dbh,$sql,$data);
 
                 //総レコード数と総ページ数を変数に格納
-                $rst['total'] = $stmt->rowCount(); //総レコード数 home.phpで echo getSweetsData['total']; として呼び出す
+                //総レコード数 home.phpで echo getSweetsData['total']; として呼び出す
+                $rst['total'] = $stmt->rowCount(); 
                 $rst['total_page'] = ceil($rst['total']/$span); //総ページ数  home.phpで echo getSweetsData['total_page']; として呼び出す
                 
                 //クエリが失敗した場合
@@ -504,30 +551,29 @@ $err_msg = array();
             $e->getMessage();
         }
     }
-
-
     //=============================================
     // スイーツの情報取得関数   SweetsDetail.phpで使用 
     //  Sweetsテーブルとカテゴリーテーブルを外部結合してスイーツのカテゴリーも含めて情報を入手している。
     //=============================================
-    function getSweetsOne($s_id){
+    function getSweetsDetail($s_id){
         debug('スイーツ情報を取得します');
-        debug('スイーツのID:'.$s_id);
+        debug('getSweetsDetailのスイーツID:'.$s_id);
 
         try{
             //DB接続
             $dbh = dbConnect();
-
-            //新しいSQL (スイーツテーブルとカテゴリーテーブルを分けていない想定)   
-            $sql = 'SELECT id, name, store_name, category_name, comment, price, pic1, pic2, pic3, user_id, create_date, update_date
-                FROM sweets
-                WHERE id = :s_id AND delete_flg = 0';
+            
+            //categoryテーブルから取ってくるデータはASで変換するようにsweetsテーブルのidとcategoryテーブルのidが同じになる可能性がある
+            $sql =
+                'SELECT s.id, s.name, s.store_name, s.category_id, s.comment, s.price, s.pic1, s.pic2, s.pic3, s.user_id, s.delete_flg, s.create_date, s.update_date, c.id AS category_id, c.name AS category_name
+                FROM sweets AS s LEFT JOIN category AS c ON s.category_id = c.id WHERE s.id = :s_id AND s.delete_flg = 0 AND c.delete_flg = 0';
 
             //プレースホルダー
             $data = array(':s_id'=>$s_id);
             //クエリ実行
             $stmt = queryPost($dbh,$sql,$data);
-
+            debug('getSweetsDetailのクエリ実行');
+            //クエリ成否判定
             if($stmt){
                 //クエリ結果のデータを１レコード返却
                 return $stmt->fetch(PDO::FETCH_ASSOC);
@@ -542,10 +588,10 @@ $err_msg = array();
     }
 
     //===============================================
-    //お気に入り登路したスイーツの情報取得関数 myRegistSweets.phpで使用
+    //自分の出品したスイーツの情報取得関数 myRegistSweets.phpで使用
     //===============================================
     function getMySweets($u_id){
-        debug('自分のお気に入りのスイーツ情報を取得します');
+        debug('自分の出品したスイーツ情報のを取得します');
         debug('ユーザーID:'.$u_id);
 
         //DB処理開始
@@ -567,43 +613,6 @@ $err_msg = array();
             error_log('エラー発生:'.$e->getMessage());
         }
     }
-
-    //=============================================
-    //掲示板情報取得関数（掲示板とメッセージの情報を結合）
-    //=============================================
-    function getMsgAndBoard2($b_id){
-        debug('メッセージ情報を取得します');
-        debug('掲示板ID:'.$b_id); //ここはOK
-        //DB処理
-        try{
-            //DB接続
-            $dbh = dbConnect();
-            //SQL作成
-            $sql = 
-                'SELECT m.id AS m_id, board_id, send_date, to_user, from_user, sale_user, buy_user, msg, b.create_date
-                FROM message AS m RIGHT JOIN board AS b ON  b.id = m.board_id
-                WHERE b.id = :id AND m.delete_flg = 0  
-                ORDER BY send_date ASC ' ;
-
-            //プレースホルダー
-            $data = array(':id'=> $b_id);
-            //クエリ実行
-            $stmt = queryPost($dbh,$sql,$data);
-        
-            //クエリ
-            if($stmt){
-                //クエリ結果の全データを返却
-                return $stmt->fetchAll();
-            }else{
-                //失敗したらfalseを返す
-                return false;
-            }
-
-        }catch(Exception $e){
-            error_log('エラー発生:' . $e->getMessage());
-        }
-    }
-
     //=============================================
     //掲示板情報取得関数（掲示板とメッセージの情報を結合）
     //=============================================
@@ -650,7 +659,7 @@ $err_msg = array();
         $data = array(':id'=>$u_id);
         $stmt = queryPost($dbh,$sql,$data);
 
-        //取得した掲示板のクエリ結果を変数に入れる  TODO:return $stmt->fetchAll()だと駄目？
+        //取得した掲示板のクエリ結果を変数に入れる
         $rst = $stmt->fetchAll();
         debug('掲示板から取得したデータ:'.print_r($rst,true));
 
@@ -662,8 +671,7 @@ $err_msg = array();
                 $sql = 'SELECT * FROM `message` WHERE board_id = :id  AND delete_flg =0 ORDER BY send_date DESC';
                 $data = array(':id'=>$val['id']);
                 $stmt = queryPost($dbh, $sql, $data);
-
-                //取得したメッセージのクエリ結果をに入れる TODO:デバッグ結果を見て理解する。
+                //取得したメッセージのクエリ結果をに入れる
                 $rst[$key]['msg'] = $stmt->fetchAll();
                 debug( 'メッセージテーブルから取得したデータ:'.print_r($rst[$key]['msg'],true) );
             }
@@ -690,53 +698,84 @@ $err_msg = array();
     //=============================================
     //フォーム入力保持関数 profEdit.phpとregistSweets.phpで使用  
     //=============================================
+    // フォーム入力保持
     function getFormData($str, $flg = false){
-        
-        //GETかPOSTを判別する処理を追加 
-            //デフォルトではfalseになっている
-            if($flg){
-                $method = $_GET;
-                debug('GET送信です');
-            }else{
-                $method = $_POST;
-                debug('POST送信です');
-            }
+    
+    //呼び出し元の送信がGETかPOSTか判定する
+    if($flg){
+        $method = $_GET;
+        debug('getFormDataの判定はGET送信です');
+    }else{
+        $method = $_POST;
+        debug('getFormDataの判定はPOST送信です');
+    }
+    //使う変数をグローバル宣言
+    global $dbFormData;
+    global $err_msg;
 
-            //$dbFormDataはグローバル変数化
-            global $dbFormData;
-
-            //フォームデータがあった場合
-            if(!empty($dbFormData)){
-
-                //ユーザーデータあり、フォームにエラーがあった場合
-                if(!empty($err_msg[$str])){
-                    //POSTにデータがあった場合（エラーが発生したフォーム部分の処理になる）
-                    if(isset($method[$str])){ //金額や郵便番号などのフォームの可能性があり、emptyだと0が入力されても入ってないと判定されてしまうのでissetにする
-                        return sanitize($method[$str]);//POSTされたデータを受け入れる
-                    //POSTにデータが無かった場合（一部分のフォームだけエラーが発生した場合の想定）
-                    }else{
-                        return sanitize($dbFormData[$str]);//もともとあったDBの情報をそのままフォーム上にに保持する
-                    }
-
-                //フォームデータがあり、フォームにエラーが無かった場合
-                }else{
-                    //POSTにデータがあり、DBにある情報と差異が見られた場合
-                    if(isset($method[$str]) && $method[$str] !== $dbFormData[$str]){
-                        //POSTされたデータに更新する
-                        return sanitize($method[$str]); 
-                    //変更していない場合（ データがPOSTされなかった場合）
-                    }else{
-                        //もともとの値を保持する
-                        return sanitize($dbFormData[$str]);
-                    }
-                }
-
-        //そもそもフォームデータが無かった場合
-        }else{
-            //ポストされたデータがあればそれをreturnする
+    //DBにデータがある場合
+    if(!empty($dbFormData)){
+        //フォームにエラーがある場合(バリデーションに引っかかる)
+        if(!empty($err_msg[$str])){
+            //フォームにデータがある場合
             if(isset($method[$str])){
+                debug('結果1です');
                 return sanitize($method[$str]);
+            
+            //ない場合（基本ありえない）はDBの情報を表示
+            }else{
+                debug('結果2です');
+                return sanitize($dbFormData[$str]);
             }
+
+        //フォームにエラーがない場合
+        }else{
+            //POSTにデータがあり、DBの情報と違う場合
+            //出品したスイーツからregistSweets.phpに飛んで情報を更新した時。
+            if(isset($method[$str]) && $method[$str] !== $dbFormData[$str]){
+                debug('結果3です');
+                return sanitize($method[$str]);
+            //POSTにデータがあり、DBの情報と違う場合
+            //出品したスイーツからregistSweets.phpに飛んだ時
+            }else{
+                debug('結果4です');
+                return sanitize($dbFormData[$str]);
+            }
+        }   
+
+    //dbFormDataが現在のページに存在しない場合(初めて入力するデータの場合)
+    }else{
+        if(isset($method[$str])){
+            debug('結果5です');
+            return sanitize($method[$str]);
+        }
+    }
+    }
+    //============================================
+    //カテゴリーデータ入手関数 registSweets.phpで使用
+    //============================================
+    function getCategoryData(){
+        //デバッグ
+        debug('カテゴリーデータを入手します');
+        //トライキャッチ
+        try{
+            //DBへ接続
+            $dbh = dbConnect();
+            //SQLを作成
+            $sql = 'SELECT * FROM category';
+            //tocheck: $dataは必要？ =>queryPostの
+            $data = array();
+            //クエリを関数に入れて変数に入れる
+            $stmt =queryPost($dbh, $sql,$data);
+            //クエリ成否判定
+            if($stmt){
+                //クエリデータを返却(fetchAll();で)
+                return $stmt->fetchAll();
+            }else{
+                return false;
+            }
+        }catch(Exception $e){
+            error_log('エラーが発生しました'.$e->getMessage());
         }
     }
     
@@ -781,7 +820,7 @@ $err_msg = array();
     }
 
     //=============================================
-    //認証キー作成  追加パスワードリマインダーの認証キー発行 TODO：テスト
+    //認証キー作成  追加パスワードリマインダーの認証キー発行 ト
     //=============================================
     function makeRandKey($length = 8){ //認証キーを８文字に制限
         $chars = 'abcdefghijklmnopqrstuvxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -832,7 +871,7 @@ $err_msg = array();
                 //MIMEタイプを自動でチェックする
                 $type = @exif_imagetype($file['tmp_name']);
                 if(!in_array($type,[IMAGETYPE_GIF, IMAGETYPE_JPEG, IMAGETYPE_PNG], true)){
-                    //in_arrayで調べた$typeの中身が第二引数に指定した三つに一致しなかった場合
+                    //in_arrayで調べた$typeの中身が第2引数に指定した三つに一致しなかった場合
                     throw new RuntimeException('画像形式が未対応です'); 
                 }
 
@@ -846,7 +885,7 @@ $err_msg = array();
                 }
 
                 //保存したファイルパスのパーミッションを変更する
-                chmod($path,0644); //TODO: 0644の意味は？権限について自分で調べる。
+                chmod($path,0644); 
                 debug('ファイルは正常にアップロードされました');
                 debug('ファイルパス:'.$path);
                 return $path;
@@ -858,105 +897,45 @@ $err_msg = array();
             }
         }
     }
-
-    //=============================================
-    //画像処理
-    //=============================================
-    function uploadImg2($file,$key){
-        debug('画像アップロード処理開始');
-        debug('FILE情報：'.print_r($file,true));
-
-        if (isset($file['error']) && is_int($file['error'])) {
-        
-        try{
-            // バリデーション
-            // $file['error'] の値を確認。配列内には「UPLOAD_ERR_OK」などの定数が入っている。
-            //「UPLOAD_ERR_OK」などの定数はphpでファイルアップロード時に自動的に定義される。定数には値として0や1などの数値が入っている。
-            switch ($file['error']) {
-                case UPLOAD_ERR_OK: // OK
-                    break;
-                case UPLOAD_ERR_NO_FILE:   // ファイル未選択の場合
-                    throw new RuntimeException('ファイルが選択されていません');
-                case UPLOAD_ERR_INI_SIZE:  // php.ini定義の最大サイズが超過した場合
-                case UPLOAD_ERR_FORM_SIZE: // フォーム定義の最大サイズ超過した場合
-                    throw new RuntimeException('ファイルサイズが大きすぎます');
-                default: // その他の場合
-                    throw new RuntimeException('その他のエラーが発生しました');
-            }
-
-            // $file['mime']の値はブラウザ側で偽装可能なので、MIMEタイプを自前でチェックする
-            // exif_imagetype関数は「IMAGETYPE_GIF」「IMAGETYPE_JPEG」などの定数を返す
-            $type = @exif_imagetype($file['tmp_name']);
-            if (!in_array($type, [IMAGETYPE_GIF, IMAGETYPE_JPEG, IMAGETYPE_PNG], true)) { // 第三引数にはtrueを設定すると厳密にチェックしてくれるので必ずつける
-                throw new RuntimeException('画像形式が未対応です');
-            }
-
-            // ファイルデータからSHA-1ハッシュを取ってファイル名を決定し、ファイルを保存する
-            // ハッシュ化しておかないとアップロードされたファイル名そのままで保存してしまうと同じファイル名がアップロードされる可能性があり、
-            // DBにパスを保存した場合、どっちの画像のパスなのか判断つかなくなってしまう
-            // image_type_to_extension関数はファイルの拡張子を取得するもの
-            $path = 'upload_img/'.sha1_file($file['tmp_name']).image_type_to_extension($type);
-            if(!move_uploaded_file($file['tmp_name'], $path)) { //ファイルを移動する
-                throw new RuntimeException('ファイル保存時にエラーが発生しました');
-            }
-            // 保存したファイルパスのパーミッション（権限）を変更する
-            chmod($path, 0644);
-            debug('ファイルは正常にアップロードされました');
-            debug('ファイルパス：'.$path);
-            return $path;
-        
-            }catch (RuntimeException $e) {
-                debug($e->getMessage());
-                global $err_msg;
-                $err_msg[$key] = $e->getMessage();
-            }
-        }
-    }
     //=================================
     // 画像削除関数
     //=================================
-        function deleteImg($pic,$s_id){
-            debug('画像１〜３判別情報:'.print_r($pic,true));
-            debug('スイーツのID:'.$s_id);
-            debug('IDが'.$s_id.'のスイーツの画像'.print_r($pic,true).'を削除します');
-            
-            try{
-                //DB接続
-                $dbh = dbConnect();
-                ////SQL
-                $sql = 'DELETE :pic FROM sweets WHERE id = :s_id';
-                ////プレースホルダー
-                $data = array(':pic'=>$pic, ':s_id'=>$s_id);
-
-                //クエリー
-                $stmt = queryPost($dbh, $sql, $data);
-
-                //クエリ判定
-                if($stmt){
-                    debug('画像の削除に成功しました');
-                    return true;
-                }else{
-                    debug('画像の削除に失敗しました');
-                    return false;
-                }
-
-            }catch(Exception $e){
-                error_log('エラー発生:'.$e->getMessage() );
+    function deleteImg($pic,$s_id){
+        debug('画像１〜３判別情報:'.print_r($pic,true));
+        debug('スイーツのID:'.$s_id);
+        debug('IDが'.$s_id.'のスイーツの画像'.print_r($pic,true).'を削除します');
+        
+        try{
+            //DB接続
+            $dbh = dbConnect();
+            ////SQL
+            $sql = 'DELETE :pic FROM sweets WHERE id = :s_id';
+            ////プレースホルダー
+            $data = array(':pic'=>$pic, ':s_id'=>$s_id);
+            //クエリー
+            $stmt = queryPost($dbh, $sql, $data);
+            //クエリ判定
+            if($stmt){
+                debug('画像の削除に成功しました');
+                return true;
+            }else{
+                debug('画像の削除に失敗しました');
+                return false;
             }
+        }catch(Exception $e){
+            error_log('エラー発生:'.$e->getMessage() );
         }
-
-
-
-
-
+    }
     //============================================================
     //== home.phpの出品された商品のページング処理関数 ==///
     // $currentPageNum : 現在のページ数
     // $totalPageNum : 総ページ数
     // $link : 検索用GETパラメータリンク
     // $pageColNum : ページネーション表示数
-    function pagenation( $currentPageNum, $totalPageNum, $link = '', $pageColNum = 5){
-        // 現在のページが、総ページ数と同じ　かつ　総ページ数が表示項目数以上なら、左にリンク４個出す
+    //============================================================
+    function pagenation( $currentPageNum, $totalPageNum, $category, $sort, $link = '', $pageColNum = 5){
+
+        // 現在のページが、総ページ数と同じかつ総ページ数が表示項目数以上なら、左にリンク４個出す
         if( $currentPageNum == $totalPageNum && $totalPageNum >= $pageColNum){
             $minPageNum = $currentPageNum - 4;
             $maxPageNum = $currentPageNum;
@@ -976,7 +955,7 @@ $err_msg = array();
         }elseif($totalPageNum < $pageColNum){
             $minPageNum = 1;
             $maxPageNum = $totalPageNum;
-        // それ以外は左に２個出す。
+        // それ以外は左に2個出す。
         }else{
             $minPageNum = $currentPageNum - 2;
             $maxPageNum = $currentPageNum + 2;
@@ -989,13 +968,12 @@ $err_msg = array();
             if($currentPageNum != 1){
                 echo '<li class="list__item"><a class="list__item__link" href="?p=1'.$link.'">&lt;</a></li>';
             }
-
             //ページネーションのボタンを表示する
             //$minPageNumが$maxPageNumより少ない限りページネーションのボタンをふやす
             for($i = $minPageNum; $i <= $maxPageNum; $i++){
                 echo '<li class="list__item ';  
                 if($currentPageNum == $i ){ echo 'active'; } 
-                echo ' "><a class="list__item__link" href=" ?p='.$i.$link.' "> '.$i.'</a></li>';
+                echo ' "><a class="list__item__link" href=" ?p='.$i.$link.'&c_id='.$category.'&sort='.$sort.' "> '.$i.'</a></li>';
             }
 
             //現在のページが最大ページではなく、最大ページが1以上の場合は進むボタン(>)を表示する
@@ -1007,52 +985,62 @@ $err_msg = array();
     }
 
     //============================================================
-    //　mypage.phpのお気に入り商品のページング
+    //mypage.phpのお気に入り商品のページング
     //============================================================
     //== home.phpの出品された商品のページング処理関数 ==///
     // $currentFavPageNum : 現在のページ数
-    // $totalPageNum : 総ページ数
+    // $totalFavPageNum : 総ページ数
     // $link : 検索用GETパラメータリンク
     // $pageColNum : ページネーション表示数
-    function favPagenation( $currentFavPageNum, $totalPageNum, $link = '', $pageColNum = 5){
-        // 現在のページが、総ページ数と同じ　かつ　総ページ数が表示項目数以上なら、左にリンク４個出す
-        if( $currentFavPageNum == $totalPageNum && $totalPageNum >= $pageColNum){
+    function favPagenation( $currentFavPageNum, $totalFavPageNum, $link = '', $pageColNum = 5){
+        //デバッグ
+        debug('現在のお気に入りのページ数:'.print_r($currentFavPageNum, true));
+        debug('お気に入りのページ数の総数:'.print_r($totalFavPageNum, true));
+
+        // 現在のページが、総ページ数と同じかつ総ページ数が表示項目数以上なら、左にリンク４個出す
+        if( $currentFavPageNum == $totalFavPageNum && $totalFavPageNum >= $pageColNum){
             $minPageNum = $currentFavPageNum - 4;
             $maxPageNum = $currentFavPageNum;
+            debug('結果5です');
         // 現在のページが、総ページ数の１ページ前なら、左にリンク３個、右に１個出す
-        }elseif( $currentFavPageNum == ($totalPageNum-1) && $totalPageNum >= $pageColNum){
+        }elseif( $currentFavPageNum == ($totalFavPageNum-1) && $totalFavPageNum >= $pageColNum){
             $minPageNum = $currentFavPageNum - 3;
             $maxPageNum = $currentFavPageNum + 1;
+            debug('結果4です');
         // 現ページが2の場合は左にリンク１個、右にリンク３個だす。
-        }elseif( $currentFavPageNum == 2 && $totalPageNum >= $pageColNum){
+        }elseif( $currentFavPageNum == 2 && $totalFavPageNum >= $pageColNum){
             $minPageNum = $currentFavPageNum - 1;
             $maxPageNum = $currentFavPageNum + 3;
-        // 現ページが1の場合は左に何も出さない。右に５個出す。 $totalPageNum = 5  $pageColNum = 
-        }elseif( $currentFavPageNum == 1 && $totalPageNum >= $pageColNum){
+            debug('結果3です');
+        // 現ページが1の場合は左に何も出さない。右に５個出す。 $totalFavPageNum = 5  $pageColNum = 
+        }elseif( $currentFavPageNum == 1 && $totalFavPageNum >= $pageColNum){
             $minPageNum = $currentFavPageNum;
             $maxPageNum = 5;
+            debug('結果2です');
         // 総ページ数が表示項目数より少ない場合は、総ページ数をループのMax、ループのMinを１に設定
-        }elseif($totalPageNum < $pageColNum){
+        }elseif($totalFavPageNum < $pageColNum){
             $minPageNum = 1;
-            $maxPageNum = $totalPageNum;
-        // それ以外は左に２個出す。
+            $maxPageNum = $totalFavPageNum;
+            debug('結果1です');
+        //それ以外は左に2個出す。
         }else{
             $minPageNum = $currentFavPageNum - 2;
             $maxPageNum = $currentFavPageNum + 2;
+            debug('結果0です');
         }
         //実際に吐き出すページネーションの中身
         echo '<div class="pagenation">';
             echo '<ul class="pagenation__list">';
             if($currentFavPageNum != 1){
-                echo '<li class="list__item"><a class="list__item__link" href="?p=1'.$link.'">&lt;</a></li>';
+                echo '<li class="list__item"><a class="list__item__link" href="?fav_p=1'.$link.'">&lt;</a></li>';
             }
             for($i = $minPageNum; $i <= $maxPageNum; $i++){
                 echo '<li class="list__item ';  
                 if($currentFavPageNum == $i ){ echo 'active'; } 
-                echo ' "><a class="list__item__link" href=" ?p='.$i.$link.' "> '.$i.'</a></li>';
+                echo ' "><a class="list__item__link" href=" ?fav_p='.$i.$link.' "> '.$i.'</a></li>';
             }
             if($currentFavPageNum != $maxPageNum && $maxPageNum > 1){
-                echo '<li class="list__item"><a class="list__item__link" href="?p='.$maxPageNum.$link.'">&gt;</a></li>';
+                echo '<li class="list__item"><a class="list__item__link" href="?fav_p='.$maxPageNum.$link.'">&gt;</a></li>';
             }
             echo '</ul>';
         echo '</div>';
@@ -1063,7 +1051,7 @@ $err_msg = array();
     //=========================================
     function showImg($path){
         if(empty($path)){
-            return 'img/sample_img1.jpg';
+            return '../../../../portfolio_sweetsboard/src/img/sample_img1.jpg';
         }else{
             return $path;
         }
@@ -1073,20 +1061,25 @@ $err_msg = array();
     //GETパラメータ付与 
     //=============================================
     // $del_key : 付与から取り除きたいGETパラメータのキー
-        //=>productDetail.phpではs_id(スイーツのID)を取り除いてページ数のGETパラメータだけを付与するようにしている。
+     //=>productDetail.phpではs_id(スイーツのID)を取り除いてページ数のGETパラメータだけを付与するようにしている。
     function appendGetParam($arr_del_key = array()){
-        if(!empty($_GET)){ //GETパラメータが存在した場合
+        //GETパラメータが存在した場合(URLに?をつけるので$strに格納する)
+        if(!empty($_GET)){ 
             $str = '?';
-            foreach($_GET as $key => $val){ //GETパラメータをkey=>valの形で分解
-                if(!in_array($key,$arr_del_key,true)){ //取り除きたいパラメータじゃない場合にurlにくっつけるパラメータを生成
-                    $str .= $key.'='.$val.'&'; // => ?$key=$val& となる。
+            /*GETパラメータをkey=>valの形で分解して
+            取り除きたいパラメータ($arr_del_key)と$keyを判別*/
+            foreach($_GET as $key => $val){ 
+                //取り除きたいパラメータじゃない場合にurlにくっつけるパラメータを生成
+                if(!in_array($key,$arr_del_key,true)){ 
+                    // => ?$key=$val& となる。(?sweets_id=1)など
+                    $str .= $key.'='.$val.'&'; 
                 }
             }
-            
-            $str = mb_substr($str, 0, -1, "UTF-8"); // $arr_del_keyを取り除いた時に ? も余るのでそれを取り除く
-            return $str;  
+            // $arr_del_keyを取り除いた時に ? も余るのでそれを取り除く
+            $str = mb_substr($str, 0, -1, "UTF-8"); 
             //echoにするとhome.phpでスイーツの画像をクリックした時にGETパラメータがおかしくなる =>?p_idの処理に移ってしまう
             //echoからreturnに修正すると逆に今までechoにしていたところに影響が出るので関数を使っていたところを再度テストチェックするようにしよう
+            return $str;
         }
     }
 
@@ -1158,14 +1151,38 @@ $err_msg = array();
     //==== DB接続系の関数 ==============================//
     //================================================//
 
-    //DB接続関数
+    //DB接続関数(Xserver接続時)
+    //function dbConnect(){
+    //    //DBの接続準備 xserverとxsurvどちらが正解？
+    //    $dsn = 'mysql:dbname=reol0405_sboardappdb;
+    //                host=mysql8050.xserver.jp;
+    //                charset=utf8';
+//
+    //    $user = 'reol0405_mysql28';
+    //    $password = 'harenn28';
+    //    $options = array(
+    //        // SQL実行失敗時にはエラーコードのみ設定。ここを変えてエラーを特定できることもある
+    //        //tocheck: 開発の時にはERRMODE_EXCEPTIONにし、サーバーに公開時にはERRMODE_SILENTにする
+    //        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+    //        // デフォルトフェッチモードを連想配列形式に設定
+    //        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    //        // バッファードクエリを使う(一度に結果セットをすべて取得し、サーバー負荷を軽減)
+    //        // SELECTで得た結果に対してもrowCountメソッドを使えるようにする
+    //        PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true,
+    //    );
+    //    $dbh = new PDO($dsn, $user, $password, $options);
+    //    return $dbh; 
+    //}
+
+    //DB接続関数(localhostで開発時)
     function dbConnect(){
-        //DBの接続準備
+        //DBの接続準備 xserverとxsurvどちらが正解？
         $dsn = 'mysql:dbname=boardapp;host=localhost;charset=utf8';
         $user = 'root';
         $password = 'root';
         $options = array(
             // SQL実行失敗時にはエラーコードのみ設定。ここを変えてエラーを特定できることもある
+            //tocheck: 開発の時にはERRMODE_EXCEPTIONにし、サーバーに公開時にはERRMODE_SILENTにする
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             // デフォルトフェッチモードを連想配列形式に設定
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
@@ -1174,21 +1191,11 @@ $err_msg = array();
             PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true,
         );
         $dbh = new PDO($dsn, $user, $password, $options);
-        return $dbh; //忘れずに！
+        return $dbh; 
     }
 
-    //クエリ実行関数
-    //function queryPost($dbh, $sql, $data){
-        //クエリ作成
-        //$stmt = $dbh->prepare($sql);
-        //プレースホルダーに値をセットし、SQLを実行
-        //$stmt -> execute($data);
-        //実行結果を返す
-        //return $stmt;
-    //}
-
     //クエリ関数変更後（getUser関数や）
-    //今まで呼び出し元で行っていたクエリの成功、失敗の判定を関数内で行うようにした
+    //クエリの成功、失敗の判定はこの関数内で行う
     function queryPost($dbh, $sql, $data){
         
         //クエリ作成
@@ -1202,12 +1209,11 @@ $err_msg = array();
                 debug('クエリは失敗しました');
                 debug('失敗したSQL:'.print_r($stmt,true));
                 $err_msg['common'] = MSG07;
-                return 0; //なぜ０を返す？
+                return 0; 
             }
             //成功した場合
             debug('クエリは成功しました');
             debug('成功したSQL:'.print_r($stmt,true));
             return $stmt; 
     }
-
 ?>

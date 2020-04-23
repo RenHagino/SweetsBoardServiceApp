@@ -34,33 +34,35 @@ if(!empty($_POST)){
     validRequired($pass_new, 'pass_new');
     validRequired($pass_new_re, 'pass_new_re');
 
-    //見入力チェックを通過したら
+    //未入力チェックを通過したら
     if(empty($err_msg)){
 
-        //ValidPass =>最大文字数、最小文字数、半角英数字をまとめて行なっている.=>function.php
-        //古いパスワードのチェック 
-        validPass($pass_old,'pass_old');
-        //新しいパスワードのチェック
+        /**
+         * 古いパスワードは会員登録の時にバリデーションが設置されているため
+         * ここでは半角英数字、最大文字数、最小文字数のバリデーションを
+         * 設置しなくても「!passsword_verify」に引っかかるのでvalidPass
+         * は古いパスワードに対しては使わない。
+         */
+        
+        //新しいパスワードのチェック(半角英数字, 最大文字数, 最小文字数)
         validPass($pass_new,'pass_new');
-
+        
         //古いパスワードとDBのパスワードを照合
-        //もし、同じなら半角英数字や最大文字数チェックは行わなくて良い
         if(!password_verify($pass_old, $userData['password'])){
-            $err_msg['pass_old'] = MSG12; //古いパスワードが違います
+            //古いパスワードが違います
+            $err_msg['pass_old'] = MSG12; 
         }
-
+        
         //新しいパスワードが古いパスワードと同じままかチェック
         if($pass_old === $pass_new){
-            $err_msg['pass_new'] = MSG13;//古いパスワードと同じです
+            //新しく設定するパスワードと現在設定されているパスワードが同じです
+            $err_msg['pass_new'] = MSG13;
         }
-
+        
         //パスワードとパスワード再入力があっているかをチェック
-        validMatch($pass_new, $pass_new_re, 'pass_new_re');
+        validMatchPass($pass_new, $pass_new_re, 'pass_new_re');
 
-        //最大文字数、最小文字数、半角英数字チェックは validPassの中で行なっているので
-        //ここに直接書く必要はない
-
-        //一通りのバリデーションに通過したら
+        //一通りのバリデーションを通過したら
         if(empty($err_msg)){
 
             //DB処理
@@ -69,35 +71,14 @@ if(!empty($_POST)){
                 $dbh = dbConnect();
                 //SQL実行
                 $sql = 'UPDATE users SET password = :pass WHERE id = :id'; 
-                //プレースホルダー //TODO:password_hashについて調べる。 user_idがどこで作られたか調べる
+                //プレースホルダー 
                 $data= array(':id'=> $_SESSION['user_id'] , ':pass' => password_hash($pass_new, PASSWORD_DEFAULT));
                 //クエリ実行
                 $stmt = queryPost($dbh, $sql, $data);
                 //クエリ成功の場合
                 if($stmt){
-
-
-                    $_SESSION['msg-success'] = SUC01; //パスワードを変更しました。
-
-                    //メールを送信する
-                    //メールを送信
-                        $username = ($userData['username']) ? $userData['username'] : '名無し';
-                        $from = 'info@sweetsboard.com';
-                        $to = $userData['email'];
-                        $subject = 'パスワード変更通知｜WEBUKATUMARKET';
-                        //EOTはEndOfFileの略。ABCでもなんでもいい。先頭の<<<の後の文字列と合わせること。最後のEOTの前後に空白など何も入れてはいけない。
-                        //EOT内の半角空白も全てそのまま半角空白として扱われるのでインデントはしないこと
-                        $comment = <<<EOT
-                                {$username}　さん
-                                パスワードが変更されました。                     
-                                ////////////////////////////////////////
-                                スイーツボードマーケットカスタマーセンター
-                                URL  http://sweetsboard.com/
-                                E-mail info@sweetsboard.com
-                                ///////////////////////////////////////
-EOT;
-                    //メール送信関数使用
-                    sendMail($from, $to, $subject, $comment);
+                    //サクセスメッセージ格納
+                    $_SESSION['msg-success'] = SUC01; 
                     //マイページへ遷移
                     header("Location:mypage.php");
                 
@@ -125,11 +106,11 @@ EOT;
         ?>
         <!--メイン-->
         <section class="main">
-            <h2 class="main-title main-title__passEdit">
+            <h2 class="main-title main-title-passedit">
             パスワード変更画面
             </h2>
             <div class="form-container">
-                <form method="post" class="form form-m pass-form">
+                <form method="post" class="form form-m default-form">
                     <!--フォームタイトル-->
                     <div class="area-msg">
                         <?php if(!empty($err_msg['common'])) echo $err_msg['common']; ?>

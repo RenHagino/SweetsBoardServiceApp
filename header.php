@@ -14,6 +14,7 @@
             //ログインしていた場合
             }else{
             ?>
+                <li class="btn-container"><a href="home.php" class="btn btn-s btn-mypage">スイーツ一覧</a></li>
                 <li class="btn-container"><a href="mypage.php" class="btn btn-s btn-mypage">マイページへ</a></li>
                 <li class="btn-container"><a href="logout.php" class="btn btn-s btn-logout">ログアウト</a></li>
             <?php

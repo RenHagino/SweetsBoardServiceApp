@@ -150,29 +150,29 @@
                             <?php if(!empty($err_msg['common'])) echo $err_msg['common']; ?>
                         </div>
                         <!--名前-->
+                        <div class="area-msg">
+                            <?php if(!empty($err_msg['username'])) echo $err_msg['username']; ?>
+                        </div>
                         <label class="label <?php if(!empty($err_msg['username'])) echo 'err'?>" >
                             名前(必須):<br> 
                             <input class="input" type="text" name="username" value="<?php echo getFormData('username')?>" >
                         </label>
-                        <div class="area-msg">
-                            <?php if(!empty($err_msg['username'])) echo $err_msg['username']; ?>
-                        </div>
                         <!--出身地-->
+                        <div class="area-msg">
+                            <?php  if(!empty($err_msg['region'])) echo $err_msg['region']; ?>
+                        </div>
                         <label class="label <?php if(!empty($err_msg['region'])) echo 'err' ?>">
                             住んでいる場所:<br> <!--value属性にDBから取ってきた情報を指定-->
                             <input class="input" type="text" name="region"  value="<?php echo getFormData('region');?>">
                         </label>
-                        <div class="area-msg">
-                            <?php  if(!empty($err_msg['region'])) echo $err_msg['region']; ?>
-                        </div>
                         <!--Email-->
+                        <div class="area-msg">
+                            <?php if(!empty($err_msg['email'])) echo $err_msg['email']; ?>
+                        </div>
                         <label class="label <?php if(!empty($err_msg['email'])) echo 'err'; ?>">
                             Email(必須):<br>
                             <input class="input" type="text" name="email" value="<?php echo getFormData('email'); ?>"> 
                         </label>
-                        <div class="area-msg">
-                            <?php if(!empty($err_msg['email'])) echo $err_msg['email']; ?>
-                        </div>
 
                         <!--プロフィールタイトル-->
                         <p class="prof-title">プロフィール画像をクリックして設定できます</p>

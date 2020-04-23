@@ -4,7 +4,7 @@
   ### URL
   =>http://sweetsboardservice.com/new.php
   ### テストログイン用アカウント<br>
-    メールアドレス:email0002@gmail.com
+    メールアドレス:slikeyuka100@gmail.com
     パスワード:saitou_y0202
   
 # ***サービス概要***

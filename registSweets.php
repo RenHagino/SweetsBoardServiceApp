@@ -173,7 +173,7 @@
 
                 //クエリ成功の場合
                 if($stmt){
-                    $_SESSION['msg-success'] = SUC04; 
+                    $_SESSION['msg-success'] = SUC03; 
                     debug('マイページへ遷移します');
                     header("Location:mypage.php"); 
                 }

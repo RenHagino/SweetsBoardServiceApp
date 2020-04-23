@@ -49,8 +49,11 @@
 
         //ユーザー名バリデーション
         if($dbFormData['username'] !== $username){
-            //必須チェックと最大文字数チェック
-            validMaxName($username,'username');
+            //必須チェック
+            validRequired($username, 'username');
+            if(empty($err_msg['username'])){    
+                validMaxName($username,'username');
+            }
         }
 
         //都道府県バリデーション
@@ -152,7 +155,7 @@
                             <input class="input" type="text" name="username" value="<?php echo getFormData('username')?>" >
                         </label>
                         <div class="area-msg">
-                            <?php if(!empty($err_msg['username'])) echo $err_msg['username']?>
+                            <?php if(!empty($err_msg['username'])) echo $err_msg['username']; ?>
                         </div>
                         <!--出身地-->
                         <label class="label <?php if(!empty($err_msg['region'])) echo 'err' ?>">

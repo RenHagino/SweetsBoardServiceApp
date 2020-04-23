@@ -44,7 +44,7 @@
         <!--スライドメッセージ-->
         <!-- フッターにjs, CSSはanimation.scssに記述 function.phpで裏側の処理-->
         <p class="js-show-msg msg-slide" style="display: none;" >
-            <?php echo getSessionFlash('msg-success'); ?> <!--msg-successにSUCが指定されると開発者ツールで中身を確認できる。-->
+            <?php echo getSessionFlash('msg-success'); ?> 
         </p>
 
         <!--メイン-->

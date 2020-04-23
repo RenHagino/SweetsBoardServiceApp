@@ -89,7 +89,6 @@
                         if(!empty($dbFavSweetsData['data'])):
                             foreach($dbFavSweetsData['data'] as $key => $val):
                     ?>
-                        <!-- TODO: appendGetParamの復習 -->
                         <a class="panel" href="SweetsDetail.php?s_id=<?php echo $val['sweets_id'];?>">
                             <div class="panel-head">
                                 <img src="<?php echo showImg(sanitize($val['pic1'])); ?>" alt="">

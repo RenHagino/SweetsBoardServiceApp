@@ -20,8 +20,7 @@ if(!empty($_POST)){
     try{
         //DBへ接続
         $dbh = dbConnect();
-
-        //SQL TODO:なぜuser_idではなくus_idにした？
+        
         // idはusersテーブルのもの。 user_idは他のテーブルのユーザーID判別のためのもの
         $sql1 = 'UPDATE users SET delete_flg = 1 WHERE id = :us_id';
         $sql2 = 'UPDATE sweets SET delete_flg = 1 WHERE user_id = :us_id';

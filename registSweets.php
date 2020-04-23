@@ -47,9 +47,7 @@
         $category_id = $_POST['category_id'];
         $name = $_POST['name'];
         $store_name = $_POST['store_name'];
-        /*TODO: $priceに入れる値はどうする？
-            入力結果が0もしくは空文字の場合は0を入れる
-            $price = (!empty($_POST['price']))? $_POST['price'] : 0;*/
+        //$price = (!empty($_POST['price']))? $_POST['price'] : 0;
         $price = $_POST['price'];
         $comment = $_POST['comment'];
         
@@ -215,7 +213,7 @@
                         <?php if(!empty($err_msg['common'])) echo $err_msg['common']; ?>
                     </div>
 
-                    <!--カテゴリー TODO:仕組みを要復習。ソースコードをいじって動作を確認してみる-->
+                    <!--カテゴリー -->
                     <label class="label <?php if(!empty($err_msg['category_id'])) echo 'err'?>" >
                         カテゴリー<span class="label-require">必須</span><br>
                         <!--セレクトボックスで実装-->
@@ -275,7 +273,7 @@
                     <!--テキストエリアタグを改行すると空文字が入るので注意-->
                     <textarea class="input js-count" name="comment" cols="50" rows="3"><?php echo getFormData('comment'); ?></textarea>
                     </label> 
-                    <!--TODO: jsで処理するので動作確認-->
+                    <!--現在入力されているコメントの入力数をカウント-->
                     <p class="count-text">
                         <span class="js-count-view">0</span>/100文字
                     </p>

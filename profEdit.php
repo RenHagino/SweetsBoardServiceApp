@@ -28,19 +28,19 @@
         if(!empty($_POST)){
         
         //POSTされている情報を確認
-            debug('POST送信があります');
-            debug('POST情報:'.print_r($_POST,true));
-            debug('FILE情報:'.print_r($_FILES,true)); 
+        debug('POST送信があります');
+        debug('POST情報:'.print_r($_POST,true));
+        debug('FILE情報:'.print_r($_FILES,true)); 
 
-        //変数にユーザー情報を代入 //TODO:リファクタリング filter_inputを使う。
-            $username = $_POST['username'];
-            $region = $_POST['region'];
-            $email =$_POST['email'];
-            
-            //$_FILES変数のpicmのname(連想配列)に何か値があればuploadImg関数にpicの情報を渡してアップロードする(key=pic)
-            $pic = (!empty($_FILES['pic']['name'])) ? uploadImg($_FILES['pic'],'pic'): '';
-            //現在$picに何も入っていなくて、DBに画像があった場合はそれを表示する
-            $pic = ( empty($pic) && !empty($dbFormData['pic'])) ? $dbFormData['pic']: $pic;
+        //変数にユーザー情報を代入 
+        $username = $_POST['username'];
+        $region = $_POST['region'];
+        $email =$_POST['email'];
+        
+        //$_FILES変数のpicmのname(連想配列)に何か値があればuploadImg関数にpicの情報を渡してアップロードする(key=pic)
+        $pic = (!empty($_FILES['pic']['name'])) ? uploadImg($_FILES['pic'],'pic'): '';
+        //現在$picに何も入っていなくて、DBに画像があった場合はそれを表示する
+        $pic = ( empty($pic) && !empty($dbFormData['pic'])) ? $dbFormData['pic']: $pic;
 
 
         //========================================================

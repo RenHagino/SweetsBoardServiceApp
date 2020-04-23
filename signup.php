@@ -164,7 +164,7 @@
                     </label>
                     <!--送信ボタン-->
                     <div class="btn-container">
-                        <input type="submit" class="btn btn-s btn-signup" value="登録する"> <!--TODO:クラス設計見直し-->
+                        <input type="submit" class="btn btn-s btn-signup" value="登録する"> 
                     </div>
                 </form>
             </div>

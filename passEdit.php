@@ -71,35 +71,14 @@ if(!empty($_POST)){
                 $dbh = dbConnect();
                 //SQL実行
                 $sql = 'UPDATE users SET password = :pass WHERE id = :id'; 
-                //プレースホルダー //TODO:password_hashについて調べる。 user_idがどこで作られたか調べる
+                //プレースホルダー 
                 $data= array(':id'=> $_SESSION['user_id'] , ':pass' => password_hash($pass_new, PASSWORD_DEFAULT));
                 //クエリ実行
                 $stmt = queryPost($dbh, $sql, $data);
                 //クエリ成功の場合
                 if($stmt){
-
-
+                    //サクセスメッセージ格納
                     $_SESSION['msg-success'] = SUC01; 
-
-                    //メールを送信する
-                    //メールを送信
-                        $username = ($userData['username']) ? $userData['username'] : '名無し';
-                        $from = 'info@sweetsboard.com';
-                        $to = $userData['email'];
-                        $subject = 'パスワード変更通知｜SWEETSBOARD';
-                        //EOTはEndOfFileの略。ABCでもなんでもいい。先頭の<<<の後の文字列と合わせること。最後のEOTの前後に空白など何も入れてはいけない。
-                        //EOT内の半角空白も全てそのまま半角空白として扱われるのでインデントはしないこと
-                        $comment = <<<EOT
-                                {$username}　さん
-                                パスワードが変更されました。                     
-                                ////////////////////////////////////////
-                                スイーツボードマーケットカスタマーセンター
-                                URL  http://sweetsboard.com/
-                                E-mail info@sweetsboard.com
-                                ///////////////////////////////////////
-EOT;
-                    //メール送信関数使用
-                    sendMail($from, $to, $subject, $comment);
                     //マイページへ遷移
                     header("Location:mypage.php");
                 

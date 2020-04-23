@@ -17,7 +17,7 @@
         debug('post送信があります');
 
         //変数にユーザー情報代入
-        $email = $_POST['email']; //TODO: なぜセッションでは無い？
+        $email = $_POST['email']; 
         $pass = $_POST['pass'];
         $pass_save = (!empty($_POST['pass_save']))? true : false; //空でなければtrue
 
@@ -44,7 +44,6 @@
                 //DBへ接続
                 //各種準備。（接続、sql、プレースホルダー）
                 $dbh = dbConnect();
-                //TODO: function.phpのEmail重複チェックと同じようにAND delete_flg = 0 を追加。
                 //退会したユーザーのアドレスを拾って退会しているのにログインできるようにしないため。
                 $sql = 'SELECT password, id  FROM users WHERE email = :email  AND delete_flg = 0 ';
                 $data = array(':email' => $email);

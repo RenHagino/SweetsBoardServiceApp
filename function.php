@@ -72,10 +72,10 @@ define('MSG15','認証キーが違います');
 define('MSG16','認証キーの有効期限が切れています');
 define('MSG17','半角数字で入力してください'); 
 define('MSG18','正しくありません。');
-//todo: サクセスメッセージを表示できるように実装
+//サクセスメッセージ一覧
 define('SUC01', 'パスワードを変更しました！');
 define('SUC02', 'プロフィールを変更しました！');
-define('SUC04','スイーツが登録されました！');
+define('SUC03','スイーツが登録されました！');
 
 //===グローバル変数==========================================//
 //エラーメッセージ格納用の配列
@@ -139,9 +139,9 @@ $err_msg = array();
     //最小文字数チェック
     validMinPass($str, $key);
     }
-
-    //最大文字数チェック //$maxはDBの設定と照らし合わせて指定する
-    //関数を呼び出す時に指定すれば$maxの値を変えることも可能
+    
+    //最大文字数チェック 
+    //関数を呼び出す時に指定すれば$maxの値を変えることが可能
     function validMaxComment($str,$key,$max=100){ 
         if(mb_strlen($str) > $max){
             global $err_msg;
@@ -208,10 +208,6 @@ $err_msg = array();
         $err_msg[$key] = MSG01B;
         }
     }
-    /*電話番号形式チェック、郵便番号形式チェック、半角数字チェックは今回は作らない*/
-    //出身地文字数チェックチェックは最大文字数チェックでOK。
-
-
 
     //=============================================
     //ユーザー情報取得関数 (profEdit.phpで使用)
@@ -567,7 +563,6 @@ $err_msg = array();
             //DB接続
             $dbh = dbConnect();
             
-            //TODO: 復習
             //categoryテーブルから取ってくるデータはASで変換するようにsweetsテーブルのidとcategoryテーブルのidが同じになる可能性がある
             $sql =
                 'SELECT s.id, s.name, s.store_name, s.category_id, s.comment, s.price, s.pic1, s.pic2, s.pic3, s.user_id, s.delete_flg, s.create_date, s.update_date, c.id AS category_id, c.name AS category_name
@@ -664,7 +659,7 @@ $err_msg = array();
         $data = array(':id'=>$u_id);
         $stmt = queryPost($dbh,$sql,$data);
 
-        //取得した掲示板のクエリ結果を変数に入れる  TODO:return $stmt->fetchAll()だと駄目？
+        //取得した掲示板のクエリ結果を変数に入れる
         $rst = $stmt->fetchAll();
         debug('掲示板から取得したデータ:'.print_r($rst,true));
 
@@ -676,8 +671,7 @@ $err_msg = array();
                 $sql = 'SELECT * FROM `message` WHERE board_id = :id  AND delete_flg =0 ORDER BY send_date DESC';
                 $data = array(':id'=>$val['id']);
                 $stmt = queryPost($dbh, $sql, $data);
-
-                //取得したメッセージのクエリ結果をに入れる TODO:デバッグ結果を見て理解する。
+                //取得したメッセージのクエリ結果をに入れる
                 $rst[$key]['msg'] = $stmt->fetchAll();
                 debug( 'メッセージテーブルから取得したデータ:'.print_r($rst[$key]['msg'],true) );
             }
@@ -702,7 +696,7 @@ $err_msg = array();
     }
 
     //=============================================
-    //フォーム入力保持関数 profEdit.phpとregistSweets.phpで使用  :todo　復習
+    //フォーム入力保持関数 profEdit.phpとregistSweets.phpで使用  
     //=============================================
     // フォーム入力保持
     function getFormData($str, $flg = false){
@@ -826,7 +820,7 @@ $err_msg = array();
     }
 
     //=============================================
-    //認証キー作成  追加パスワードリマインダーの認証キー発行 TODO：テスト
+    //認証キー作成  追加パスワードリマインダーの認証キー発行 ト
     //=============================================
     function makeRandKey($length = 8){ //認証キーを８文字に制限
         $chars = 'abcdefghijklmnopqrstuvxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -891,7 +885,7 @@ $err_msg = array();
                 }
 
                 //保存したファイルパスのパーミッションを変更する
-                chmod($path,0644); //TODO: 0644の意味は？権限について自分で調べる。
+                chmod($path,0644); 
                 debug('ファイルは正常にアップロードされました');
                 debug('ファイルパス:'.$path);
                 return $path;
@@ -1064,7 +1058,7 @@ $err_msg = array();
     }
 
     //=============================================
-    //GETパラメータ付与 todo:コードをいじって動作確認
+    //GETパラメータ付与 
     //=============================================
     // $del_key : 付与から取り除きたいGETパラメータのキー
      //=>productDetail.phpではs_id(スイーツのID)を取り除いてページ数のGETパラメータだけを付与するようにしている。

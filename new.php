@@ -22,7 +22,7 @@
     require('head.php');
   ?>
   <body>
-    <!--メイン(背景画像)-->
+    <!--メイン-->
     <div class="new-back-content">
       <!--ウェブサービスのタイトル-->
       <h1 class="new-back-content__title">SweetsBoard</h1>

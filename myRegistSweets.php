@@ -70,11 +70,6 @@
             endforeach;
             endif;
         ?>
-        <!-- TODO: 後で実装 
-            登録したスイーツのページネーション-->
-        <?php 
-            //pagenation($currentMyPageNum, $countMyData['total_page'] ); 
-        ?>
       </section>
     </section>
     <!--フッター呼び出し-->

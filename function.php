@@ -1,7 +1,7 @@
 <?php
 //=== ログ設定 ==================//
 //ログを取るかどうか
-ini_set('log_errors','on');
+ini_set('log_errors','off');
 //出力ファイルを設定
 ini_set('error_log','php.log');
 //tocheck: 開発時のみオンにするように
